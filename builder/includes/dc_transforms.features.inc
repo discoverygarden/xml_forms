@@ -58,7 +58,7 @@ function xml_form_builder_default_dc_config_features_export($data, &$export, $mo
     return isset($configs[$config]) ? $configs[$config]['xslt_name'] : FALSE;
   };
   $xslt_names = array_unique(array_map($map_xslt_name, $data));
-  $export['features']['xml_form_builder_default_dc_xslt'] = drupal_map_assoc($xslt_names);
+  $export['features']['xml_form_builder_default_dc_xslt'] = array_combine($xslt_names, $xslt_names);
 }
 
 /**
@@ -68,8 +68,8 @@ function xml_form_builder_default_dc_config_features_export_render($module_name,
   module_load_include('inc', 'xml_form_builder', 'includes/db');
 
   $code = array();
-  $drop_fields = drupal_map_assoc(array('id', 'xslt_id'));
-  foreach (array_intersect_key(xml_form_builder_default_dc_config_get_mapped_features(), drupal_map_assoc($data)) as $key => $item) {
+  $drop_fields = array_combine(array('id', 'xslt_id'), array('id', 'xslt_id'));
+  foreach (array_intersect_key(xml_form_builder_default_dc_config_get_mapped_features(), array_combine($data, $data)) as $key => $item) {
     $code[$key] = array_diff_key($item, $drop_fields);
   }
 
@@ -96,8 +96,8 @@ function xml_form_builder_default_dc_config_features_rebuild($module_name) {
   // We pass NULL when reverting, after nuking the relevant DB tables, so we do
   // a full rebuild of the relevant features.
   $values = $module_name === NULL ?
-    module_invoke_all('xml_form_builder_default_dc_config') :
-    module_invoke($module_name, 'xml_form_builder_default_dc_config');
+    \Drupal::moduleHandler()->invokeAll('xml_form_builder_default_dc_config') :
+    \Drupal::moduleHandler()->invoke($module_name, 'xml_form_builder_default_dc_config');
 
   if (!empty($values)) {
     $xslts = db_select('xml_form_builder_xslts', 'x')
@@ -116,17 +116,20 @@ function xml_form_builder_default_dc_config_features_rebuild($module_name) {
           $file = file_save_data($info['xslt'], 'public://');
           $file->status &= ~FILE_STATUS_PERMANENT;
           $file = file_save($file);
-          features_log(t('Replacing !current_content of @xslt_name with feature content.', array(
-            '!current_content' => l(t('current content'), file_create_url($file->uri)),
-            '@xslt_name' => $info['xslt_name'],
-          )), 'warning');
+          // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// features_log(t('Replacing !current_content of @xslt_name with feature content.', array(
+//             '!current_content' => l(t('current content'), file_create_url($file->uri)),
+//             '@xslt_name' => $info['xslt_name'],
+//           )), 'warning');
+
 
           // XSLT exists with same name, but different contents; replace it.
           // Change name of old entry.
           $old_name_replacement = str_rot13($old['name']);
           while (isset($xslts[$old_name_replacement])) {
             // If there happens to be a collision, generate a random name.
-            $old_name_replacement = bin2hex(drupal_random_bytes(8));
+            $old_name_replacement = bin2hex(\Drupal\Component\Utility\Crypt::randomBytes(8));
           }
           db_update('xml_form_builder_xslts')
             ->fields(array(

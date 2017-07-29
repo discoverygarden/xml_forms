@@ -153,7 +153,7 @@ class XMLFormDatabase {
       $object = new stdClass();
       $object->name = $form_name;
       $object->form = $definition->saveXML();
-      return drupal_write_record(self::TABLE, $object) !== FALSE;
+      return \Drupal::database()->insert(self::TABLE)->fields($object)->execute() !== FALSE;
     }
     return FALSE;
   }

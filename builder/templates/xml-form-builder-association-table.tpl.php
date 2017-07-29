@@ -37,12 +37,21 @@
           <td>
           <?php if ($association['type'] == 'hook'): ?>
           <?php if ($association['enabled']): ?>
-          <?php print l(t("Disable"), "admin/islandora/xmlform/forms/{$association['form_name']}/disassociate/{$association['id']}") ?>
+          <?php // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// print l(t("Disable"), "admin/islandora/xmlform/forms/{$association['form_name']}/disassociate/{$association['id']}")
+ ?>
           <?php else: ?>
-          <?php print l(t("Enable"), "admin/islandora/xmlform/forms/{$association['form_name']}/associate/{$association['id']}") ?>
+          <?php // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// print l(t("Enable"), "admin/islandora/xmlform/forms/{$association['form_name']}/associate/{$association['id']}")
+ ?>
           <?php endif; ?>
           <?php else: ?>
-          <?php print l(t("Delete"), "admin/islandora/xmlform/forms/{$association['form_name']}/disassociate/{$association['id']}") ?>
+          <?php // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// print l(t("Delete"), "admin/islandora/xmlform/forms/{$association['form_name']}/disassociate/{$association['id']}")
+ ?>
           <?php endif; ?>
           </td>
         </tr>

@@ -22,7 +22,7 @@ class Tabs {
   public static function addRequiredResources(array &$form_state) {
     static $load = TRUE;
     if ($load) {
-      form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Element');
+      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
       Element::addUIWidgets('ui.tabs');
       Element::addUIThemeStyles(array(
         'ui.core.css',
@@ -83,7 +83,7 @@ function template_preprocess_tabs(&$vars) {
   $vars['collapsible'] = $tabs['#collapsible'] == TRUE;
   $vars['collapsed'] = $tabs['#collapsed'] == TRUE;
   // Get Tabpanels.
-  $keys = element_children($tabs);
+  $keys = \Drupal\Core\Render\Element::children($tabs);
   $children = array();
 
   foreach ($keys as $key) {
