@@ -21,7 +21,7 @@
  *   A Drupal form definition.
  */
 function xml_form_builder_select_association_form(array $form, array &$form_state, array $associations) {
-  form_load_include($form_state, 'inc', 'xml_form_builder', 'includes/select_association.form');
+  $form_state->loadInclude('xml_form_builder', 'inc', 'includes/select_association.form');
   $get_default = function($name, $default) use(&$form_state) {
     // @XXX: This used to be using input instead of values but it has been
     // switched back. The original input change was to fix a problem with
@@ -111,7 +111,7 @@ function xml_form_builder_select_association_form_get_forms(array $associations,
     return $o['form_name'];
   };
   $forms = array_map($get_form, $selected_model_associations);
-  return drupal_map_assoc($forms);
+  return array_combine($forms, $forms);
 }
 
 /**

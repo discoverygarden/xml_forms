@@ -46,7 +46,15 @@ function xml_form_builder_edit_include_css() {
     $ext_path . 'resources/css/ext-all.css',
   );
   foreach ($css_files as $file) {
-    drupal_add_css($file);
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_css($file);
+
   }
 }
 
@@ -72,7 +80,15 @@ function xml_form_builder_edit_include_js() {
     $js_path . 'PreviewPanel.js',
   );
   foreach ($js_files as $file) {
-    drupal_add_js($file);
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($file);
+
   }
 }
 
@@ -103,7 +119,7 @@ function xml_form_builder_edit_save($form_name) {
   }
   catch (Exception $e) {
     $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
-    drupal_set_message(filter_xss($msg), 'error');
+    drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
   }
 }
 
@@ -141,7 +157,15 @@ function xml_form_builder_create_element_type_store() {
     data: $data
   });
 EOT;
-  drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
+
 }
 
 /**
@@ -176,7 +200,15 @@ function xml_form_builder_create_properties_store($form_name) {
  });
  Ext.formbuilder.propertiesStore.sync();
 EOT;
-  drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
+
 }
 
 /**
@@ -201,7 +233,15 @@ function xml_form_builder_create_element_store($form_name) {
     root: $data
  });
 EOT;
-  drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
+
 }
 
 /**
@@ -214,8 +254,8 @@ function xml_form_builder_get_element_types() {
   $output = &drupal_static(__FUNCTION__);
 
   if (!isset($output)) {
-    $types = array_keys(module_invoke_all('element_info'));
-    $output = drupal_map_assoc($types);
+    $types = array_keys(\Drupal::moduleHandler()->invokeAll('element_info'));
+    $output = array_combine($types, $types);
     ksort($output);
   }
 

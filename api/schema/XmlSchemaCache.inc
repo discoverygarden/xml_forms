@@ -1,11 +1,16 @@
 <?php
 
-/**
- * @file
- * Handles schema caching so that they don't need to be downloaded each request.
- */
+// @FIXME
+// // @FIXME
+// // This looks like another module's variable. You'll need to rewrite this call
+// // to ensure that it uses the correct configuration object.
+// /**
+//  * @file
+//  * Handles schema caching so that they don't need to be downloaded each request.
+//  */
+// 
+// define('XML_SCHEMA_API_CACHE_LOCATION', variable_get('file_public_path', \Drupal\Core\DrupalKernel::findSitePath() . '/files') . '/schemas');
 
-define('XML_SCHEMA_API_CACHE_LOCATION', variable_get('file_public_path', conf_path() . '/files') . '/schemas');
 
 /**
  * Stores/retrieves schema documents from the file location on disk.
@@ -32,7 +37,7 @@ class XmlSchemaCache {
    *   TRUE if the cache exists; FALSE otherwise.
    */
   public static function Exists() {
-    return cache_get(self::ID, self::TYPE) && self::LocationExists();
+    return \Drupal::cache(self::TYPE)->get(self::ID) && self::LocationExists();
   }
 
   /**
@@ -67,7 +72,7 @@ class XmlSchemaCache {
    */
   protected static function ClearCacheTable() {
     // Empty to start with.
-    cache_set(self::ID, array(), self::TYPE, CACHE_PERMANENT);
+    \Drupal::cache(self::TYPE)->set(self::ID, array(), \Drupal\Core\Cache\Cache::PERMANENT);
   }
 
   /**
@@ -126,9 +131,9 @@ class XmlSchemaCache {
       $doc = new DOMDocument();
       if (!@$doc->load($cached_filename)) {
         // Failed to load clear instance from the cache.
-        $cache = cache_get(self::ID, self::TYPE)->data;
+        $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
         unset($cache[$filename]);
-        cache_set(self::ID, $cache, self::TYPE);
+        \Drupal::cache(self::TYPE)->set(self::ID, $cache);
         return FALSE;
       }
       // Success.
@@ -150,14 +155,14 @@ class XmlSchemaCache {
   public static function GetCachedFilename($filename) {
     // Only Creates if none existed.
     if (self::Create()) {
-      $cache = cache_get(self::ID, self::TYPE)->data;
+      $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
       if (isset($filename) && isset($cache[$filename])) {
         if (self::LocationExists($cache[$filename])) {
           return $cache[$filename];
         }
         // Failed to find the file clear instance from the cache.
         unset($cache[$filename]);
-        cache_set(self::ID, $cache, self::TYPE);
+        \Drupal::cache(self::TYPE)->set(self::ID, $cache);
       }
     }
     return FALSE;
@@ -177,9 +182,9 @@ class XmlSchemaCache {
     if (self::Create()) {
       $cached_filename = file_create_filename('schema.xsd', XML_SCHEMA_API_CACHE_LOCATION);
       if (@$doc->save($cached_filename) != FALSE) {
-        $cache = cache_get(self::ID, self::TYPE)->data;
+        $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
         $cache[$filename] = $cached_filename;
-        cache_set(self::ID, $cache, self::TYPE);
+        \Drupal::cache(self::TYPE)->set(self::ID, $cache);
       }
     }
   }

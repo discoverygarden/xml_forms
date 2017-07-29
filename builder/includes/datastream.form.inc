@@ -25,7 +25,7 @@
  *   form for adding the datastream.
  */
 function xml_form_builder_datastream_form(array $form, array &$form_state, AbstractObject $object, $dsid) {
-  form_load_include($form_state, 'inc', 'xml_form_builder', 'includes/datastream.form');
+  $form_state->loadInclude('xml_form_builder', 'inc', 'includes/datastream.form');
   // Leave this here for legacy reasons.
   $form_state['datastream'] = isset($object[$dsid]) ? $object[$dsid] : FALSE;
   $associations = xml_form_builder_datastream_form_get_associations($form_state, $object->models, $dsid);
@@ -150,7 +150,7 @@ function xml_form_builder_datastream_form_metadata_form(array $form, array &$for
   if ($association['title_field']) {
     $title_field_parents = $association['title_field'];
     $title_field_parents[] = '#required';
-    drupal_array_set_nested_value($form, $title_field_parents, TRUE);
+    \Drupal\Component\Utility\NestedArray::setValue($form, $title_field_parents, TRUE);
   }
   $form['update'] = array(
     '#type' => 'submit',
@@ -176,7 +176,7 @@ function xml_form_builder_datastream_form_metadata_form_submit(array $form, arra
   $association = $form_state['association'];
   $label = NULL;
   if ($association['title_field']) {
-    $title_field = drupal_array_get_nested_value($form, $association['title_field']);
+    $title_field = \Drupal\Component\Utility\NestedArray::getValue($form, $association['title_field']);
     $label = $title_field['#value'];
   }
   $xml_form = new XMLForm($form_state);
@@ -199,8 +199,8 @@ function xml_form_builder_datastream_form_metadata_form_submit(array $form, arra
  *   An array containing the form to be rendered.
  */
 function xml_form_builder_create_metadata_form($form, &$form_state, $object) {
-  form_load_include($form_state, 'inc', 'xml_form_builder', 'includes/datastream.form');
-  form_load_include($form_state, 'inc', 'islandora', 'includes/utilities');
+  $form_state->loadInclude('xml_form_builder', 'inc', 'includes/datastream.form');
+  $form_state->loadInclude('islandora', 'inc', 'includes/utilities');
 
   $datastreams = xml_form_builder_empty_metadata_datastreams($object);
   $options = array_combine($datastreams, $datastreams);
@@ -234,12 +234,12 @@ function xml_form_builder_create_metadata_form_submit($form, &$form_state) {
 function xml_form_builder_add_datastream_page(AbstractObject $object) {
   module_load_include('inc', 'islandora', 'includes/add_datastream.form');
   return array(
-    'core_form' => drupal_get_form('islandora_add_datastream_form', $object),
+    'core_form' => \Drupal::formBuilder()->getForm('islandora_add_datastream_form', $object),
     'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?
       array(
         '#type' => 'fieldset',
         '#title' => t('Add A Metadata Datastream'),
-        'xml_form' => drupal_get_form('xml_form_builder_create_metadata_form', $object),
+        'xml_form' => \Drupal::formBuilder()->getForm('xml_form_builder_create_metadata_form', $object),
       ) :
       array()
     ),

@@ -32,8 +32,8 @@ class Tags {
   public static function addRequiredResources(&$form_state) {
     static $load = TRUE;
     if ($load) {
-      form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Element');
-      form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Tag');
+      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
+      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
       Element::addJS('tags.js');
       Element::addCSS('tags.css');
       $load = FALSE;
@@ -61,7 +61,7 @@ class Tags {
     $element['#after_build'] = array('xml_form_elements_after_build_tags');
     $element['#prefix'] = "<div class='clear-block' id='ahah-{$element['#id']}-wrapper'>";
     $element['#suffix'] = '</div>';
-    foreach (element_children($element) as $key) {
+    foreach (\Drupal\Core\Render\Element::children($element) as $key) {
       $child = $element[$key];
       $hash = $child['#hash'];
       $element['controls']['edit'][$hash] = self::createEditButton($element, $child);
@@ -85,8 +85,8 @@ class Tags {
   public static function AfterBuild(array $form_element, array &$form_state) {
     if ($form_element['#required']) {
       // 2 to include the controls element.
-      $require = (count(element_children($form_element)) == 2) ? TRUE : FALSE;
-      foreach (element_children($form_element) as $key) {
+      $require = (count(\Drupal\Core\Render\Element::children($form_element)) == 2) ? TRUE : FALSE;
+      foreach (\Drupal\Core\Render\Element::children($form_element) as $key) {
         $child = &$form_element[$key];
         $child['#required'] = $require;
       }
@@ -214,7 +214,7 @@ function template_preprocess_tags(&$vars) {
   $vars['remove'] = isset($tags['controls']['remove']) ? $tags['controls']['remove'] : NULL;
   // Used to create tag icons, and hidden input fields.
   $vars['tags'] = array();
-  $children = element_children($tags);
+  $children = \Drupal\Core\Render\Element::children($tags);
   foreach ($children as $key) {
     $child = $tags[$key];
     if (isset($child['#type']) && $child['#type'] == 'tag') {
@@ -228,7 +228,16 @@ function template_preprocess_tags(&$vars) {
   $textfield['element']['#size'] = $tags['#size'];
   $textfield['element']['#autocomplete_path'] = isset($textfield['element']['#autocomplete_path']) ? $textfield['element']['#autocomplete_path'] : FALSE;
   // Theme the text field to take advantage of autocomplete.
-  $vars['textfield'] = theme('textfield', $textfield);
+  // @FIXME
+// theme() has been renamed to _theme() and should NEVER be called directly.
+// Calling _theme() directly can alter the expected output and potentially
+// introduce security issues (see https://www.drupal.org/node/2195739). You
+// should use renderable arrays instead.
+// 
+// 
+// @see https://www.drupal.org/node/2195739
+// $vars['textfield'] = theme('textfield', $textfield);
+
 }
 
 /**

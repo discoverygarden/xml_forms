@@ -39,7 +39,10 @@ function xml_form_builder_list_associations() {
    * Returns a link to the edit associations form for form $form_name.
    */
   function create_form_association_link($form_name) {
-    return array(l($form_name, xml_form_builder_get_associate_form_path($form_name)));
+    // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// return array(l($form_name, xml_form_builder_get_associate_form_path($form_name)));
+
   }
 
   foreach ($map as $cmodel => $forms) {
@@ -54,7 +57,7 @@ function xml_form_builder_list_associations() {
     else {
       $label = $cmodel;
     }
-    $associations_list['#items'][] = $label . drupal_render($form_table);
+    $associations_list['#items'][] = $label . \Drupal::service("renderer")->render($form_table);
   }
 
   return array($associations_list);

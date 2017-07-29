@@ -240,10 +240,33 @@ function xml_form_builder_menu() {
 }
 
 /**
- * Implements hook_menu_alter().
+ * @FIXME
+ * hook_menu_alter() is gone in Drupal 8. You will have to port its
+ * functionality manually. The are several mechanisms for this:
  *
- * Overrides the add datastream callback to be aware of forms.
+ * To alter routes, you must implement a route subscriber class. An empty one
+ * has been generated for you in src/Routing/RouteSubscriber.php.
+ *
+ * To alter menu link definitions, see hook_menu_links_discovered_alter(). An
+ * empty implementation has been created at the end of this file.
+ *
+ * To alter local task definitions, see hook_menu_local_tasks_alter(). An
+ * empty implementation has been created for you at the end of this file.
+ *
+ * To alter local actions, see hook_menu_local_actions_alter(). An
+ * empty implementation has been created for you at the end of this file.
+ *
+ * Contextual links are altered during rendering only. See
+ * hook_contextual_links_view_alter(). An empty implementation has been
+ * created for you at the end of this file.
+ *
+ * @see https://www.drupal.org/node/2118147#alter
+ * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Menu%21menu.api.php/function/hook_menu_links_discovered_alter/8
+ * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Menu%21menu.api.php/function/hook_menu_local_tasks_alter/8
+ * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Menu%21menu.api.php/function/hook_menu_local_actions_alter/8
+ * @see https://api.drupal.org/api/drupal/core%21modules%21contextual%21contextual.api.php/function/hook_contextual_links_view_alter/8
  */
+
 function xml_form_builder_menu_alter(&$items) {
   $items['islandora/object/%islandora_object/manage/datastreams/add']['page callback'] = 'xml_form_builder_add_datastream_page';
   $items['islandora/object/%islandora_object/manage/datastreams/add']['page arguments'] = array(2);
@@ -255,8 +278,8 @@ function xml_form_builder_menu_alter(&$items) {
  * Access callback for the XSLTs admin page.
  */
 function xml_form_builder_xslts_access() {
-  if (user_access(XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS) &&
-    variable_get('xml_form_builder_use_default_dc_xslts', FALSE)) {
+  if (\Drupal::currentUser()->hasPermission(XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS) &&
+    \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts')) {
     return TRUE;
   }
   return FALSE;
@@ -448,9 +471,9 @@ function xml_form_builder_get_associate_form_path($form_name) {
  *   The Drupal Form, if it exists FALSE otherwise.
  */
 function xml_form_builder_get_form(array $form, array &$form_state, $form_name, $xml = NULL, $parents = array()) {
-  form_load_include($form_state, 'inc', 'xml_form_builder', 'XMLFormRepository');
-  form_load_include($form_state, 'inc', 'xml_form_api', 'XMLForm');
-  form_load_include($form_state, 'inc', 'xml_form_api', 'XMLFormDefinition');
+  $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
+  $form_state->loadInclude('xml_form_api', 'inc', 'XMLForm');
+  $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
   if (!XMLFormRepository::Exists($form_name)) {
     drupal_set_message(t('The form "%name" does not exist.', array('%name' => $form_name)));
     return FALSE;
@@ -466,7 +489,7 @@ function xml_form_builder_get_form(array $form, array &$form_state, $form_name, 
       $definition = new XMLFormDefinition(XMLFormRepository::Get($form_name));
       $document = $definition->createXMLDocument($xml);
       $form = $definition->getForm();
-      drupal_alter(XML_FORM_BUILDER_GET_FORM_MODIFY_DEFINITION_HOOK, $form,
+      \Drupal::moduleHandler()->alter(XML_FORM_BUILDER_GET_FORM_MODIFY_DEFINITION_HOOK, $form,
         $form_state);
       $xml_form->initialize($form, $document);
     }
@@ -476,7 +499,7 @@ function xml_form_builder_get_form(array $form, array &$form_state, $form_name, 
     // Catch any errors that occured and display them to the user so that they
     // may correct their form definition.
     $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
-    drupal_set_message(filter_xss($msg), 'error');
+    drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
     return FALSE;
   }
   return $form;
@@ -574,7 +597,7 @@ function xml_form_builder_update_object(AbstractObject $object, array $associati
   }
   $object->models = array_merge($object->models, array($association['content_model']));
   $document = $document->document;
-  $run_transforms = !variable_get('xml_form_builder_use_default_dc_xslts', FALSE);
+  $run_transforms = !\Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
   if (isset($association['self_transform']) && $association['self_transform'] != 'No Transform' && $run_transforms) {
     $document = xml_form_builder_transform_metadata_datastream($document, $association['self_transform']);
   }
@@ -734,7 +757,7 @@ function xml_form_builder_settings_form(array $form, array &$form_state) {
       '#type' => 'checkbox',
       '#title' => t('Use Default DC XSLTs'),
       '#description' => t('Enable the use of default metadata datastream to DC transforms.'),
-      '#default_value' => variable_get('xml_form_builder_use_default_dc_xslts', FALSE),
+      '#default_value' => \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
     ),
   );
   return system_settings_form($form);
@@ -754,7 +777,7 @@ function xml_form_builder_help($path) {
         at install time so as to maintain consistent DC metadata.'
       ),
     );
-    return drupal_render($output_array);
+    return \Drupal::service("renderer")->render($output_array);
   }
 }
 
@@ -764,7 +787,7 @@ function xml_form_builder_help($path) {
  * Dynamically maps the derivatives based on the database.
  */
 function xml_form_builder_islandora_derivative(AbstractObject $object = NULL) {
-  if (!variable_get('xml_form_builder_use_default_dc_xslts', FALSE) || !$object) {
+  if (!\Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts') || !$object) {
     return;
   }
   module_load_include('inc', 'xml_form_builder', 'includes/db');
@@ -804,3 +827,23 @@ function xml_form_builder_features_api() {
 
   return $items;
 }
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function xml_form_builder_menu_links_discovered_alter(array &$links) {}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function xml_form_builder_menu_local_tasks_alter(array &$data, $route_name) {}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function xml_form_builder_menu_local_actions_alter(array &$local_actions) {}
+
+/**
+ * Implements hook_contextual_links_view_alter().
+ */
+function xml_form_builder_contextual_links_view_alter(array &$element, array $items) {}

@@ -22,7 +22,7 @@
  *   A Drupal Form that represents the given form, identified by $form_name.
  */
 function xml_form_builder_preview(array $form, array &$form_state, $form_name) {
-  form_load_include($form_state, 'inc', 'xml_form_builder', 'Preview');
+  $form_state->loadInclude('xml_form_builder', 'inc', 'Preview');
   $form = xml_form_builder_get_form($form, $form_state, $form_name);
   $form['submit'] = array(
     '#type' => 'submit',
@@ -52,7 +52,7 @@ function xml_form_builder_preview_submit(array $form, array &$form_state) {
     $message = 'File: ' . $e->getFile() . '</br>';
     $message .= 'Line: ' . $e->getLine() . '</br>';
     $message .= 'Error: ' . $e->getMessage() . '</br>';
-    drupal_set_message(filter_xss($message), 'error');
+    drupal_set_message(\Drupal\Component\Utility\Xss::filter($message), 'error');
     $form_state['rebuild'] = TRUE;
   }
 }

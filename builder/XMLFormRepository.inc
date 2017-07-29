@@ -17,10 +17,10 @@ class XMLFormRepository extends XMLFormDatabase {
    *   also arrays, in the format "array('form_file' => 'path/to/the/form')".
    */
   protected static function getFormsFromHook() {
-    $hooks = module_invoke_all('xml_form_builder_forms');
+    $hooks = \Drupal::moduleHandler()->invokeAll('xml_form_builder_forms');
     // @todo Remove (deprecated) invokation if
     // "islandora_xml_form_builder_forms".
-    $hooks += module_invoke_all('islandora_xml_form_builder_forms');
+    $hooks += \Drupal::moduleHandler()->invokeAll('islandora_xml_form_builder_forms');
     return $hooks;
   }
 
