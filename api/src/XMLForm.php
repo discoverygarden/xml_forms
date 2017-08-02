@@ -1,13 +1,5 @@
 <?php
-
-/**
- * @file
- * Implementation of the objective_forms Form class.
- */
-
-module_load_include('inc', 'objective_forms', 'Form');
-module_load_include('inc', 'xml_form_api', 'XMLDocument');
-module_load_include('inc', 'xml_form_api', 'Actions');
+namespace Drupal\xml_form_api;
 
 /**
  * The XML Form class.

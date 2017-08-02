@@ -45,8 +45,8 @@ function xml_form_builder_associations_form(array $form, array &$form_state, $fo
 // Calling _theme() directly can alter the expected output and potentially
 // introduce security issues (see https://www.drupal.org/node/2195739). You
 // should use renderable arrays instead.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2195739
 // $form += array(
 //     'list' => array(
