@@ -57,6 +57,7 @@ define('MENU_XML_FORM_BUILDER_EDIT_DATASTREAM', XML_FORM_BUILDER_EDIT_DATASTREAM
 // @codingStandardsIgnoreEnd
 
 /**
+<<<<<<< HEAD
  * Implements hook_menu().
  */
 function xml_form_builder_menu() {
@@ -253,6 +254,18 @@ function xml_form_builder_menu() {
  * To alter local task definitions, see hook_menu_local_tasks_alter(). An
  * empty implementation has been created for you at the end of this file.
  *
+=======
+ * @FIXME
+ * hook_menu_alter() is gone in Drupal 8. You will have to port its
+ * functionality manually. The are several mechanisms for this:
+ *
+ * To alter routes, you must implement a route subscriber class. An empty one
+ * has been generated for you in src/Routing/RouteSubscriber.php.
+ *
+ * To alter menu link definitions, see hook_menu_links_discovered_alter(). An
+ * empty implementation has been created at the end of this file.
+ *
+>>>>>>> 03abb59979f81e5a7a2f7cb4a23c9bde671657ea
  * To alter local actions, see hook_menu_local_actions_alter(). An
  * empty implementation has been created for you at the end of this file.
  *
