@@ -25,7 +25,15 @@ class Element {
   public static function addUIWidgets($files = array()) {
     // TODO $files needs to be a string or multiple calls to drupal_add_library
     // need to be made.
-    drupal_add_library('system', $files);
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_library('system', $files);
+
   }
 
   /**

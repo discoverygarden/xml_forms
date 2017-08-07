@@ -19,7 +19,7 @@
  *   A drupal form definition.
  */
 function xml_form_builder_ingest_form(array $form, array &$form_state, array $association) {
-  form_load_include($form_state, 'inc', 'xml_form_builder', 'ingest.form');
+  $form_state->loadInclude('xml_form_builder', 'inc', 'ingest.form');
   $step_storage = &islandora_ingest_form_get_step_storage($form_state, 'xml_form_builder_metadata_step');
   $step_storage['association'] = $association;
   $form_name = $association['form_name'];
@@ -32,7 +32,7 @@ function xml_form_builder_ingest_form(array $form, array &$form_state, array $as
     // Make the Object label field required.
     $title_element = $association['title_field'];
     $title_element[] = '#required';
-    drupal_array_set_nested_value($form, $title_element, TRUE);
+    \Drupal\Component\Utility\NestedArray::setValue($form, $title_element, TRUE);
   }
   return $form;
 }
@@ -71,7 +71,7 @@ function xml_form_builder_ingest_form_submit(array $form, array &$form_state) {
   $document = $xml_form->submit($form, $form_state);
   $label = NULL;
   if ($association['title_field']) {
-    $title_field = drupal_array_get_nested_value($form, $association['title_field']);
+    $title_field = \Drupal\Component\Utility\NestedArray::getValue($form, $association['title_field']);
     $label = $title_field['#value'];
   }
   $step_storage['created'] = xml_form_builder_update_object($object, $association, $document, $label);

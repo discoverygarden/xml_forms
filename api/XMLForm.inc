@@ -158,7 +158,7 @@ class XMLForm extends Form {
     // Have parent offset so let's grab only the portion of the form to
     // submit!
     if (!empty($this->parents)) {
-      $form =& drupal_array_get_nested_value($form_in, $this->parents);
+      $form =& \Drupal\Component\Utility\NestedArray::getValue($form_in, $this->parents);
     }
     else {
       $form =& $form_in;
@@ -188,7 +188,7 @@ class XMLForm extends Form {
    */
   public function flattenDrupalForm($form) {
     $flattened = array();
-    foreach (element_children($form) as $key) {
+    foreach (\Drupal\Core\Render\Element::children($form) as $key) {
       $child_element = $form[$key];
       if (isset($child_element['#hash'])) {
         $flattened[$child_element['#hash']] = $child_element;

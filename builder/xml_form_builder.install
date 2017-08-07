@@ -256,7 +256,7 @@ function xml_form_builder_update_7100() {
   );
 
   $output = array();
-  $t = get_t();
+  $t = 't';
   foreach ($schema as $name => $schema_info) {
     try {
       db_create_table($name, $schema_info);
@@ -327,7 +327,7 @@ function xml_form_builder_update_7101() {
  * Add self_transform field to table definition.
  */
 function xml_form_builder_update_7102() {
-  $t = get_t();
+  $t = 't';
   $self_transform = array(
     'description' => 'A xsl transform for setting the Fedora Object\'s Dublin Core metadata datastream.',
     'type' => 'varchar',

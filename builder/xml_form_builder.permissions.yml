@@ -1,0 +1,15 @@
+XML_FORM_BUILDER_LIST_FORMS_PERMS:
+  title: 'View XML forms'
+  description: 'View a list of all currently available XML forms.'
+XML_FORM_BUILDER_CREATE_FORMS_PERMS:
+  title: 'Create XML forms'
+  description: 'Create new XML forms using the Form Builder.'
+XML_FORM_BUILDER_EDIT_FORMS_PERMS:
+  title: 'Edit XML forms'
+  description: 'Edit existing XML forms using the Form Builder.'
+XML_FORM_BUILDER_DELETE_FORMS_PERMS:
+  title: 'Delete XML forms'
+  description: 'Permanently delete any XML form.'
+XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS:
+  title: 'Associate XML forms'
+  description: 'Associate forms with content models and datastream identifiers.'

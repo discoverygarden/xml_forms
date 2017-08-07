@@ -1,0 +1,6 @@
+xml_form_builder.settings:
+  type: mapping
+  label: Settings
+  mapping:
+    xml_form_builder_use_default_dc_xslts:
+      type: boolean

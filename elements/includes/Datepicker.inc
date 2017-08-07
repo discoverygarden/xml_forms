@@ -17,7 +17,7 @@ class Datepicker {
   public static function addRequiredResources(&$form_state) {
     static $load = TRUE;
     if ($load) {
-      form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Element');
+      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
       // @todo: add Element::addRequiredResources().
       Element::addUIWidgets('ui.datepicker');
       Element::addUIThemeStyles(array(
@@ -68,7 +68,7 @@ function theme_datepicker_xml_form_elements($variables) {
   if (isset($element['#field_prefix'])) {
     $output .= '<span class="field-prefix">' . $element['#field_prefix'] . '</span> ';
   }
-  $output .= '<input type="text"' . $maxlength . ' name="' . $element['#name'] . '" id="' . $element['#id'] . '"' . $size . ' value="' . check_plain($element_val) . '"' . drupal_attributes($element['#attributes']) . ' />';
+  $output .= '<input type="text"' . $maxlength . ' name="' . $element['#name'] . '" id="' . $element['#id'] . '"' . $size . ' value="' . \Drupal\Component\Utility\Html::escape($element_val) . '"' . drupal_attributes($element['#attributes']) . ' />';
   if (isset($element['#field_suffix'])) {
     $output .= ' <span class="field-suffix">' . $element['#field_suffix'] . '</span>';
   }
