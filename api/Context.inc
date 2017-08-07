@@ -7,12 +7,12 @@
  * DOMNode a given context refers to.
  */
 
-module_load_include('inc', 'php_lib', 'Enum');
+use Drupal\php_lib;
 
 /**
  * Enumerated types for Context.
  */
-class ContextType extends Enum {
+class ContextType extends Drupal\php_lib\Enum {
   const __DEFAULT = 'document';
   const DOCUMENT = 'document';
   const PARENT = 'parent';

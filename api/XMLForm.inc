@@ -5,14 +5,15 @@
  * Implementation of the objective_forms Form class.
  */
 
-module_load_include('inc', 'objective_forms', 'Form');
+use Drupal\objective_forms;
+
 module_load_include('inc', 'xml_form_api', 'XMLDocument');
 module_load_include('inc', 'xml_form_api', 'Actions');
 
 /**
  * The XML Form class.
  */
-class XMLForm extends Form {
+class XMLForm extends Drupal\objective_forms\Form {
 
   /**
    * The document the form manipulates.
