@@ -124,6 +124,6 @@ xml_form_builder.datastream_form:
   defaults:
     perm: 'edit fedora metadata'
     _title: 'Edit datastream'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderDatastreamForm
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::XmlFormBuilderDatastreamForm'
   requirements:
     _custom_access: '\Drupal\xml_form_builder\Form\XmlFormBuilderDatastreamForm::xml_form_builder_datastream_access'
