@@ -12,7 +12,7 @@ define('XML_FORM_BUILDER_EDIT_FORMS_PERMS', 'Edit XML Forms');
 define('XML_FORM_BUILDER_DELETE_FORMS_PERMS', 'Delete XML Forms');
 define('XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS', 'Associate XML Forms');
 
-define('XML_FORM_BUILDER_ADMIN_MENU', 'admin/islandora/xmlform');
+define('XML_FORM_BUILDER_ADMIN_MENU', 'admin/config/islandora/xmlform');
 define('XML_FORM_BUILDER_MAIN_MENU', XML_FORM_BUILDER_ADMIN_MENU . '/forms');
 define('XML_FORM_BUILDER_ASSOCIATIONS', XML_FORM_BUILDER_ADMIN_MENU . '/associations');
 define('XML_FORM_BUILDER_SETTINGS_MENU', XML_FORM_BUILDER_ADMIN_MENU . '/settings');
