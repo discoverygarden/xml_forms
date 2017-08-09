@@ -40,13 +40,8 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     // Calling _theme() directly can alter the expected output and potentially
     // introduce security issues (see https://www.drupal.org/node/2195739). You
     // should use renderable arrays instead.
-<<<<<<< HEAD
     // 
     // 
-=======
-    //
-    //
->>>>>>> 03abb59979f81e5a7a2f7cb4a23c9bde671657ea
     // @see https://www.drupal.org/node/2195739
     // $form += array(
     //     'list' => array(
@@ -91,10 +86,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     //       ),
     //     ),
     //   );
-<<<<<<< HEAD
 
-=======
->>>>>>> 03abb59979f81e5a7a2f7cb4a23c9bde671657ea
     if (!\Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts')) {
       $form['fieldset']['transform'] = [
         '#type' => 'select',
@@ -150,11 +142,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
         ->execute();
       drupal_set_message(t('Successfully added association.'));
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 03abb59979f81e5a7a2f7cb4a23c9bde671657ea
       catch (Exception $e) {
       drupal_set_message(t('Failed to add association.'), 'error');
     }

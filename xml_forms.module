@@ -6,6 +6,24 @@
  */
 
 /**
+ * Implements Hook Menu.
+ *
+ * @return array
+ *   Array of menu items.
+ */
+function xml_forms_menu() {
+  $items['schema/%'] = array(
+    'title' => 'schema',
+    'description' => 'schema',
+    'page callback' => 'xml_forms_get_schema',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
  * Get the schema if it exists.
  *
  * @param string $filename

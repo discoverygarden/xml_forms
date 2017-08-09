@@ -1,4 +1,5 @@
-# Islandora XML Forms
+# Islandora XML Forms [![Build Status](https://travis-ci.org/Islandora/islandora_xml_forms.png?branch=7.x)](https://travis-ci.org/Islandora/islandora_xml_forms)
+
 ## Introduction
 
 XML Forms is a collection of Drupal modules that allow for the manipulation of XML documents though Drupal forms. The Islandora Form Builder (XML_Forms modules) makes it possible for users to create, copy, and edit ingest forms, and to affiliate them with Content Models in the repository.
@@ -100,6 +101,12 @@ A. No. The following element types are not supported for full CRUD (create/read/
   * button
   * image_button
   * submit
+
+## Maintainers/Sponsors
+
+Current maintainers:
+
+* [Diego Pino](https://github.com/DiegoPino)
 
 ## Development
 

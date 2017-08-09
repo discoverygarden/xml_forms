@@ -4,8 +4,4 @@ dependencies:
   - php_lib
 package: 'Islandora Dependencies'
 core: 8.x
-<<<<<<< HEAD
-=======
-php: '5.5.9'
->>>>>>> 03abb59979f81e5a7a2f7cb4a23c9bde671657ea
 type: module
