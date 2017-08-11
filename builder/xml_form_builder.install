@@ -126,7 +126,7 @@ function xml_form_builder_schema() {
         'not null' => TRUE,
       ),
     ),
-    'unique keys' => array('name' => array('name', 191)),
+    'unique keys' => array('name' => array(array('name', 191))),
     'primary key' => array('xslt_id'),
   );
 
@@ -168,7 +168,7 @@ function xml_form_builder_schema() {
       ),
     ),
     'unique keys' => array(
-      'name' => array('name'),
+      'name' => array(array('name', 191)),
       'content_model_dsid' => array('content_model', 'dsid'),
     ),
     'primary key' => array('id'),
