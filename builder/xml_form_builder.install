@@ -126,7 +126,7 @@ function xml_form_builder_schema() {
         'not null' => TRUE,
       ),
     ),
-    'unique keys' => array('name' => array('name')),
+    'unique keys' => array('name' => array('name(191)')),
     'primary key' => array('xslt_id'),
   );
 
