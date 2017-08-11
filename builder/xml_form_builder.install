@@ -343,16 +343,6 @@ function xml_form_builder_update_7102() {
 }
 
 /**
- * Implements hook_uninstall().
- */
-function xml_form_builder_uninstall() {
-  $variables = array(
-    'xml_form_builder_use_default_dc_xslts',
-  );
-  array_walk($variables, 'variable_del');
-}
-
-/**
  * Updates the DB to support uploaded transforms and default DC mappings.
  */
 function xml_form_builder_update_7103() {
