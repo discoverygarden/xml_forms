@@ -126,7 +126,7 @@ function xml_form_builder_schema() {
         'not null' => TRUE,
       ),
     ),
-    'unique keys' => array('name' => array('name')),
+    'unique keys' => array('name' => array(array('name', 191))),
     'primary key' => array('xslt_id'),
   );
 
@@ -168,7 +168,7 @@ function xml_form_builder_schema() {
       ),
     ),
     'unique keys' => array(
-      'name' => array('name'),
+      'name' => array(array('name', 191)),
       'content_model_dsid' => array('content_model', 'dsid'),
     ),
     'primary key' => array('id'),
@@ -256,7 +256,7 @@ function xml_form_builder_update_7100() {
   );
 
   $output = array();
-  $t = get_t();
+  $t = 't';
   foreach ($schema as $name => $schema_info) {
     try {
       db_create_table($name, $schema_info);
@@ -327,7 +327,7 @@ function xml_form_builder_update_7101() {
  * Add self_transform field to table definition.
  */
 function xml_form_builder_update_7102() {
-  $t = get_t();
+  $t = 't';
   $self_transform = array(
     'description' => 'A xsl transform for setting the Fedora Object\'s Dublin Core metadata datastream.',
     'type' => 'varchar',
@@ -340,16 +340,6 @@ function xml_form_builder_update_7102() {
   catch (DatabaseSchemaObjectExistsException $e) {
     $output[] = $t('Field "self_transform" already exists.');
   }
-}
-
-/**
- * Implements hook_uninstall().
- */
-function xml_form_builder_uninstall() {
-  $variables = array(
-    'xml_form_builder_use_default_dc_xslts',
-  );
-  array_walk($variables, 'variable_del');
 }
 
 /**

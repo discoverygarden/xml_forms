@@ -93,7 +93,7 @@ function xml_form_elements_creative_commons($element, &$form_state) {
     $license_output_id = $form_state['storage']['xml_form_elements'][$element['#name']]['license_output_id'];
   }
   else {
-    $license_output_id = drupal_html_id('license_output');
+    $license_output_id = \Drupal\Component\Utility\Html::getId('license_output');
     $form_state['storage']['xml_form_elements'][$element['#name']]['license_output_id'] = $license_output_id;
   }
 
@@ -174,7 +174,7 @@ function xml_form_elements_creative_commons($element, &$form_state) {
     ),
   );
   // Value gets populated if default value is populated.
-  if (current_path() == 'system/ajax' || !$element['#value'] ||
+  if (\Drupal\Core\Url::fromRoute("<current>")->toString() == 'system/ajax' || !$element['#value'] ||
     (isset($element['#default_value']) && $element['#value'] == $element['#default_value'])) {
     $element['#tree'] = TRUE;
   }
@@ -206,7 +206,7 @@ function xml_form_elements_creative_commons($element, &$form_state) {
 function xml_form_elements_creative_commons_ajax(&$form, &$form_state) {
   $parents = $form_state['triggering_element']['#parents'];
   array_pop($parents);
-  $creative_commons_element = drupal_array_get_nested_value($form, $parents);
+  $creative_commons_element = \Drupal\Component\Utility\NestedArray::getValue($form, $parents);
 
   return $creative_commons_element['license_output'];
 }
@@ -228,16 +228,24 @@ function xml_form_elements_creative_commons_ajax(&$form, &$form_state) {
  *   FALSE if failed request.
  */
 function xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction) {
-  $response = drupal_http_request(url(
-    'http://api.creativecommons.org/rest/1.5/license/standard/get',
-    array(
-      'query' => array(
-        'commercial' => $commercial,
-        'derivatives' => $derivatives,
-        'jurisdiction' => $jurisdiction,
-      ),
-    )
-  ));
+  // @FIXME
+// drupal_http_request() has been replaced by the Guzzle HTTP client, which is bundled
+// with Drupal core.
+// 
+// 
+// @see https://www.drupal.org/node/1862446
+// @see http://docs.guzzlephp.org/en/latest
+// $response = drupal_http_request(url(
+//     'http://api.creativecommons.org/rest/1.5/license/standard/get',
+//     array(
+//       'query' => array(
+//         'commercial' => $commercial,
+//         'derivatives' => $derivatives,
+//         'jurisdiction' => $jurisdiction,
+//       ),
+//     )
+//   ));
+
   if ($response->code != 200) {
     return FALSE;
   }

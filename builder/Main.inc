@@ -43,18 +43,36 @@ function xml_form_builder_main() {
     $name = $form_info['name'];
     if ($form_info['indb']) {
       $type = t('Custom');
-      $edit = l(t('Edit'), xml_form_builder_get_edit_form_path($name));
-      $delete = l(t('Delete'), xml_form_builder_get_delete_form_path($name));
+      // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $edit = l(t('Edit'), xml_form_builder_get_edit_form_path($name));
+
+      // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $delete = l(t('Delete'), xml_form_builder_get_delete_form_path($name));
+
     }
     else {
       $type = t('Built-in');
       $edit = '';
       $delete = '';
     }
-    $copy = l(t('Copy'), xml_form_builder_get_copy_form_path($name));
-    $view = l(t('View'), xml_form_builder_get_view_form_path($name));
-    $export = l(t('Export'), xml_form_builder_get_export_form_path($name));
-    $associate = l(t('Associate'), xml_form_builder_get_associate_form_path($name));
+    // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $copy = l(t('Copy'), xml_form_builder_get_copy_form_path($name));
+
+    // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $view = l(t('View'), xml_form_builder_get_view_form_path($name));
+
+    // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $export = l(t('Export'), xml_form_builder_get_export_form_path($name));
+
+    // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $associate = l(t('Associate'), xml_form_builder_get_associate_form_path($name));
+
 
     $table['rows'][] = array(
       $name,
@@ -68,5 +86,14 @@ function xml_form_builder_main() {
     );
   }
 
-  return theme('table', $table);
+  // @FIXME
+// theme() has been renamed to _theme() and should NEVER be called directly.
+// Calling _theme() directly can alter the expected output and potentially
+// introduce security issues (see https://www.drupal.org/node/2195739). You
+// should use renderable arrays instead.
+// 
+// 
+// @see https://www.drupal.org/node/2195739
+// return theme('table', $table);
+
 }

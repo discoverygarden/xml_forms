@@ -88,13 +88,13 @@ class JSONFormDefinitionGenerator {
    */
   protected static function GetElement(array $element, $identifier = NULL) {
     $json = array();
-    foreach (element_properties($element) as $key) {
+    foreach (\Drupal\Core\Render\Element::properties($element) as $key) {
       // Remove the #.
       $name = trim($key, '#');
       $json[$name] = $element[$key];
     }
     $json['children'] = array();
-    foreach (element_children($element) as $key) {
+    foreach (\Drupal\Core\Render\Element::children($element) as $key) {
       $json['children'][] = self::GetElement($element[$key], $key);
     }
     // These two are ExtJS specific.
