@@ -142,34 +142,6 @@ function xml_form_builder_forms($form_id, $args) {
 }
 
 /**
- * Implements hook_permission().
- */
-function xml_form_builder_permission() {
-  return array(
-    XML_FORM_BUILDER_LIST_FORMS_PERMS => array(
-      'title' => t('View XML forms'),
-      'description' => t('View a list of all currently available XML forms.'),
-    ),
-    XML_FORM_BUILDER_CREATE_FORMS_PERMS => array(
-      'title' => t('Create XML forms'),
-      'description' => t('Create new XML forms using the Form Builder.'),
-    ),
-    XML_FORM_BUILDER_EDIT_FORMS_PERMS => array(
-      'title' => t('Edit XML forms'),
-      'description' => t('Edit existing XML forms using the Form Builder.'),
-    ),
-    XML_FORM_BUILDER_DELETE_FORMS_PERMS => array(
-      'title' => t('Delete XML forms'),
-      'description' => t('Permanently delete any XML form.'),
-    ),
-    XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS => array(
-      'title' => t('Associate XML forms'),
-      'description' => t('Associate forms with content models and datastream identifiers.'),
-    ),
-  );
-}
-
-/**
  * Downloads the XML Form Definition to the clients computer..
  *
  * @param string $form_name
