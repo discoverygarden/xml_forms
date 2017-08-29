@@ -74,7 +74,7 @@ function xml_form_builder_get_associations(array $forms = array(), array $models
  */
 function xml_form_builder_get_database_associations(array $forms = array(), array $models = array(), array $dsids = array()) {
   $query = db_select('xml_form_builder_form_associations', 'fa')->fields('fa');
-  $add_conditions = function(SelectQuery $query, $label, array $values) {
+  $add_conditions = function($query, $label, array $values) {
     if (!empty($values)) {
       $conditions = db_or();
       foreach ($values as $value) {
