@@ -618,23 +618,3 @@ function xml_form_builder_features_api() {
 
   return $items;
 }
-
-/**
- * Implements hook_menu_links_discovered_alter().
- */
-function xml_form_builder_menu_links_discovered_alter(array &$links) {}
-
-/**
- * Implements hook_menu_local_tasks_alter().
- */
-function xml_form_builder_menu_local_tasks_alter(array &$data, $route_name) {}
-
-/**
- * Implements hook_menu_local_actions_alter().
- */
-function xml_form_builder_menu_local_actions_alter(array &$local_actions) {}
-
-/**
- * Implements hook_contextual_links_view_alter().
- */
-function xml_form_builder_contextual_links_view_alter(array &$element, array $items) {}
