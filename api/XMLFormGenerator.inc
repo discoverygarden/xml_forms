@@ -5,6 +5,8 @@
  * XML Form Generator class.
  */
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'php_lib', 'DOMHelpers.inc');
 
 /**

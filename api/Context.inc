@@ -7,6 +7,7 @@
  * DOMNode a given context refers to.
  */
 
+use Drupal\objective_forms\FormElement;
 use Drupal\php_lib;
 
 /**

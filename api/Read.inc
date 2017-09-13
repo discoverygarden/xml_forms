@@ -5,6 +5,8 @@
  * Class to implement the Read action.
  */
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'xml_form_api', 'ActionInterface');
 module_load_include('inc', 'xml_form_api', 'Path');
 
