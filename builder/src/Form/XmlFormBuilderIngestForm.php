@@ -32,7 +32,7 @@ class XmlFormBuilderIngestForm extends FormBase {
    * @return array
    *   A drupal form definition.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $configuration = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, array $association = []) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'ingest.form');
     $step_storage = &islandora_ingest_form_get_step_storage($form_state, 'xml_form_builder_metadata_step');
     $step_storage['association'] = $association;
