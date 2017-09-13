@@ -249,9 +249,9 @@ function xml_form_builder_get_associate_form_path($form_name) {
  *
  * @param array $form
  *   An array containing any "wrapping" elements.
- * @param array $form_state
+ * @param array & $form_state
  *   The Drupal Form State
- * @param string $form_name
+ * @param \Drupal\Core\Form\FormStateInterface $form_name
  *   The Form to render.
  * @param string $xml
  *   The metadata to prepopulate the form with,
@@ -261,7 +261,7 @@ function xml_form_builder_get_associate_form_path($form_name) {
  * @return array
  *   The Drupal Form, if it exists FALSE otherwise.
  */
-function xml_form_builder_get_form(array $form, array &$form_state, $form_name, $xml = NULL, $parents = array()) {
+function xml_form_builder_get_form(array $form, FormStateInterface $form_state, $form_name, $xml = NULL, $parents = array()) {
   $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLForm');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
