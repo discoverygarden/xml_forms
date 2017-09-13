@@ -9,6 +9,8 @@ use Drupal\objective_forms;
 
 use Drupal\Core\Form\FormStateInterface;
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'xml_form_api', 'XMLDocument');
 module_load_include('inc', 'xml_form_api', 'Actions');
 
