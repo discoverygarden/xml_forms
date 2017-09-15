@@ -55,7 +55,7 @@ class XmlFormBuilderIngestForm extends FormBase {
    * Updates the ingestable object's datastream.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    module_load_include('inc', 'xml_form_api', 'XMLForm');
+    $form_state->loadInclude('xml_form_api', 'inc', 'XMLForm');
     $step_storage = &islandora_ingest_form_get_step_storage($form_state, 'xml_form_builder_metadata_step');
     $association = $step_storage['association'];
     $object = islandora_ingest_form_get_object($form_state);
