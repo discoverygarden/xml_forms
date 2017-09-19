@@ -7,6 +7,11 @@
 
 use Drupal\objective_forms;
 
+use Drupal\Core\Form\FormStateInterface;
+
+use Drupal\objective_forms\FormElement;
+use Drupal\objective_forms\FormValues;
+
 module_load_include('inc', 'xml_form_api', 'XMLDocument');
 module_load_include('inc', 'xml_form_api', 'Actions');
 
@@ -39,13 +44,13 @@ class XMLForm extends Drupal\objective_forms\Form {
   /**
    * Constructor function for the XMLForm class.
    *
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    *
    * @param array $parents
    *   An array containing an offset of parents.
    */
-  public function __construct(array &$form_state, $parents = array(), $name = NULL) {
+  public function __construct(FormStateInterface $form_state, $parents = array(), $name = NULL) {
     parent::__construct(array(), $form_state, $parents);
     if ($this->storage->initialized) {
       $this->initializeFromStorage();
@@ -146,14 +151,13 @@ class XMLForm extends Drupal\objective_forms\Form {
    *
    * @param array $form_in
    *   The form to submit.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The state of the form.
    *
    * @return XMLDocument
    *   An XML document generated from the form.
    */
-  public function submit(array &$form_in, array &$form_state) {
-    module_load_include('inc', 'objective_forms', 'FormValues');
+  public function submit(array &$form_in, FormStateInterface $form_state) {
     module_load_include('inc', 'xml_form_api', 'XMLFormProcessor');
 
     // Have parent offset so let's grab only the portion of the form to

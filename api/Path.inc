@@ -5,6 +5,8 @@
  * Class for storing and querying XPaths.
  */
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'xml_form_api', 'Context');
 
 /**

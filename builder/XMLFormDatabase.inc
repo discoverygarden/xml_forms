@@ -31,8 +31,9 @@ class XMLFormDatabase {
     $count = db_select('xml_forms', 'xf')
       ->condition('xf.name', $form_name)
       ->fields('xf', array('name'))
+      ->countQuery()
       ->execute()
-      ->rowCount();
+      ->fetchField();
 
     return $count == 1;
   }

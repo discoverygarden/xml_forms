@@ -5,6 +5,8 @@
  * Create implementation of the ActionInterface.
  */
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'xml_form_api', 'ActionInterface');
 module_load_include('inc', 'xml_form_api', 'Path');
 module_load_include('inc', 'xml_schema_api', 'InsertOrderMap');

@@ -5,6 +5,8 @@
  * Class to prepopulate an XML form.
  */
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'xml_form_api', 'XMLDocument');
 module_load_include('inc', 'php_lib', 'DOMHelpers');
 

@@ -5,6 +5,10 @@
  * Classes for the XML Form Processor.
  */
 
+use Drupal\objective_forms\FormValues;
+use Drupal\objective_forms\FormElement;
+use Drupal\objective_forms\FormElementRegistry;
+
 module_load_include('inc', 'xml_form_api', 'XMLDocument');
 
 /**

@@ -5,6 +5,8 @@
  * Callbacks used in derivatives hook.
  */
 
+use Drupal\Core\Logger\RfcLogLevel;
+
 /**
  * Derives the DC datastream using a default XSLT.
  *
@@ -18,7 +20,7 @@ function xml_form_builder_derive_dc($object, $force = FALSE, $hook = array()) {
         array(
           'message' => t('DC creation failed: source DSID missing.'),
           'type' => 'watchdog',
-          'severity' => WATCHDOG_ERROR,
+          'severity' => RfcLogLevel::ERROR,
         ),
       ),
     );
@@ -42,7 +44,7 @@ function xml_form_builder_derive_dc($object, $force = FALSE, $hook = array()) {
           'message' => t('DC creation failed.<br/> With stack: @trace'),
           'message_sub' => array('@trace' => $e->getTraceAsString()),
           'type' => 'watchdog',
-          'severity' => WATCHDOG_ERROR,
+          'severity' => RfcLogLevel::ERROR,
         ),
       ),
     );
