@@ -1,0 +1,10 @@
+xml_form_builder.create_create:
+  route_name: xml_form_builder.create_create
+  title: 'Create Form'
+  appears_on:
+    - xml_form_builder.main
+xml_form_builder.create_import:
+  route_name: xml_form_builder.create_import
+  title: 'Import Form'
+  appears_on:
+    - xml_form_builder.main
