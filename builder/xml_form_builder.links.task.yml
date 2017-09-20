@@ -1,0 +1,12 @@
+xml_form_builder.main:
+  route_name: xml_form_builder.main
+  title: 'Form Builder Forms'
+  base_route: xml_form_builder.main
+xml_form_builder.list_associations:
+  route_name: xml_form_builder.list_associations
+  title: 'Enabled Associations'
+  base_route: xml_form_builder.main
+xml_form_builder.settings_form:
+  route_name: xml_form_builder.settings_form
+  title: Settings
+  base_route: xml_form_builder.main
