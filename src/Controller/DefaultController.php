@@ -1,7 +1,4 @@
-<?php /**
- * @file
- * Contains \Drupal\xml_forms\Controller\DefaultController.
- */
+<?php
 
 namespace Drupal\xml_forms\Controller;
 

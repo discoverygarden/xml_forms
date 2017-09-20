@@ -1,11 +1,11 @@
-<?php /**
- * @file
- * Contains \Drupal\xml_form_builder\Controller\DefaultController.
- */
+<?php
 
 namespace Drupal\xml_form_builder\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
+
+use XMLFormRepository;
 
 /**
  * Default controller for the xml_form_builder module.
@@ -13,7 +13,6 @@ use Drupal\Core\Controller\ControllerBase;
 class DefaultController extends ControllerBase {
 
   public function xml_form_builder_main() {
-
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     $names = XMLFormRepository::GetNames();
 
@@ -23,7 +22,7 @@ class DefaultController extends ControllerBase {
     }
 
     $table = [
-      'header' => [
+      '#header' => [
         ['data' => t('Title')],
         ['data' => t('Type')],
         [
@@ -31,45 +30,51 @@ class DefaultController extends ControllerBase {
           'colspan' => 6,
         ],
       ],
-      'rows' => [],
+      '#rows' => [],
     ];
 
     foreach ($names as $form_info) {
       $name = $form_info['name'];
       if ($form_info['indb']) {
         $type = t('Custom');
-        // @FIXME
-        // l() expects a Url object, created from a route name or external URI.
-        // $edit = l(t('Edit'), xml_form_builder_get_edit_form_path($name));
-
-        // @FIXME
-        // l() expects a Url object, created from a route name or external URI.
-        // $delete = l(t('Delete'), xml_form_builder_get_delete_form_path($name));
-
+        $edit = Link::createFromRoute(
+          t('Edit'),
+          'xml_form_builder.edit',
+          ['form_name' => $name]
+        );
+        $delete = Link::createFromRoute(
+          t('Delete'),
+          'xml_form_builder.delete',
+          ['form_name' => $name]
+        );
       }
       else {
         $type = t('Built-in');
         $edit = '';
         $delete = '';
       }
-      // @FIXME
-      // l() expects a Url object, created from a route name or external URI.
-      // $copy = l(t('Copy'), xml_form_builder_get_copy_form_path($name));
+      $copy = Link::createFromRoute(
+        t('Copy'),
+        'xml_form_builder.copy',
+        ['form_name' => $name]
+      );
+      $view = Link::createFromRoute(
+        t('View'),
+        'xml_form_builder.preview',
+        ['form_name' => $name]
+      );
+      $export = Link::createFromRoute(
+        t('Export'),
+        'xml_form_builder.export',
+        ['form_name' => $name]
+      );
+      $associate = Link::createFromRoute(
+        t('Associate'),
+        'xml_form_builder.associations_form',
+        ['form_name' => $name]
+      );
 
-      // @FIXME
-      // l() expects a Url object, created from a route name or external URI.
-      // $view = l(t('View'), xml_form_builder_get_view_form_path($name));
-
-      // @FIXME
-      // l() expects a Url object, created from a route name or external URI.
-      // $export = l(t('Export'), xml_form_builder_get_export_form_path($name));
-
-      // @FIXME
-      // l() expects a Url object, created from a route name or external URI.
-      // $associate = l(t('Associate'), xml_form_builder_get_associate_form_path($name));
-
-
-      $table['rows'][] = [
+      $table['#rows'][] = [
         $name,
         $type,
         $copy,
@@ -80,17 +85,8 @@ class DefaultController extends ControllerBase {
         $associate,
       ];
     }
-
-    // @FIXME
-    // theme() has been renamed to _theme() and should NEVER be called directly.
-    // Calling _theme() directly can alter the expected output and potentially
-    // introduce security issues (see https://www.drupal.org/node/2195739). You
-    // should use renderable arrays instead.
-    //
-    //
-    // @see https://www.drupal.org/node/2195739
-    // return theme('table', $table);
-
+    $table['#type'] = 'table';
+    return $table;
   }
 
   public function xml_form_builder_list_associations() {
