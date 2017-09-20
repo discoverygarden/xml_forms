@@ -1,0 +1,5 @@
+xml_form_builder.main:
+  route_name: xml_form_builder.main
+  parent: islandora.admin_config
+  title: 'Form Builder'
+  description: 'Configure Islandora XML forms.'
