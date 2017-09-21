@@ -4,6 +4,7 @@ namespace Drupal\xml_form_builder\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use XMLFormRepository;
 
@@ -151,15 +152,24 @@ class DefaultController extends ControllerBase {
     exit();
   }
 
+  /**
+   * Includes all the required CSS/JS files needed to render the Form Builder GUI.
+   *
+   * @param string $form_name
+   *   The name of the form to edit.
+   *
+   * @return array
+   *   The render array for the Form Builder.
+   */
   public function xml_form_builder_edit($form_name) {
     module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
+    module_load_include('inc', 'xml_form_builder', 'Edit');
 
-    if (!XMLFormDatabase::Exists($form_name)) {
+    if (!\XMLFormDatabase::Exists($form_name)) {
       drupal_set_message(t('Form "%name" does not exist.', [
         '%name' => $form_name
         ]), 'error');
-      drupal_not_found();
-      exit();
+      throw new NotFoundHttpException();
     }
 
     xml_form_builder_edit_include_css();
@@ -167,9 +177,25 @@ class DefaultController extends ControllerBase {
     xml_form_builder_create_element_type_store();
     xml_form_builder_create_element_store($form_name);
     xml_form_builder_create_properties_store($form_name);
-    return '<div id="xml-form-builder-editor"></div>';
+
+    return [
+      '#markup' => '<div id="xml-form-builder-editor"></div>',
+    ];
   }
 
+  /**
+   * Save changes made to the form definition client side.
+   *
+   * Transforms the submited JSON into a Form Definition which is then stored in
+   * the database as an XML Form Definition.
+   *
+   * @param string $form_name
+   *   The name of the form to update.
+   *
+   * @throws Exception
+   *   If unable to instantiate the JSON form definition, or generate the XML form
+   *   definition.
+   */
   public function xml_form_builder_edit_save($form_name) {
     module_load_include('inc', 'xml_form_builder', 'JSONFormDefinition');
     module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');

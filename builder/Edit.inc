@@ -8,32 +8,6 @@
  */
 
 /**
- * Includes all the required CSS/JS files needed to render the Form Builder GUI.
- *
- * @param string $form_name
- *   The name of the form to edit.
- *
- * @return string
- *   The html where the Form Builder GUI will be rendered.
- */
-function xml_form_builder_edit($form_name) {
-  module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
-
-  if (!XMLFormDatabase::Exists($form_name)) {
-    drupal_set_message(t('Form "%name" does not exist.', array('%name' => $form_name)), 'error');
-    drupal_not_found();
-    exit();
-  }
-
-  xml_form_builder_edit_include_css();
-  xml_form_builder_edit_include_js();
-  xml_form_builder_create_element_type_store();
-  xml_form_builder_create_element_store($form_name);
-  xml_form_builder_create_properties_store($form_name);
-  return '<div id="xml-form-builder-editor"></div>';
-}
-
-/**
  * Includes all the required CSS files needed to render the Form Builder GUI.
  */
 function xml_form_builder_edit_include_css() {
@@ -49,8 +23,8 @@ function xml_form_builder_edit_include_css() {
     // @FIXME
 // The Assets API has totally changed. CSS, JavaScript, and libraries are now
 // attached directly to render arrays using the #attached property.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2169605
 // @see https://www.drupal.org/node/2408597
 // drupal_add_css($file);
@@ -83,43 +57,12 @@ function xml_form_builder_edit_include_js() {
     // @FIXME
 // The Assets API has totally changed. CSS, JavaScript, and libraries are now
 // attached directly to render arrays using the #attached property.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2169605
 // @see https://www.drupal.org/node/2408597
 // drupal_add_js($file);
 
-  }
-}
-
-/**
- * Save changes made to the form definition client side.
- *
- * Transforms the submited JSON into a Form Definition which is then stored in
- * the database as an XML Form Definition.
- *
- * @param string $form_name
- *   The name of the form to update.
- *
- * @throws Exception
- *   If unable to instantiate the JSON form definition, or generate the XML form
- *   definition.
- */
-function xml_form_builder_edit_save($form_name) {
-  module_load_include('inc', 'xml_form_builder', 'JSONFormDefinition');
-  module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
-  module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
-  try {
-    // @TODO: this data needs to be sanitized. Can we get this data through the
-    // form API?
-    $definition = new JSONFormDefinition($_POST['data']);
-    list($properties, $form) = $definition->getPropertiesAndForm();
-    $definition = XMLFormDefinitionGenerator::Create($properties, $form);
-    XMLFormDatabase::Update($form_name, $definition);
-  }
-  catch (Exception $e) {
-    $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
-    drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
   }
 }
 
@@ -160,8 +103,8 @@ EOT;
   // @FIXME
 // The Assets API has totally changed. CSS, JavaScript, and libraries are now
 // attached directly to render arrays using the #attached property.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2169605
 // @see https://www.drupal.org/node/2408597
 // drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
@@ -203,8 +146,8 @@ EOT;
   // @FIXME
 // The Assets API has totally changed. CSS, JavaScript, and libraries are now
 // attached directly to render arrays using the #attached property.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2169605
 // @see https://www.drupal.org/node/2408597
 // drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
@@ -236,8 +179,8 @@ EOT;
   // @FIXME
 // The Assets API has totally changed. CSS, JavaScript, and libraries are now
 // attached directly to render arrays using the #attached property.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2169605
 // @see https://www.drupal.org/node/2408597
 // drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
