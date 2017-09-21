@@ -1,16 +1,15 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\xml_form_builder\Form\XmlFormBuilderCopy.
- */
-
 namespace Drupal\xml_form_builder\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Form for copying XML forms.
+ */
 class XmlFormBuilderCopy extends FormBase {
 
   /**
@@ -21,16 +20,16 @@ class XmlFormBuilderCopy extends FormBase {
   }
 
   public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state, $form_name = NULL) {
-    module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
+    $form_state->loadInclude('xml_form_builder', 'inc', 'Copy');
+    $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
     if (isset($_POST['cancel'])) {
-      drupal_goto(XML_FORM_BUILDER_MAIN_MENU);
+      return $this->redirect('xml_form_builder.main');
     }
     if (!XMLFormRepository::Exists($form_name)) {
-      drupal_set_message(t('Form "%name" does not exist.', [
+      drupal_set_message($this->t('Form "%name" does not exist.', [
         '%name' => $form_name
         ]), 'error');
-      drupal_not_found();
-      exit();
+      throw new NotFoundHttpException();
     }
     return [
       'original' => [
@@ -39,7 +38,7 @@ class XmlFormBuilderCopy extends FormBase {
       ],
       'form_name' => [
         '#type' => 'textfield',
-        '#title' => t('Form Name'),
+        '#title' => $this->t('Form Name'),
         '#required' => TRUE,
         '#element_validate' => [
           'xml_form_builder_copy_validate_name'
@@ -47,35 +46,35 @@ class XmlFormBuilderCopy extends FormBase {
       ],
       'copy' => [
         '#type' => 'submit',
-        '#value' => t('Copy'),
+        '#value' => $this->t('Copy'),
         '#name' => 'copy',
       ],
       'cancel' => [
         '#type' => 'submit',
-        '#value' => t('Cancel'),
+        '#value' => $this->t('Cancel'),
         '#name' => 'cancel',
       ],
     ];
   }
 
-  public function submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
-    if ($form_state->get(['clicked_button', '#name']) == 'copy') {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
+    $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
+    if ($form_state->getTriggeringElement()['#name'] == 'create') {
       $original = $form_state->getValue(['original']);
       $form_name = $form_state->getValue(['form_name']);
-      if (XMLFormRepository::Copy($original, $form_name)) {
-        drupal_set_message(t('Successfully copied form "%name".', [
+      if (\XMLFormRepository::Copy($original, $form_name)) {
+        drupal_set_message($this->t('Successfully copied form "%name".', [
           '%name' => $form_name
           ]));
-        $form_state->set(['redirect'], xml_form_builder_get_edit_form_path($form_name));
+        $form_state->setRedirect('xml_form_builder.edit', ['form_name' => $form_name]);
         return;
       }
-      drupal_set_message(t('Failed to copy form "%name".', [
+      drupal_set_message($this->t('Failed to copy form "%name".', [
         '%name' => $form_name
         ]), 'error');
     }
-    $form_state->set(['redirect'], XML_FORM_BUILDER_MAIN_MENU);
+    $form_state->setRedirect('xml_form_builder.main');
   }
 
 }
-?>

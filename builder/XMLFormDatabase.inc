@@ -65,7 +65,7 @@ class XMLFormDatabase {
    */
   public static function Get($form_name) {
     if (self::Exists($form_name)) {
-      $query = db_query('SELECT form FROM {xml_forms} WHERE name = :name', array(':name' => $form_name));
+      $query = db_query('SELECT form FROM {xml_forms} WHERE name = :name', [':name' => $form_name]);
       $xml = $query->fetchField();
       if (trim($xml) !== '') {
         $definition = new DOMDocument();
@@ -151,10 +151,10 @@ class XMLFormDatabase {
       module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
       $definition = isset($definition) ? $definition : xml_form_api_get_empty_form_definition();
       $definition = XMLFormDefinition::upgradeToLatestVersion($definition);
-      $object = new stdClass();
-      $object->name = $form_name;
-      $object->form = $definition->saveXML();
-      return \Drupal::database()->insert(self::TABLE)->fields($object)->execute() !== FALSE;
+      $fields = [];
+      $fields['name'] = $form_name;
+      $fields['form'] = $definition->saveXML();
+      return \Drupal::database()->insert(self::TABLE)->fields($fields)->execute() !== FALSE;
     }
     return FALSE;
   }

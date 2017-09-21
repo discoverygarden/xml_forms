@@ -1,16 +1,14 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\xml_form_builder\Form\XmlFormBuilderCreate.
- */
-
 namespace Drupal\xml_form_builder\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
+/**
+ * Form for creating an XML form.
+ */
 class XmlFormBuilderCreate extends FormBase {
 
   /**
@@ -20,9 +18,10 @@ class XmlFormBuilderCreate extends FormBase {
     return 'xml_form_builder_create';
   }
 
-  public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state, $type = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $type = NULL) {
+    $form_state->loadInclude('xml_form_builder', 'inc', 'Create');
     if (isset($_POST['cancel'])) {
-      drupal_goto(XML_FORM_BUILDER_MAIN_MENU);
+      return $this->redirect('xml_form_builder.main');
     }
     $return = [];
 
@@ -30,7 +29,7 @@ class XmlFormBuilderCreate extends FormBase {
 
     $return['form_name'] = [
       '#type' => 'textfield',
-      '#title' => t('Form Name'),
+      '#title' => $this->t('Form Name'),
       '#required' => TRUE,
       '#maxlength' => 128,
       '#element_validate' => [
@@ -41,37 +40,51 @@ class XmlFormBuilderCreate extends FormBase {
     if ($type == 'import') {
       $return['file'] = [
         '#type' => 'file',
-        '#title' => t('Form Definition'),
+        '#title' => $this->t('Form Definition'),
         '#size' => 64,
-        '#description' => t('An optional XML form definition template.'),
+        '#description' => $this->t('An optional XML form definition template.'),
       ];
     }
 
     $return['create'] = [
       '#type' => 'submit',
-      '#value' => t('Create'),
+      '#value' => $this->t('Create'),
       '#name' => 'create',
     ];
 
     $return['cancel'] = [
       '#type' => 'submit',
-      '#value' => t('Cancel'),
+      '#value' => $this->t('Cancel'),
       '#name' => 'cancel',
     ];
 
     return $return;
   }
 
-  public function validateForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  /**
+   * Validate the create form.
+   *
+   * Makes sure the uploaded file is valid.
+   *
+   * @param array $form
+   *   The Drupal Form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The Drupal Form State.
+   *
+   * @throws Exception
+   *   If unable to load the uploaded file as XML, or if the form definition is
+   *   invalid.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
     $file_uploaded = isset($_FILES['files']['error']['file']) && ($_FILES['files']['error']['file'] == 0);
     if ($file_uploaded) {
-      module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
       $filename = $_FILES['files']['tmp_name']['file'];
       $definition = new DOMDocument();
       try {
         $definition->load($filename);
       }
-      
+
         catch (Exception $e) {
         $form_state->setErrorByName('files', t("Could not load uploaded file as XML, with error: %error.", [
           '%error' => $e->getMessage()
@@ -83,34 +96,34 @@ class XmlFormBuilderCreate extends FormBase {
           $form_state->setErrorByName('files', t('The given form definition is not valid.'));
         }
       }
-      
+
         catch (Exception $e) {
         $form_state->setErrorByName('files', $e->getMessage());
       }
     }
   }
 
-  public function submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
+    $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
     $form_name = $form_state->getValue(['form_name']);
-    if ($form_state->get(['clicked_button', '#name']) == 'create') {
+    if ($form_state->getTriggeringElement()['#name'] == 'create') {
       $definition = xml_form_builder_create_get_uploaded_file();
       $definition = $definition ? $definition : xml_form_api_get_empty_form_definition();
-      if (XMLFormRepository::Create($form_name, $definition)) {
-        drupal_set_message(t('Successfully created form "%name".', [
+      if (\XMLFormRepository::Create($form_name, $definition)) {
+        drupal_set_message($this->t('Successfully created form "%name".', [
           '%name' => $form_name
           ]));
-        $form_state->set(['redirect'], xml_form_builder_get_edit_form_path($form_name));
+        $form_state->setRedirect('xml_form_builder.edit', ['form_name' => $form_name]);
         return;
       }
       else {
-        drupal_set_message(t('Failed to create form %name.', [
+        drupal_set_message($this->t('Failed to create form %name.', [
           '%name' => $form_name
           ]), 'error');
       }
     }
-    $form_state->set(['redirect'], XML_FORM_BUILDER_MAIN_MENU);
+    $form_state->setRedirect('xml_form_builder.main');
   }
 
 }
-?>
