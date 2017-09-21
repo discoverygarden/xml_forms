@@ -89,8 +89,15 @@ class DefaultController extends ControllerBase {
     return $table;
   }
 
+  /**
+   * Show the Associations page.
+   *
+   * Here, the user can view which forms are enabled for each content model.
+   *
+   * @return array
+   *   The table to display.
+   */
   public function xml_form_builder_list_associations() {
-
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
 
     $associations_list = [
@@ -111,20 +118,15 @@ class DefaultController extends ControllerBase {
     }
     ksort($map);
 
-    /**
-     * Returns a link to the edit associations form for form $form_name.
-     */
-    function create_form_association_link($form_name) {
-      // @FIXME
-// l() expects a Url object, created from a route name or external URI.
-// return array(l($form_name, xml_form_builder_get_associate_form_path($form_name)));
-
-    }
+    // Returns a link to the edit associations form for form $form_name.
+    $create_form_association_link = function ($form_name) {
+      return [Link::createFromRoute($form_name, 'xml_form_builder.associations_form', ['form_name' => $form_name])];
+    };
 
     foreach ($map as $cmodel => $forms) {
       $form_table = [
-        '#theme' => 'table',
-        '#rows' => array_map('create_form_association_link', $forms),
+        '#type' => 'table',
+        '#rows' => array_map($create_form_association_link, $forms),
       ];
       $object = islandora_object_load($cmodel);
       if ($object) {
@@ -133,7 +135,7 @@ class DefaultController extends ControllerBase {
       else {
         $label = $cmodel;
       }
-      $associations_list['#items'][] = $label . \Drupal::service("renderer")->render($form_table);
+      $associations_list['#items'][] = ['#markup' => $label . \Drupal::service("renderer")->render($form_table)];
     }
 
     return [$associations_list];
