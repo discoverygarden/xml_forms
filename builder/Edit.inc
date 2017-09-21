@@ -11,59 +11,22 @@
  * Includes all the required CSS files needed to render the Form Builder GUI.
  */
 function xml_form_builder_edit_include_css() {
-  $path = drupal_get_path('module', 'xml_form_builder');
-  $ext_path = $path . '/lib/ext/';
-  $css_path = $path . '/css/';
-  $css_files = array(
-    $css_path . 'Clear.css',
-    $css_path . 'EditForm.css',
-    $ext_path . 'resources/css/ext-all.css',
-  );
-  foreach ($css_files as $file) {
-    // @FIXME
-// The Assets API has totally changed. CSS, JavaScript, and libraries are now
-// attached directly to render arrays using the #attached property.
-//
-//
-// @see https://www.drupal.org/node/2169605
-// @see https://www.drupal.org/node/2408597
-// drupal_add_css($file);
-
-  }
+  return [
+    '#attached' => [
+      'library' => ['xml_form_builder/xml-form-builder-css'],
+    ]
+  ];
 }
 
 /**
  * Includes all the required JS files needed to render the Form Builder GUI.
  */
 function xml_form_builder_edit_include_js() {
-  $path = drupal_get_path('module', 'xml_form_builder');
-  $ext_path = $path . '/lib/ext/';
-  $js_path = $path . '/js/';
-  $js_files = array(
-    $ext_path . 'ext-all.js',
-    $js_path . 'Formbuilder.js',
-    $js_path . 'FormGrid.js',
-    $js_path . 'Tooltips.js',
-    $js_path . 'ElementModel.js',
-    $js_path . 'PropertiesModel.js',
-    $js_path . 'MainPanel.js',
-    $js_path . 'DisplayPanel.js',
-    $js_path . 'TreePanel.js',
-    $js_path . 'ElementForm.js',
-    $js_path . 'PropertiesForm.js',
-    $js_path . 'PreviewPanel.js',
-  );
-  foreach ($js_files as $file) {
-    // @FIXME
-// The Assets API has totally changed. CSS, JavaScript, and libraries are now
-// attached directly to render arrays using the #attached property.
-//
-//
-// @see https://www.drupal.org/node/2169605
-// @see https://www.drupal.org/node/2408597
-// drupal_add_js($file);
-
-  }
+  return [
+    '#attached' => [
+      'library' => ['xml_form_builder/xml-form-builder-js'],
+    ]
+  ];
 }
 
 /**
@@ -76,45 +39,25 @@ function xml_form_builder_edit_include_js() {
  */
 function xml_form_builder_create_element_type_store() {
   $types = xml_form_builder_get_element_types();
-  $data = array();
+  $data = [];
   foreach ($types as $type) {
-    $data[] = array(
+    $data[] = [
       'display' => $type,
       'value' => $type,
-    );
+    ];
   }
-  $data = json_encode($data);
-  $js = <<<EOT
-  Ext.formbuilder.elementTypeStore = Ext.data.Store({
-    storeId: 'ElementTypes',
-    fields: ['display', 'value'],
-    proxy: {
-      type: 'memory',
-      reader: {
-        type: 'json'
-      },
-      writer: {
-        type: 'json'
-      }
-    },
-    data: $data
-  });
-EOT;
-  // @FIXME
-// The Assets API has totally changed. CSS, JavaScript, and libraries are now
-// attached directly to render arrays using the #attached property.
-//
-//
-// @see https://www.drupal.org/node/2169605
-// @see https://www.drupal.org/node/2408597
-// drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
-
+  return [
+    '#attached' => [
+      'library' => ['xml_form_builder/xml-form-builder-element-types-js'],
+      'drupalSettings' => [
+        'xml_form_builder' => ['element_types' => $data],
+      ],
+    ],
+  ];
 }
 
 /**
  * Creates an ExtJS store containing the form properties.
- *
- * Uses inline javascript to create the ExtJS store.
  *
  * Used to populate the 'Form Properties' Form.
  *
@@ -126,38 +69,19 @@ function xml_form_builder_create_properties_store($form_name) {
   module_load_include('inc', 'xml_form_builder', 'JSONFormDefinitionGenerator');
   module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
   $definition = new XMLFormDefinition(XMLFormDatabase::Get($form_name));
-  $data = JSONFormDefinitionGenerator::GetProperties($definition->getProperties());
-  $js = <<<EOT
-  Ext.formbuilder.propertiesStore = Ext.create('Ext.data.Store', {
-    storeId: 'PropertiesStore',
-    model: 'Properties',
-    autoLoad: true,
-    autoSync: true,
-    proxy: {
-      type: 'memory',
-      data: $data,
-      reader: {
-        type: 'json'
-      }
-    }
- });
- Ext.formbuilder.propertiesStore.sync();
-EOT;
-  // @FIXME
-// The Assets API has totally changed. CSS, JavaScript, and libraries are now
-// attached directly to render arrays using the #attached property.
-//
-//
-// @see https://www.drupal.org/node/2169605
-// @see https://www.drupal.org/node/2408597
-// drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
-
+  $data = JSONFormDefinitionGenerator::GetPropertiesArray($definition->getProperties());
+  return [
+    '#attached' => [
+      'library' => ['xml_form_builder/xml-form-builder-properties-js'],
+      'drupalSettings' => [
+        'xml_form_builder' => ['properties' => $data],
+      ],
+    ],
+  ];
 }
 
 /**
  * Creates an ExtJS store containing the form elements.
- *
- * Uses inline javascript to create the ExtJS store.
  *
  * Used to populate the 'Elements Tree'.
  *
@@ -169,22 +93,15 @@ function xml_form_builder_create_element_store($form_name) {
   module_load_include('inc', 'xml_form_builder', 'JSONFormDefinitionGenerator');
   module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
   $definition = new XMLFormDefinition(XMLFormDatabase::Get($form_name));
-  $data = JSONFormDefinitionGenerator::GetForm($definition->getForm());
-  $js = <<<EOT
-  Ext.formbuilder.elementStore = Ext.create('Ext.data.TreeStore', {
-    model: 'Element',
-    root: $data
- });
-EOT;
-  // @FIXME
-// The Assets API has totally changed. CSS, JavaScript, and libraries are now
-// attached directly to render arrays using the #attached property.
-//
-//
-// @see https://www.drupal.org/node/2169605
-// @see https://www.drupal.org/node/2408597
-// drupal_add_js($js, array('type' => 'inline', 'scope' => JS_DEFAULT));
-
+  $data = JSONFormDefinitionGenerator::GetFormArray($definition->getForm());
+  return [
+    '#attached' => [
+      'library' => ['xml_form_builder/xml-form-builder-elements-js'],
+      'drupalSettings' => [
+        'xml_form_builder' => ['elements' => $data],
+      ],
+    ],
+  ];
 }
 
 /**

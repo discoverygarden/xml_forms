@@ -43,14 +43,21 @@ class JSONFormDefinitionGenerator {
    *   The JSON representation of the Form Properties.
    */
   public static function GetProperties(array $properties) {
+    return json_encode(self::GetPropertiesArray($properties));
+  }
+
+  /**
+   * Gets the Form Properties as an array.
+   */
+  public static function GetPropertiesArray(array $properties) {
     $namespaces = isset($properties['namespaces']) ? $properties['namespaces'] : array();
-    $properties = array(
+    $properties = [
       'localName' => $properties['root_name'],
       'uri' => isset($properties['default_uri']) ? $properties['default_uri'] : NULL,
       'namespaces' => $namespaces,
       'schema' => isset($properties['schema_uri']) ? $properties['schema_uri'] : NULL,
-    );
-    return json_encode(array($properties));
+    ];
+    return [$properties];
   }
 
   /**
@@ -63,6 +70,13 @@ class JSONFormDefinitionGenerator {
    *   The JSON representation of the Drupal Form.
    */
   public static function GetForm(array $form) {
+    return json_encode(self::GetFormArray($form));
+  }
+
+  /**
+   * Gets the Drupal Form as an array.
+   */
+  public static function GetFormArray(array $form) {
     $elements = array(
       'key' => 'Root',
       'text' => 'Elements',
@@ -71,7 +85,7 @@ class JSONFormDefinitionGenerator {
     $elements = self::GetElement($form);
     $elements['key'] = empty($elements['key']) ? 'Root' : $elements['key'];
     $elements['text'] = "{$elements['key']} ({$elements['type']})";
-    return json_encode(array('expanded' => TRUE, 'children' => $elements));
+    return ['expanded' => TRUE, 'children' => $elements];
   }
 
   /**

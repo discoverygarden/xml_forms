@@ -171,16 +171,17 @@ class DefaultController extends ControllerBase {
         ]), 'error');
       throw new NotFoundHttpException();
     }
-
-    xml_form_builder_edit_include_css();
-    xml_form_builder_edit_include_js();
-    xml_form_builder_create_element_type_store();
-    xml_form_builder_create_element_store($form_name);
-    xml_form_builder_create_properties_store($form_name);
-
-    return [
+    $builder = [
       '#markup' => '<div id="xml-form-builder-editor"></div>',
     ];
+    $css = xml_form_builder_edit_include_css();
+    $js = xml_form_builder_edit_include_js();
+    $types = xml_form_builder_create_element_type_store();
+    $elements = xml_form_builder_create_element_store($form_name);
+    $properties = xml_form_builder_create_properties_store($form_name);
+    $full_builder = array_merge_recursive($builder, $css, $js, $types, $elements, $properties);
+
+    return $full_builder;
   }
 
   /**
