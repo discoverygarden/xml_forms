@@ -8,6 +8,8 @@
  * other classes.
  */
 
+use Drupal\objective_forms\FormElement;
+
 module_load_include('inc', 'php_lib', 'String');
 module_load_include('inc', 'php_lib', 'Array');
 

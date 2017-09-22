@@ -2,6 +2,8 @@
 
 namespace Drupal\xml_form_builder\Form;
 
+use DOMDocument;
+
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -84,16 +86,15 @@ class XmlFormBuilderCreate extends FormBase {
       try {
         $definition->load($filename);
       }
-
-        catch (Exception $e) {
-        $form_state->setErrorByName('files', t("Could not load uploaded file as XML, with error: %error.", [
+      catch (Exception $e) {
+        $form_state->setErrorByName('files', $this->t("Could not load uploaded file as XML, with error: %error.", [
           '%error' => $e->getMessage()
           ]));
       }
       try {
-        $version = XMLFormDefinition::getVersion($definition);
-        if (!XMLFormDefinition::isValid($definition, $version)) {
-          $form_state->setErrorByName('files', t('The given form definition is not valid.'));
+        $version = \XMLFormDefinition::getVersion($definition);
+        if (!\XMLFormDefinition::isValid($definition, $version)) {
+          $form_state->setErrorByName('files', $this->t('The given form definition is not valid.'));
         }
       }
 

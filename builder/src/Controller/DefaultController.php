@@ -202,18 +202,16 @@ class DefaultController extends ControllerBase {
     module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
     module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
     try {
-      // @TODO: this data needs to be sanitized. Can we get this data through the
-    // form API?
-      $definition = new JSONFormDefinition($_POST['data']);
+      $definition = new \JSONFormDefinition($_POST['data']);
       list($properties, $form) = $definition->getPropertiesAndForm();
-      $definition = XMLFormDefinitionGenerator::Create($properties, $form);
-      XMLFormDatabase::Update($form_name, $definition);
+      $definition = \XMLFormDefinitionGenerator::Create($properties, $form);
+      \XMLFormDatabase::Update($form_name, $definition);
     }
-
-      catch (Exception $e) {
+    catch (Exception $e) {
       $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
       drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
     }
+    return [];
   }
 
   public function xml_form_builder_disable_association($form_name, $id) {
