@@ -297,19 +297,6 @@ function xml_form_builder_get_form(array $form, FormStateInterface $form_state, 
 }
 
 /**
- * Implements hook_theme().
- */
-function xml_form_builder_theme() {
-  return array(
-    'xml_form_builder_association_table' => array(
-      'variables' => array('associations' => NULL),
-      'template' => 'xml-form-builder-association-table',
-      'path' => drupal_get_path('module', 'xml_form_builder') . '/templates',
-    ),
-  );
-}
-
-/**
  * Implements hook_islandora_ingest_steps().
  *
  * If the given configuration has more that one metadata form association add

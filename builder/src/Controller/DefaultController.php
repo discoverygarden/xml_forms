@@ -214,13 +214,26 @@ class DefaultController extends ControllerBase {
     return [];
   }
 
+  /**
+   * Remove the association identified by $id.
+   *
+   * Either by deleting it from the database, or marking it disabled if its
+   * provided by a hook.
+   *
+   * @param string $form_name
+   *   The name of the form for which the associations are being adjusted.
+   *   (used to redirect).
+   * @param string|int $id
+   *   The identifier for the form association.  A string for "default" forms
+   *   (added in via associations), and an integer for associations added via
+   *   the form.
+   */
   public function xml_form_builder_disable_association($form_name, $id) {
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
     $association = xml_form_builder_get_association($id);
     if (!isset($association)) {
       drupal_set_message(t('Specified association does not exist.'), 'error');
-      drupal_goto(xml_form_builder_get_associate_form_path($form_name));
-      return;
+      return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
     }
     // Database defined association.
     if ($association['in_db']) {
@@ -256,16 +269,26 @@ class DefaultController extends ControllerBase {
       }
       drupal_set_message(t('Successfully disabled association.'));
     }
-    drupal_goto(xml_form_builder_get_associate_form_path($form_name));
+    return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
   }
 
+  /**
+   * Enable a default association identified by $id.
+   *
+   * @param string $form_name
+   *   The name of the form for which the associations are being adjusted.
+   *   (used to redirect).
+   * @param string $id
+   *   The identifier for the form association. Note that only "default"
+   *   associations added via hook_xml_form_builder_form_associations() can be
+   *   enabled.
+   */
   public function xml_form_builder_enable_association($form_name, $id) {
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
     $association = xml_form_builder_get_association($id);
     if (!isset($association)) {
       drupal_set_message(t('Specified association does not exist.'), 'error');
-      drupal_goto(xml_form_builder_get_associate_form_path($form_name));
-      return;
+      return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
     }
     // Hook defined association, can't enable non hook associations.
     if (!$association['in_db']) {
@@ -291,7 +314,7 @@ class DefaultController extends ControllerBase {
       }
     }
     drupal_set_message(t('Successfully enabled association.'));
-    drupal_goto(xml_form_builder_get_associate_form_path($form_name));
+    return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
   }
 
 
