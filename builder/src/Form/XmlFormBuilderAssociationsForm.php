@@ -7,6 +7,7 @@ use DOMDocument;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Link;
 
 /**
  * Form association form.
@@ -39,120 +40,98 @@ class XmlFormBuilderAssociationsForm extends FormBase {
       $association['type'] = $association['in_db'] ? 'custom' : 'hook';
       return $association;
     };
-/**
 
+    $associations = array_map($create_table_rows, $associations);
+    $use_default_transforms = \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
 
-<div id="content-model-form-main">
-  <div id="content-model-form-table">
-    <table>
-      <tr>
-        <th><?php print t('Content model'); ?></th>
-        <th><?php print t('Type'); ?></th>
-        <th><?php print t('Datastream ID'); ?></th>
-        <th><?php print t('Label field'); ?></th>
+    $header = [
+      $this->t('Content model'),
+      $this->t('Type'),
+      $this->t('Datastream ID'),
+      $this->t('Label field'),
+    ];
+    if (!$use_default_transforms) {
+      $header[] = $this->t('Transform');
+      $header[] = $this->t('Self Transform');
+    }
+    $header[] = $this->t('Has template');
+    $header[] = $this->t('Operations');
 
-        <?php if (!$use_default_transforms): ?>
-          <th><?php print t('Transform'); ?></th>
-          <th><?php print t('Self Transform'); ?></th>
-        <?php endif; ?>
+    $rows = [];
+    foreach ($associations as $association) {
+      $row = [
+        $association['content_model'],
+        ($association['type'] == 'hook') ? $this->t('Built-in') : $this->t('Custom'),
+        $association['dsid'],
+        $association['title_field'],
+      ];
 
-        <th><?php print t('Has template'); ?></th>
-        <th><?php print t('Operations'); ?></th>
-      </tr>
-      <?php foreach ($associations as $association) : ?>
-        <tr>
-          <td><?php print $association['content_model'] ?></td>
-          <td><?php print ($association['type'] == 'hook') ? t('Built-in') : t('Custom') ?></td>
-          <td><?php print $association['dsid'] ?></td>
-          <td><?php print $association['title_field'] ?></td>
+      if (!$use_default_transforms) {
+        $row[] = $association['transform'];
+        $row[] =  (isset($association['self_transform'])) ? $association['self_transform'] : $this->t("No Self Transform");
+      }
 
-          <?php if (!$use_default_transforms): ?>
-            <td><?php print $association['transform'] ?></td>
-            <td><?php print (isset($association['self_transform'])) ? $association['self_transform'] : t("No Self Transform") ?></td>
-          <?php endif; ?>
+      $row[] = ($association['template']) ? $this->t('Yes') : $this->t('No');
+      $operations = NULL;
+      if ($association['type'] == 'hook') {
+        if ($association['enabled']) {
+          $operations = Link::createFromRoute($this->t("Disable"), 'xml_form_builder.disable_association', ['form_name' => $association['form_name'], 'id' => $association['id']]);
+        }
+        else {
+          $operations = Link::createFromRoute($this->t("Enable"), 'xml_form_builder.enable_association', ['form_name' => $association['form_name'], 'id' => $association['id']]);
+        }
+      }
+      else {
+        $operations = Link::createFromRoute($this->t("Delete"), 'xml_form_builder.disable_association', ['form_name' => $association['form_name'], 'id' => $association['id']]);
+      }
+      $row[] = $operations;
+      $rows[] = $row;
+    }
 
-          <td><?php print ($association['template']) ? t('Yes') : t('No') ?></td>
-          <td>
-          <?php if ($association['type'] == 'hook'): ?>
-          <?php if ($association['enabled']): ?>
-          <?php // @FIXME
-// l() expects a Url object, created from a route name or external URI.
-// print l(t("Disable"), "admin/islandora/xmlform/forms/{$association['form_name']}/disassociate/{$association['id']}")
- ?>
-          <?php else: ?>
-          <?php // @FIXME
-// l() expects a Url object, created from a route name or external URI.
-// print l(t("Enable"), "admin/islandora/xmlform/forms/{$association['form_name']}/associate/{$association['id']}")
- ?>
-          <?php endif; ?>
-          <?php else: ?>
-          <?php // @FIXME
-// l() expects a Url object, created from a route name or external URI.
-// print l(t("Delete"), "admin/islandora/xmlform/forms/{$association['form_name']}/disassociate/{$association['id']}")
- ?>
-          <?php endif; ?>
-          </td>
-        </tr>
-      <?php endforeach; ?>
-    </table>
-  </div>
-</div>
+    $form += [
+        'list' => [
+          '#type' => 'table',
+          '#caption' => $this->t('Current Associations:'),
+          '#header' => $header,
+          '#rows' => $rows,
+        ],
+        'fieldset' => [
+          '#type' => 'details',
+          '#open' => TRUE,
+          '#title' => $this->t('Add Association'),
+          '#collapsible' => TRUE,
+          'content_model' => [
+            '#type' => 'textfield',
+            '#title' => $this->t('Content Model'),
+            '#required' => TRUE,
+            '#autocomplete_route_name' => 'islandora.content_model_autocomplete',
+            '#description' => $this->t('The content model to associate with a form. If the content model has no decendents it will not show up in autocomplete.'),
+            '#default_value' => $form_state->getValue('content_model') ? $form_state->getValue('content_model') : NULL,
+          ],
+          'dsid' => [
+            '#type' => 'textfield',
+            '#description' => $this->t("The datastream ID where the object's metadata is stored."),
+            '#title' => $this->t('Metadata Datastream ID'),
+            '#required' => TRUE,
+            '#default_value' => $form_state->getValues('dsid') ? $form_state->getValues('dsid') : NULL,
+          ],
+          'form_name' => [
+            '#type' => 'value',
+            '#title' => $this->t('Form Name'),
+            '#value' => $form_name,
+          ],
+          'title_field' => [
+            '#type' => 'select',
+            '#title' => $this->t('Title Field'),
+            '#description' => $this->t("The form field for the object's label."),
+            '#prefix' => '<div id="ahah-wrapper">',
+            '#suffix' => '</div>',
+            '#options' => xml_form_builder_get_title_options($form_name),
+          ],
+        ],
+      ];
 
-
-*/
-    // @FIXME
-    // theme() has been renamed to _theme() and should NEVER be called directly.
-    // Calling _theme() directly can alter the expected output and potentially
-    // introduce security issues (see https://www.drupal.org/node/2195739). You
-    // should use renderable arrays instead.
-    //
-    //
-    // @see https://www.drupal.org/node/2195739
-    // $form += array(
-    //     'list' => array(
-    //       '#type' => 'details',
-    //       '#title' => $this->t('Current associations'),
-    //       '#value' => theme('xml_form_builder_association_table', array(
-    //         'associations' => array_map($create_table_rows, $associations),
-    //         'use_default_transforms' => \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
-    //       )),
-    //     ),
-    //     'fieldset' => array(
-    //       '#type' => 'details',
-    //       '#title' => $this->t('Add Association'),
-    //       '#collapsible' => TRUE,
-    //       'content_model' => array(
-    //         '#type' => 'textfield',
-    //         '#title' => $this->t('Content Model'),
-    //         '#required' => TRUE,
-    //         '#autocomplete_path' => ISLANDORA_CONTENT_MODELS_AUTOCOMPLETE,
-    //         '#description' => $this->t('The content model to associate with a form. If the content model has no decendents it will not show up in autocomplete.'),
-    //         '#default_value' => isset($form_state['values']['content_model']) ? $form_state['values']['content_model'] : NULL,
-    //       ),
-    //       'dsid' => array(
-    //         '#type' => 'textfield',
-    //         '#description' => $this->t("The datastream ID where the object's metadata is stored."),
-    //         '#title' => $this->t('Metadata Datastream ID'),
-    //         '#required' => TRUE,
-    //         '#default_value' => isset($form_state['values']['dsid']) ? $form_state['values']['dsid'] : NULL,
-    //       ),
-    //       'form_name' => array(
-    //         '#type' => 'value',
-    //         '#title' => $this->t('Form Name'),
-    //         '#value' => $form_name,
-    //       ),
-    //       'title_field' => array(
-    //         '#type' => 'select',
-    //         '#title' => $this->t('Title Field'),
-    //         '#description' => $this->t("The form field for the object's label."),
-    //         '#prefix' => '<div id="ahah-wrapper">',
-    //         '#suffix' => '</div>',
-    //         '#options' => xml_form_builder_get_title_options($form_name),
-    //       ),
-    //     ),
-    //   );
-
-    if (!\Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts')) {
+    if (!$use_default_transforms) {
       $form['fieldset']['transform'] = [
         '#type' => 'select',
         '#title' => $this->t('XSL Transform'),

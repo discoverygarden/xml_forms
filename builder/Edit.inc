@@ -112,10 +112,12 @@ function xml_form_builder_create_element_store($form_name) {
  */
 function xml_form_builder_get_element_types() {
   $output = &drupal_static(__FUNCTION__);
+
   if (!isset($output)) {
     $types = array_keys(Drupal::getContainer()->get('plugin.manager.element_info')->getDefinitions());
     $output = array_combine($types, $types);
     ksort($output);
   }
+
   return $output;
 }
