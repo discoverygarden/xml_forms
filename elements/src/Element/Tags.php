@@ -15,8 +15,8 @@ class Tags extends FormElement {
   public function getInfo() {
     $info = [
       '#input' => TRUE,
-      '#process' => array('xml_form_elements_tags_process'),
-      '#theme_wrappers' => array('tags', 'form_element'),
+      '#process' => ['xml_form_elements_tags_process'],
+      '#theme_wrappers' => ['tags', 'form_element'],
     ];
 
     return $info;

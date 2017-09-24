@@ -18,13 +18,13 @@ class Indent extends FormElement {
     $info = [
       '#input' => FALSE,
       '#tree' => FALSE,
-      '#theme_wrappers' => array('container'),
-      '#attributes' => array(
-        'class' => array('xml-form-elements-indent-element'),
-      ),
-      '#attached' => array(
-        'css' => array("$module_path/css/indent.css"),
-      ),
+      '#theme_wrappers' => ['container'],
+      '#attributes' => [
+        'class' => ['xml-form-elements-indent-element'],
+      ],
+      '#attached' => [
+        'library' => ['xml_form_elements/indent-css'],
+      ],
     ];
 
     return $info;

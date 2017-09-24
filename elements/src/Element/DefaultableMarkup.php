@@ -15,12 +15,12 @@ class DefaultableMarkup extends FormElement {
   public function getInfo() {
     $info = [
       '#markup' => '',
-      '#pre_render' => array(
+      '#pre_render' => [
         'xml_form_elements_default_value_to_markup',
         'drupal_pre_render_markup',
         'xml_form_elements_remove_empty_markup',
-      ),
-      '#post_render' => array('xml_form_elements_defaultable_markup'),
+      ],
+      '#post_render' => ['xml_form_elements_defaultable_markup'],
     ];
 
     return $info;

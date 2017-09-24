@@ -1,0 +1,10 @@
+inline-css:
+  version: 1.x
+  css:
+    layout:
+      css/inline.css: {}
+indent-css:
+  version: 1.x
+  css:
+    layout:
+      css/indent.css: {}

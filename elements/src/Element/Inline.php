@@ -18,13 +18,13 @@ class Inline extends FormElement {
     $info = [
       '#input' => FALSE,
       '#tree' => FALSE,
-      '#theme_wrappers' => array('container'),
-      '#attributes' => array(
-        'class' => array('xml-form-elements-inline-element'),
-      ),
-      '#attached' => array(
-        'css' => array("$module_path/css/inline.css"),
-      ),
+      '#theme_wrappers' => ['container'],
+      '#attributes' => [
+        'class' => ['xml-form-elements-inline-element'],
+      ],
+      '#attached' => [
+        'library' => ['xml_form_elements/inline-css'],
+      ],
     ];
 
     return $info;

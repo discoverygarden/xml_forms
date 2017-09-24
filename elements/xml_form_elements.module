@@ -5,6 +5,8 @@
  * Hooks and constants for xml_form_elements.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Constants
  */
@@ -77,7 +79,7 @@ function xml_form_elements_theme($existing, $type, $theme, $path) {
  *
  * @param array $element
  *   The element to be processed.
- * @param array $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The drupal form state.
  * @param array $complete_form
  *   The drupal form.
@@ -85,7 +87,7 @@ function xml_form_elements_theme($existing, $type, $theme, $path) {
  * @return array
  *   The processed element.
  */
-function xml_form_elements_tabs_process(array $element, array &$form_state, array $complete_form = NULL) {
+function xml_form_elements_tabs_process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
   $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tabs');
   return Tabs::Process($element, $form_state, $complete_form);
 }

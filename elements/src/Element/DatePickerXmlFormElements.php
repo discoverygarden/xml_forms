@@ -15,9 +15,9 @@ class DatePickerXmlFormElements extends FormElement {
   public function getInfo() {
     $info = [
       '#input' => TRUE,
-      '#process' => array('xml_form_elements_datepicker_xml_form_elements_process'),
+      '#process' => ['xml_form_elements_datepicker_xml_form_elements_process'],
       '#theme' => XML_FORM_ELEMENTS_DATEPICKER_THEME,
-      '#theme_wrappers' => array('form_element'),
+      '#theme_wrappers' => ['form_element'],
     ];
 
     return $info;

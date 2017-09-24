@@ -17,8 +17,8 @@ class Tabs extends FormElement {
       '#input' => TRUE,
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-      '#process' => array('xml_form_elements_tabs_process'),
-      '#theme_wrappers' => array('tabs', 'form_element'),
+      '#process' => ['xml_form_elements_tabs_process'],
+      '#theme_wrappers' => ['tabs', 'form_element'],
     ];
 
     return $info;

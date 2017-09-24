@@ -16,7 +16,7 @@ class CreativeCommons extends FormElement {
     $info = [
       '#input' => TRUE,
       '#tree' => FALSE,
-      '#process' => array('xml_form_elements_creative_commons_process'),
+      '#process' => ['xml_form_elements_creative_commons_process'],
       '#value_callback' => 'xml_form_elements_creative_commons_value_callback',
     ];
 

@@ -15,9 +15,9 @@ class Tabpanel extends FormElement {
   public function getInfo() {
     $info = [
       '#input' => TRUE,
-      '#process' => array('xml_form_elements_tabpanel_process'),
-      '#user_data' => array('add' => TRUE, 'delete' => TRUE),
-      '#theme_wrappers' => array('tabpanel'),
+      '#process' => ['xml_form_elements_tabpanel_process'],
+      '#user_data' => ['add' => TRUE, 'delete' => TRUE],
+      '#theme_wrappers' => ['tabpanel'],
     ];
 
     return $info;
