@@ -26,92 +26,6 @@ define('XML_FORM_ELEMENTS_CSS_PATH', XML_FORM_ELEMENTS_PATH . 'css/');
 define('XML_FORM_ELEMENTS_IMAGES_PATH', XML_FORM_ELEMENTS_PATH . 'images/');
 
 /**
- * Implements hook_element_info().
- */
-function xml_form_elements_element_info() {
-  $module_path = drupal_get_path('module', 'xml_form_elements');
-  return array(
-    'tabs' => array(
-      '#input' => TRUE,
-      '#collapsible' => TRUE,
-      '#collapsed' => FALSE,
-      '#process' => array('xml_form_elements_tabs_process'),
-      '#theme_wrappers' => array('tabs', 'form_element'),
-    ),
-    'tabpanel' => array(
-      '#input' => TRUE,
-      '#process' => array('xml_form_elements_tabpanel_process'),
-      '#user_data' => array('add' => TRUE, 'delete' => TRUE),
-      '#theme_wrappers' => array('tabpanel'),
-    ),
-    'tags' => array(
-      '#input' => TRUE,
-      '#process' => array('xml_form_elements_tags_process'),
-      '#theme_wrappers' => array('tags', 'form_element'),
-    ),
-    'tag' => array(
-      '#input' => TRUE,
-      '#process' => array('xml_form_elements_tag_process'),
-      '#theme' => 'tag',
-    ),
-    XML_FORM_ELEMENTS_DATEPICKER_THEME => array(
-      '#input' => TRUE,
-      '#process' => array('xml_form_elements_datepicker_xml_form_elements_process'),
-      '#theme' => XML_FORM_ELEMENTS_DATEPICKER_THEME,
-      '#theme_wrappers' => array('form_element'),
-    ),
-    'defaultable_markup' => array(
-      '#markup' => '',
-      '#pre_render' => array(
-        'xml_form_elements_default_value_to_markup',
-        'drupal_pre_render_markup',
-        'xml_form_elements_remove_empty_markup',
-      ),
-      '#post_render' => array('xml_form_elements_defaultable_markup'),
-    ),
-    'defaultable_item' => array(
-      '#markup' => '',
-      '#pre_render' => array(
-        'xml_form_elements_default_value_to_markup',
-        'drupal_pre_render_markup',
-        'xml_form_elements_remove_empty_markup',
-      ),
-      '#theme_wrappers' => array('xml_form_element'),
-    ),
-    'creative_commons' => array(
-      '#input' => TRUE,
-      '#tree' => FALSE,
-      '#process' => array('xml_form_elements_creative_commons_process'),
-      '#value_callback' => 'xml_form_elements_creative_commons_value_callback',
-    ),
-    // Designed for the form builder UI please do not use programmatically.
-    'indent' => array(
-      '#input' => FALSE,
-      '#tree' => FALSE,
-      '#theme_wrappers' => array('container'),
-      '#attributes' => array(
-        'class' => array('xml-form-elements-indent-element'),
-      ),
-      '#attached' => array(
-        'css' => array("$module_path/css/indent.css"),
-      ),
-    ),
-    // Designed for the form builder UI please do not use programmatically.
-    'inline' => array(
-      '#input' => FALSE,
-      '#tree' => FALSE,
-      '#theme_wrappers' => array('container'),
-      '#attributes' => array(
-        'class' => array('xml-form-elements-inline-element'),
-      ),
-      '#attached' => array(
-        'css' => array("$module_path/css/inline.css"),
-      ),
-    ),
-  );
-}
-
-/**
  * Implements hook_element_info_alter().
  */
 function xml_form_elements_element_info_alter(&$type) {
@@ -568,8 +482,8 @@ function theme_xml_form_element(&$elements) {
 // Calling _theme() directly can alter the expected output and potentially
 // introduce security issues (see https://www.drupal.org/node/2195739). You
 // should use renderable arrays instead.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2195739
 // return theme('form_element', $elements['element']);
 
