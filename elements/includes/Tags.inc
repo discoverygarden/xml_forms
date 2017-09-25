@@ -20,27 +20,6 @@ class Tags {
   // @codingStandardsIgnoreEnd
 
   /**
-   * Loads the required resources for displaying the Tabs element.
-   *
-   * @param array $form_state
-   *   The Drupal form state.
-   *
-   * @staticvar bool $load
-   *   Keeps us from loading the same files multiple times; while not required,
-   *   it just saves some time.
-   */
-  public static function addRequiredResources(&$form_state) {
-    static $load = TRUE;
-    if ($load) {
-      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
-      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
-      Element::addJS('tags.js');
-      Element::addCSS('tags.css');
-      $load = FALSE;
-    }
-  }
-
-  /**
    * Processes the element.
    *
    * @param array $element
@@ -54,7 +33,9 @@ class Tags {
    *   The processed element.
    */
   public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
-    self::addRequiredResources($form_state);
+    $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
+    $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
+    $element['#attached']['library'][] = 'xml_form_elementsi/tags';
     $element['#id'] = $element['#hash'];
     $element['#size'] = isset($element['#size']) ? $element['#size'] : 60;
     $element['#tree'] = TRUE;
@@ -233,8 +214,8 @@ function template_preprocess_tags(&$vars) {
 // Calling _theme() directly can alter the expected output and potentially
 // introduce security issues (see https://www.drupal.org/node/2195739). You
 // should use renderable arrays instead.
-// 
-// 
+//
+//
 // @see https://www.drupal.org/node/2195739
 // $vars['textfield'] = theme('textfield', $textfield);
 

@@ -12,32 +12,6 @@ module_load_include('inc', 'xml_form_elements', 'includes/TabPanel');
 class Tabs {
 
   /**
-   * Loads the required resources for displaying the Tabs element.
-   *
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The Drupal form state.
-   *
-   * @staticvar bool $load
-   *   Keeps us from loading the same files multiple times. While not required
-   *   it just saves some time.
-   */
-  public static function addRequiredResources(FormStateInterface $form_state) {
-    static $load = TRUE;
-    if ($load) {
-      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
-      Element::addUIWidgets('ui.tabs');
-      Element::addUIThemeStyles(array(
-        'ui.core.css',
-        'ui.tabs.css',
-        'ui.theme.css',
-      ));
-      Element::addJS('tabs.js');
-      Element::addCSS('tabs.css');
-      $load = FALSE;
-    }
-  }
-
-  /**
    * Processes the element.
    *
    * @param array $element
@@ -51,9 +25,9 @@ class Tabs {
    *   The processed tabs element.
    */
   public static function process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
-    self::addRequiredResources($form_state);
     $element['#prefix'] = "<div class='clear-block' id='{$element['#hash']}'>";
     $element['#suffix'] = '</div>';
+    $element['#attached']['library'][] = 'xml_form_elements/tabs';
     return $element;
   }
 
