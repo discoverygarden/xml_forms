@@ -47,7 +47,7 @@ function xml_form_elements_theme($existing, $type, $theme, $path) {
   return array(
     XML_FORM_ELEMENTS_TABS_THEME => array(
       'render element' => 'element',
-      'template' => 'templates/Tabs',
+      'template' => 'Tabs',
       'file' => 'includes/Tabs.inc',
     ),
     // The content of a single tabpanel.
@@ -57,7 +57,7 @@ function xml_form_elements_theme($existing, $type, $theme, $path) {
     ),
     XML_FORM_ELEMENTS_TAGS_THEME => array(
       'render element' => 'element',
-      'template' => 'templates/Tags',
+      'template' => 'Tags',
       'file' => 'includes/Tags.inc',
     ),
     XML_FORM_ELEMENTS_TAG_THEME => array(

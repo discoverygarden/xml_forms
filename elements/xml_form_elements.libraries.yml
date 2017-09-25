@@ -17,7 +17,7 @@ tabs:
     css/tabs.css: {}
   js:
     js/tabs.js: {}
-  dependencies: {}
+  dependencies:
     - core/jquery.ui.tabs
 tags:
   version: 1.x

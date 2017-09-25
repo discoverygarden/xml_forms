@@ -37,7 +37,7 @@ class Tags {
   public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
-    $element['#attached']['library'][] = 'xml_form_elementsi/tags';
+    $element['#attached']['library'][] = 'xml_form_elements/tags';
     $element['#id'] = $element['#hash'];
     $element['#size'] = isset($element['#size']) ? $element['#size'] : 60;
     $element['#tree'] = TRUE;
