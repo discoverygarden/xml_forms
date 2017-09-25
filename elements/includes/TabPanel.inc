@@ -5,6 +5,8 @@
  * Allows forms to dynamically add new tabs to a tabpanel in a form.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
 
 /**
@@ -46,7 +48,7 @@ class TabPanel {
    *
    * @param array $element
    *   The theme element.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    * @param array $complete_form
    *   An optional complete form.
@@ -54,7 +56,7 @@ class TabPanel {
    * @return array
    *   The processed element.
    */
-  public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
+  public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     // Defaults to TRUE.
     $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE;
     if ($add) {

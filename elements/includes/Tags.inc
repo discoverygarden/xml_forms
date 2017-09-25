@@ -5,6 +5,8 @@
  * Class for form tags.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 module_load_include('inc', 'xml_form_elements', 'includes/Tag');
 
 class Tags {
@@ -24,7 +26,7 @@ class Tags {
    *
    * @param array $element
    *   The element to process.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    * @param array $complete_form
    *   The completed form.
@@ -32,7 +34,7 @@ class Tags {
    * @return array
    *   The processed element.
    */
-  public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
+  public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
     $element['#attached']['library'][] = 'xml_form_elementsi/tags';
@@ -57,13 +59,13 @@ class Tags {
    *
    * @param array $form_element
    *   The tag element.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    *
    * @return array
    *   The modified $form_element.
    */
-  public static function AfterBuild(array $form_element, array &$form_state) {
+  public static function AfterBuild(array $form_element, FormStateInterface $form_state) {
     if ($form_element['#required']) {
       // 2 to include the controls element.
       $require = (count(\Drupal\Core\Render\Element::children($form_element)) == 2) ? TRUE : FALSE;
@@ -228,12 +230,12 @@ function template_preprocess_tags(&$vars) {
  *
  * @param array $form_element
  *   A tag element to be modified.
- * @param array $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The Drupal form state.
  *
  * @return array
  *   The modified $form_element.
  */
-function xml_form_elements_after_build_tags(array $form_element, array &$form_state) {
+function xml_form_elements_after_build_tags(array $form_element, FormStateInterface $form_state) {
   return Tags::AfterBuild($form_element, $form_state);
 }

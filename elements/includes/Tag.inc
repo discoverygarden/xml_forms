@@ -5,6 +5,8 @@
  * Allows forms to dynamically add new tabs to a tabpanel in a form.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 module_load_include('inc', 'xml_form_elements', 'includes/Element');
 
 /**
@@ -46,7 +48,7 @@ class Tag {
    *
    * @param array $element
    *   The element to process.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    * @param array $complete_form
    *   The completed form.
@@ -54,7 +56,7 @@ class Tag {
    * @return array
    *   The processed element.
    */
-  public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
+  public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     $tags = &get_form_element_parent($element, $complete_form);
     $element['#id'] = $element['#hash'];
     $element['#title'] = isset($tags['#title']) ? $tags['#title'] : FALSE;
