@@ -483,16 +483,8 @@ function xml_form_elements_remove_empty_markup($elements) {
  */
 function theme_xml_form_element(&$elements) {
   if (!empty($elements['element']['#children'])) {
-    // @FIXME
-// theme() has been renamed to _theme() and should NEVER be called directly.
-// Calling _theme() directly can alter the expected output and potentially
-// introduce security issues (see https://www.drupal.org/node/2195739). You
-// should use renderable arrays instead.
-//
-//
-// @see https://www.drupal.org/node/2195739
-// return theme('form_element', $elements['element']);
-
+    $elements['element']['#theme'] = 'form_element';
+    return $elements['element'];
   }
 }
 

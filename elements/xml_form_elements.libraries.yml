@@ -11,10 +11,11 @@ indent-css:
 tabs:
   version: 1.x
   css:
-    theme/ui.core.css: {}
-    theme/ui.tabs.css: {}
-    theme/ui.theme.css: {}
-    css/tabs.css: {}
+    layout:
+      theme/ui.core.css: {}
+      theme/ui.tabs.css: {}
+      theme/ui.theme.css: {}
+      css/tabs.css: {}
   js:
     js/tabs.js: {}
   dependencies:
@@ -25,6 +26,7 @@ tabs:
 tags:
   version: 1.x
   css:
+    layout:
       css/tags.css: {}
   js:
       js/tags.js: {}
