@@ -6,7 +6,7 @@
 #}
 {% set classes = collapsible ? 'xml-form-elements-tabs-collapsible ' : '' %}
 {% set classes = collapsed ? classes ~ 'xml-form-elements-tabs-collapsed' : classes %}
-<div class="xml-form-elements-tabs <?php print $classes ?>">
+<div class="xml-form-elements-tabs {{ classes }}">
   <!-- Header  -->
   <ul>
     <!-- First Tab Panel -->
