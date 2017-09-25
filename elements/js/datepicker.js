@@ -3,7 +3,7 @@
  * Date picker controls.
  */
 
-(function ($) {
+(function ($, Drupal) {
     Drupal.behaviors.xmlFormElementDatepicker = {
         attach: function(context, settings) {
         $( "input.datepicker" ).datepicker({
@@ -13,4 +13,4 @@
             });
         }
     };
-})(jQuery);
+})(jQuery, Drupal);
