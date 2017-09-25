@@ -1,29 +1,31 @@
-<?php
+{#
 /**
  * @file
  * Template for the Tags Element.
  */
-?>
+#}
 <div class="xml-form-elements-tags">
-  <?php print $textfield; ?>
-  <input type="image" src="<?php print $image_path ?>add.png" name="<?php print $add['#name'] ?>" id="<?php print $add['#id'] ?>" value="add">
+  {{ textfield }}
+  <input type="image" src="{{ image_path }}add.png" name="{{ add['#name'] }}" id="{{ add['#id'] }}" value="add">
   <div class="hidden-controls">
-    <?php 
-      print ((is_array($edit) && array_key_exists('#children', $edit)) ? $edit['#children'] : '');
-      print ((is_array($remove) && array_key_exists('#children', $remove)) ? $remove['#children'] : '');
-  ?>
+    {% if edit is iterable and edit['#children'] is defined %}
+      {{ edit['#children'] }}
+    {% endif %}
+    {% if remove is iterable and remove['#children'] is defined %}
+      {{ remove['#children'] }}
+    {% endif %}
   </div>
   <div class="hidden-tags">
-    <?php foreach ($tags as $tag): ?>
-      <input type="hidden" name="<?php print $tag['#name']; ?>" id="<?php print $tag['#id']; ?>" class="form-tag" value="<?php print "{$tag['#value']}"; ?>"/>
-    <?php endforeach ?>
+    {% for tag in tags %}
+      <input type="hidden" name="{{ tag['#name'] }}" id="{{ tag['#id'] }}" class="form-tag" value="{{ tag['#value'] }}"/>
+    {% endfor %}
   </div>
   <span class="tag-list">
-    <?php foreach ($tags as $tag): ?>
-      <span title="<?php print "{$tag['#value']}" ?>">
-        <span class="edit-tag" onclick="jQuery('#<?php print $edit[$tag['#hash']]['#id'] ?>').trigger('mousedown'); return false;"><?php print \Drupal\Component\Utility\Html::escape("{$tag['#value']}") ?></span>
-        <span class="remove-tag" onclick="jQuery('#<?php print $remove[$tag['#hash']]['#id'] ?>').trigger('mousedown'); return false;"></span>
+    {% for tag in tags %}
+      <span title="{{ tag['#value'] }}">
+        <span class="edit-tag" onclick="jQuery('#{{ edit[tag['#hash']]['#id'] }}').trigger('mousedown'); return false;">{{ tag['#value'] }}</span>
+        <span class="remove-tag" onclick="jQuery('#{{ remove[tag['#hash']]['#id'] }}').trigger('mousedown'); return false;"></span>
       </span>
-    <?php endforeach ?>
+    {% endfor %}
   </span>
 </div>
