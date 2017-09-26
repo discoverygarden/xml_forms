@@ -27,21 +27,6 @@ class TabPanel {
   // @codingStandardsIgnoreEnd
 
   /**
-   * TabPanel's theme hook.
-   *
-   * @param array $element
-   *   The theme element.
-   *
-   * @return string
-   *   A div string to pass back to theme.
-   */
-  public static function Theme($element) {
-    $children = isset($element['#children']) ? $element['#children'] : '';
-    $description = isset($element['#description']) ? "<div class='description'>{$element['#description']}</div>" : '';
-    return "<div id='{$element['#hash']}'>{$description}{$children}</div>";
-  }
-
-  /**
    * The default #process function for tabpanel's.
    *
    * Adds elements that allow for adding/remove form elements.
@@ -154,11 +139,4 @@ class TabPanel {
     return $delete;
   }
 
-}
-
-/**
- * Theme hook for a tabpanel.
- */
-function theme_tabpanel($vars) {
-  return TabPanel::Theme($vars['element']);
 }
