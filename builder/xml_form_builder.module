@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Access\AccessResult;
 
 // Constants.
 define('XML_FORM_BUILDER_LIST_FORMS_PERMS', 'List XML Forms');
@@ -99,9 +100,9 @@ function xml_form_builder_menu_alter(&$items) {
 function xml_form_builder_xslts_access() {
   if (\Drupal::currentUser()->hasPermission(XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS) &&
     \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts')) {
-    return TRUE;
+    return AccessResult::allowed();
   }
-  return FALSE;
+  return AccessResult::forbidden();
 }
 
 /**

@@ -25,21 +25,21 @@ xml_form_builder.xslts_form:
     _title: XSLTs
     _form: \Drupal\xml_form_builder\Form\XmlFormBuilderXsltsForm
   requirements:
-    _custom_access: '\Drupal\xml_form_builder\Form\XmlFormBuilderXsltsForm::xml_form_builder_xslts_access'
+    _custom_access: 'xml_form_builder_xslts_access'
 xml_form_builder.add_xslt_form:
   path: '/admin/config/islandora/xmlform/xslts/add_xslt'
   defaults:
     _title: 'Add XSLT'
     _form: \Drupal\xml_form_builder\Form\XmlFormBuilderAddXsltForm
   requirements:
-    _custom_access: '\Drupal\xml_form_builder\Form\XmlFormBuilderAddXsltForm::xml_form_builder_xslts_access'
+    _custom_access: 'xml_form_builder_xslts_access'
 xml_form_builder.add_default_dc_transform_mapping_form:
   path: '/admin/config/islandora/xmlform/xslts/add_default_dc_mapping'
   defaults:
     _title: 'Add Mapping'
     _form: \Drupal\xml_form_builder\Form\XmlFormBuilderAddDefaultDcTransformMappingForm
   requirements:
-    _custom_access: '\Drupal\xml_form_builder\Form\XmlFormBuilderAddDefaultDcTransformMappingForm::xml_form_builder_xslts_access'
+    _custom_access: 'xml_form_builder_xslts_access'
 xml_form_builder.create_create:
   path: '/admin/config/islandora/xmlform/forms/create'
   defaults:

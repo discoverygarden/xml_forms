@@ -10,3 +10,7 @@ xml_form_builder.settings_form:
   route_name: xml_form_builder.settings_form
   title: Settings
   base_route: xml_form_builder.main
+xml_form_builder.xslts_form:
+  route_name: xml_form_builder.xslts_form
+  title: XSLTs
+  base_route: xml_form_builder.main
