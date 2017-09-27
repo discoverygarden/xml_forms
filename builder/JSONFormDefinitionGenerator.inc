@@ -30,7 +30,7 @@ class JSONFormDefinitionGenerator {
   public static function Create(array &$properties, array &$form) {
     $properties = self::GetProperties($properties);
     $form = self::GetForm($form);
-    return array($properties, $form);
+    return [$properties, $form];
   }
 
   /**
@@ -77,11 +77,11 @@ class JSONFormDefinitionGenerator {
    * Gets the Drupal Form as an array.
    */
   public static function GetFormArray(array $form) {
-    $elements = array(
+    $elements = [
       'key' => 'Root',
       'text' => 'Elements',
-      'children' => array(),
-    );
+      'children' => [],
+    ];
     $elements = self::GetElement($form);
     $elements['key'] = empty($elements['key']) ? 'Root' : $elements['key'];
     $elements['text'] = "{$elements['key']} ({$elements['type']})";
@@ -101,13 +101,13 @@ class JSONFormDefinitionGenerator {
    *   Form Element.
    */
   protected static function GetElement(array $element, $identifier = NULL) {
-    $json = array();
+    $json = [];
     foreach (\Drupal\Core\Render\Element::properties($element) as $key) {
       // Remove the #.
       $name = trim($key, '#');
       $json[$name] = $element[$key];
     }
-    $json['children'] = array();
+    $json['children'] = [];
     foreach (\Drupal\Core\Render\Element::children($element) as $key) {
       $json['children'][] = self::GetElement($element[$key], $key);
     }

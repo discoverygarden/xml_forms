@@ -115,6 +115,10 @@ function xml_form_builder_get_element_types() {
 
   if (!isset($output)) {
     $types = array_keys(Drupal::getContainer()->get('plugin.manager.element_info')->getDefinitions());
+    // @XXX: Supporting #type=>markup for backwards compatibility.
+    // In Drupal 8 #type is not required.
+    // Could be handled with NULL but Ext won't bind it to a display value.
+    $types[] = 'markup';
     $output = array_combine($types, $types);
     ksort($output);
   }
