@@ -69,4 +69,19 @@ class XmlFormBuilderIngestForm extends FormBase {
     $step_storage['created'] = xml_form_builder_update_object($object, $association, $document, $label);
   }
 
+  /**
+   * Undoes the submit, purging any datastreams created by this step.
+   */
+  function undoSubmit(array $form, FormStateInterface $form_state) {
+    $step_storage = &islandora_ingest_form_get_step_storage($form_state, 'xml_form_builder_metadata_step');
+    $object = islandora_ingest_form_get_object($form_state);
+    foreach ($step_storage['created'] as $dsid => $created) {
+      if ($created) {
+        $object->purgeDatastream($dsid);
+      }
+    }
+    unset($step_storage['created']);
+    unset($step_storage['association']);
+  }
+
 }

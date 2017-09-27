@@ -318,7 +318,7 @@ function xml_form_builder_islandora_ingest_steps(FormStateInterface $form_state)
   $select_association_step = ($num_associations > 1) ? array(
     'weight' => 0,
     'type' => 'form',
-    'form_class' => 'xml_form_builder_select_association_form',
+    'form_class' => 'Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm',
     'module' => 'xml_form_builder',
     'file' => 'includes/select_association.form.inc',
     'args' => array($associations),
