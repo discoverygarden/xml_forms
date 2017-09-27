@@ -208,18 +208,7 @@ function template_preprocess_tags(&$vars) {
   $textfield = array(
     'element' => array_shift($vars['tags']),
   );
-  $textfield['element']['#size'] = $tags['#size'];
-  $textfield['element']['#autocomplete_path'] = isset($textfield['element']['#autocomplete_path']) ? $textfield['element']['#autocomplete_path'] : FALSE;
-  // Theme the text field to take advantage of autocomplete.
-  // @FIXME
-// theme() has been renamed to _theme() and should NEVER be called directly.
-// Calling _theme() directly can alter the expected output and potentially
-// introduce security issues (see https://www.drupal.org/node/2195739). You
-// should use renderable arrays instead.
-//
-//
-// @see https://www.drupal.org/node/2195739
-// $vars['textfield'] = theme('textfield', $textfield);
+$vars['textfield'] = '<input type="text" id="' . $textfield['element']['#id'] . '" name="' . $textfield['element']['#name'] . '" value="" size="60" class="form-text" />';
 
 }
 

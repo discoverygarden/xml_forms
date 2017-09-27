@@ -23,7 +23,7 @@
     </li>
     <!-- All other Tab Panels -->
     {% if tabpanels is defined %}
-      {% for var in tabpanels %}
+      {% for vars in tabpanels %}
         {% set title = vars.0 %}
         {% set link = vars.1 %}
         {% set remove_button = vars.2 %}

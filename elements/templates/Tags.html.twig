@@ -5,7 +5,7 @@
  */
 #}
 <div class="xml-form-elements-tags">
-  {{ textfield }}
+  {{ textfield | raw }}
   <input type="image" src="{{ image_path }}add.png" name="{{ add['#name'] }}" id="{{ add['#id'] }}" value="add">
   <div class="hidden-controls">
     {% if edit is iterable and edit['#children'] is defined %}
