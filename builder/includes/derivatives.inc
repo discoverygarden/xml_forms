@@ -13,6 +13,7 @@ use Drupal\Core\Logger\RfcLogLevel;
  * Since DC is always created we are effectively always forced.
  */
 function xml_form_builder_derive_dc($object, $force = FALSE, $hook = array()) {
+  module_load_include('inc', 'xml_form_builder', 'includes/db');
   if (!isset($object[$hook['source_dsid']])) {
     return array(
       'success' => FALSE,
@@ -26,8 +27,8 @@ function xml_form_builder_derive_dc($object, $force = FALSE, $hook = array()) {
     );
   }
   try {
-    module_load_include('inc', 'xml_form_builder', 'includes/db');
-    $xslt = xml_form_builder_get_default_transform($object->models, $hook['source_dsid']);
+    $model = array_diff($object->models, ['fedora-system:FedoraObject-3.0']);
+    $xslt = xml_form_builder_get_default_transform(reset($model), $hook['source_dsid']);
     $xslt_dom = new DOMDocument();
     $xslt_dom->loadXML($xslt);
 

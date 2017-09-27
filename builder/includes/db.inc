@@ -53,7 +53,7 @@ function xml_form_builder_get_xslts() {
 /**
  * Get a transform string.
  *
- * @param string|array $content_model
+ * @param string $content_model
  *   The content model(s) to get the transform for.
  * @param string $dsid
  *   The datastream ID to get the transform for.
@@ -63,7 +63,7 @@ function xml_form_builder_get_xslts() {
  */
 function xml_form_builder_get_default_transform($content_model, $dsid) {
   $query = db_select('xml_form_builder_xslts', 'x')
-    ->fields('x', array('xslt'));
+    ->fields('x', ['xslt']);
 
   $alias = $query->join('xml_form_builder_default_xslts', 'd', 'x.xslt_id = d.xslt_id');
 
