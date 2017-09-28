@@ -11,7 +11,7 @@ Ext.define('ArrayModel', {
         type: 'memory',
         reader: {
             type: 'json'
-        }  
+        }
     },
     fields: [{
         name: 'value', // This objects key in the form elements array.
@@ -27,7 +27,7 @@ Ext.define('MapModel', {
         type: 'memory',
         reader: {
             type: 'json'
-        }  
+        }
     },
     fields: [{
         name: 'key', // This objects key in the form elements array.
@@ -50,14 +50,14 @@ Ext.data.Types.MAP = {
           var obj = {};
           for(key in v) {
             if(key == '') {
-              obj.NULL = v[key];  
+              obj.NULL = v[key];
             }
             else {
               obj[key] = v[key];
             }
           }
           return obj;
-        } 
+        }
         return {};
     }
 };
@@ -118,7 +118,7 @@ Ext.define('Element', {
         type: 'memory',
         reader: {
             type: 'json'
-        }  
+        }
     },
     fields: [{
         name: 'key', // This objects key in the form elements array.
@@ -140,7 +140,7 @@ Ext.define('Element', {
         name: 'after_build', // After Build Form Control
         type: 'array'
     }, {
-        name: 'ahah', 
+        name: 'ahah',
         type: types.AHAH
     }, {
         name: 'attributes',

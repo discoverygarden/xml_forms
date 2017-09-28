@@ -1,0 +1,20 @@
+xml_form_builder.create_create:
+  route_name: xml_form_builder.create_create
+  title: 'Create Form'
+  appears_on:
+    - xml_form_builder.main
+xml_form_builder.create_import:
+  route_name: xml_form_builder.create_import
+  title: 'Import Form'
+  appears_on:
+    - xml_form_builder.main
+xml_form_builder.add_xslt_form:
+  route_name: xml_form_builder.add_xslt_form
+  title: 'Add XSLT'
+  appears_on:
+    - xml_form_builder.xslts_form
+xml_form_builder.add_default_dc_transform_mapping_form:
+  route_name: xml_form_builder.add_default_dc_transform_mapping_form
+  title: 'Add Mapping'
+  appears_on:
+    - xml_form_builder.xslts_form

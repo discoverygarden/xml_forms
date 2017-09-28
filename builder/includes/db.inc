@@ -53,7 +53,7 @@ function xml_form_builder_get_xslts() {
 /**
  * Get a transform string.
  *
- * @param string|array $content_model
+ * @param string $content_model
  *   The content model(s) to get the transform for.
  * @param string $dsid
  *   The datastream ID to get the transform for.
@@ -63,7 +63,7 @@ function xml_form_builder_get_xslts() {
  */
 function xml_form_builder_get_default_transform($content_model, $dsid) {
   $query = db_select('xml_form_builder_xslts', 'x')
-    ->fields('x', array('xslt'));
+    ->fields('x', ['xslt']);
 
   $alias = $query->join('xml_form_builder_default_xslts', 'd', 'x.xslt_id = d.xslt_id');
 
@@ -158,10 +158,11 @@ function xml_form_builder_remove_default_dc_transform_mapping($id) {
  */
 function xml_form_builder_xslt_is_a_default($xslt_id) {
   $count = db_select('xml_form_builder_default_xslts', 'x')
-    ->fields('x', array('xslt_id'))
-    ->condition("xslt_id", $xslt_id)
+    ->fields('x', ['xslt_id'])
+    ->condition('xslt_id', $xslt_id)
+    ->countQuery()
     ->execute()
-    ->rowCount();
+    ->fetchField();
 
   if ($count) {
     return TRUE;

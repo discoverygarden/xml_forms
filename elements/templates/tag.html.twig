@@ -1,0 +1,9 @@
+{#
+/**
+ * @file
+ * Template for the tag element.
+ */
+#}
+{% set children = element['#children'] is defined ? element['#children'] : '' %}
+{% set description = element['#description'] is defined ? "<div class='description'>{ element['#description']} </div>" : '' %}
+<div id='{{ element['#hash'] }}'>{{ description }}{{ children }}</div>

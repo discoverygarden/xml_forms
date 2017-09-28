@@ -1,0 +1,39 @@
+xml-form-builder-css:
+  version: 1.x
+  css:
+    layout:
+      css/Clear.css: {}
+      css/EditForm.css: {}
+      lib/ext/resources/css/ext-all.css: {}
+xml-form-builder-js:
+  js:
+    lib/ext/ext-all.js: {}
+    js/Formbuilder.js: {}
+    js/FormGrid.js: {}
+    js/Tooltips.js: {}
+    js/ElementModel.js: {}
+    js/PropertiesModel.js: {}
+    js/MainPanel.js: {}
+    js/DisplayPanel.js: {}
+    js/TreePanel.js: {}
+    js/ElementForm.js: {}
+    js/PropertiesForm.js: {}
+    js/PreviewPanel.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+xml-form-builder-element-types-js:
+  js:
+    js/type_store.js: {}
+  dependencies:
+    - core/drupalSettings
+xml-form-builder-elements-js:
+  js:
+    js/element_store.js: {}
+  dependencies:
+    - core/drupalSettings
+xml-form-builder-properties-js:
+  js:
+    js/properties_store.js: {}
+  dependencies:
+    - core/drupalSettings

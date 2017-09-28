@@ -65,7 +65,7 @@ Drupal.behaviors.xmlFormElementTabs = {
       }
     },
     attachToolTips: function() {
-      jQuery('.tool_tip_trigger').once(function() {
+      jQuery('.tool_tip_trigger').once('tool_tip_trig').each(function() {
         jQuery(this).hover(function(e) {
           var html = '';// + i + '<br/>';
           var id = jQuery(this).children('a[href]').attr('href');

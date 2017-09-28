@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Template for the Tabs Element.
+ */
+#}
+{% set classes = collapsible ? 'xml-form-elements-tabs-collapsible ' : '' %}
+{% set classes = collapsed ? classes ~ 'xml-form-elements-tabs-collapsed' : classes %}
+<div class="xml-form-elements-tabs {{ classes }}">
+  <!-- Header  -->
+  <ul>
+    <!-- First Tab Panel -->
+    <li class='tool_tip_trigger'>
+      <a href='#{{ link }}'>
+        <span style='float:left; vertical-align: middle; text-align: center;'>{{ title }}</span>
+        {% if collapsible %}
+          <span class='expand-tabpanel-icon ui-icon ui-icon-circle-triangle-e'></span>
+        {% else %}
+          <span class='expand-tabpanel-icon ui-icon ui-icon-circle-triangle-s'></span>
+        {% endif %}
+      </a>
+      <span class="tool_tip">Empty</span>
+    </li>
+    <!-- All other Tab Panels -->
+    {% if tabpanels is defined %}
+      {% for vars in tabpanels %}
+        {% set title = vars.0 %}
+        {% set link = vars.1 %}
+        {% set remove_button = vars.2 %}
+        <li class="tool_tip_trigger">
+          <a href='#{{ link }}'>{{ title }}</a>
+          {% if remove_button %}
+            <span class='ui-icon ui-icon-close' style='margin: 0.4em 0.2em 0 0; cursor: pointer;'>{{ remove_button }}</span>
+          {% endif %}
+          <span class="tool_tip">Empty</span>
+        </li>
+      {% endfor %}
+    {% endif %}
+  </ul>
+  <!-- Content  -->
+  {{ content }}
+</div>

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Access\AccessResult;
 
 // Constants.
 define('XML_FORM_BUILDER_LIST_FORMS_PERMS', 'List XML Forms');
@@ -99,9 +100,9 @@ function xml_form_builder_menu_alter(&$items) {
 function xml_form_builder_xslts_access() {
   if (\Drupal::currentUser()->hasPermission(XML_FORM_BUILDER_ASSOCIATE_FORMS_PERMS) &&
     \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts')) {
-    return TRUE;
+    return AccessResult::allowed();
   }
-  return FALSE;
+  return AccessResult::forbidden();
 }
 
 /**
@@ -297,19 +298,6 @@ function xml_form_builder_get_form(array $form, FormStateInterface $form_state, 
 }
 
 /**
- * Implements hook_theme().
- */
-function xml_form_builder_theme() {
-  return array(
-    'xml_form_builder_association_table' => array(
-      'variables' => array('associations' => NULL),
-      'template' => 'xml-form-builder-association-table',
-      'path' => drupal_get_path('module', 'xml_form_builder') . '/templates',
-    ),
-  );
-}
-
-/**
  * Implements hook_islandora_ingest_steps().
  *
  * If the given configuration has more that one metadata form association add
@@ -331,7 +319,7 @@ function xml_form_builder_islandora_ingest_steps(FormStateInterface $form_state)
   $select_association_step = ($num_associations > 1) ? array(
     'weight' => 0,
     'type' => 'form',
-    'form_class' => 'xml_form_builder_select_association_form',
+    'form_class' => 'Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm',
     'module' => 'xml_form_builder',
     'file' => 'includes/select_association.form.inc',
     'args' => array($associations),

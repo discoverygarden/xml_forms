@@ -5,6 +5,8 @@
  * Class for form tags.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 module_load_include('inc', 'xml_form_elements', 'includes/Tag');
 
 class Tags {
@@ -20,32 +22,11 @@ class Tags {
   // @codingStandardsIgnoreEnd
 
   /**
-   * Loads the required resources for displaying the Tabs element.
-   *
-   * @param array $form_state
-   *   The Drupal form state.
-   *
-   * @staticvar bool $load
-   *   Keeps us from loading the same files multiple times; while not required,
-   *   it just saves some time.
-   */
-  public static function addRequiredResources(&$form_state) {
-    static $load = TRUE;
-    if ($load) {
-      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
-      $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
-      Element::addJS('tags.js');
-      Element::addCSS('tags.css');
-      $load = FALSE;
-    }
-  }
-
-  /**
    * Processes the element.
    *
    * @param array $element
    *   The element to process.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    * @param array $complete_form
    *   The completed form.
@@ -53,8 +34,10 @@ class Tags {
    * @return array
    *   The processed element.
    */
-  public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
-    self::addRequiredResources($form_state);
+  public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
+    $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
+    $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
+    $element['#attached']['library'][] = 'xml_form_elements/tags';
     $element['#id'] = $element['#hash'];
     $element['#size'] = isset($element['#size']) ? $element['#size'] : 60;
     $element['#tree'] = TRUE;
@@ -76,13 +59,13 @@ class Tags {
    *
    * @param array $form_element
    *   The tag element.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    *
    * @return array
    *   The modified $form_element.
    */
-  public static function AfterBuild(array $form_element, array &$form_state) {
+  public static function AfterBuild(array $form_element, FormStateInterface $form_state) {
     if ($form_element['#required']) {
       // 2 to include the controls element.
       $require = (count(\Drupal\Core\Render\Element::children($form_element)) == 2) ? TRUE : FALSE;
@@ -225,18 +208,7 @@ function template_preprocess_tags(&$vars) {
   $textfield = array(
     'element' => array_shift($vars['tags']),
   );
-  $textfield['element']['#size'] = $tags['#size'];
-  $textfield['element']['#autocomplete_path'] = isset($textfield['element']['#autocomplete_path']) ? $textfield['element']['#autocomplete_path'] : FALSE;
-  // Theme the text field to take advantage of autocomplete.
-  // @FIXME
-// theme() has been renamed to _theme() and should NEVER be called directly.
-// Calling _theme() directly can alter the expected output and potentially
-// introduce security issues (see https://www.drupal.org/node/2195739). You
-// should use renderable arrays instead.
-// 
-// 
-// @see https://www.drupal.org/node/2195739
-// $vars['textfield'] = theme('textfield', $textfield);
+$vars['textfield'] = '<input type="text" id="' . $textfield['element']['#id'] . '" name="' . $textfield['element']['#name'] . '" value="" size="60" class="form-text" />';
 
 }
 
@@ -247,12 +219,12 @@ function template_preprocess_tags(&$vars) {
  *
  * @param array $form_element
  *   A tag element to be modified.
- * @param array $form_state
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The Drupal form state.
  *
  * @return array
  *   The modified $form_element.
  */
-function xml_form_elements_after_build_tags(array $form_element, array &$form_state) {
+function xml_form_elements_after_build_tags(array $form_element, FormStateInterface $form_state) {
   return Tags::AfterBuild($form_element, $form_state);
 }

@@ -13,5 +13,3 @@ Drupal.behaviors.xmlFormElementTags = function(context) {
     }
   });
 }
-
-

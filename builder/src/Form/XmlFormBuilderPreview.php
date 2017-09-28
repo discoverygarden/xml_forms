@@ -1,16 +1,17 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\xml_form_builder\Form\XmlFormBuilderPreview.
- */
-
 namespace Drupal\xml_form_builder\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
+/**
+ * Render the preview form.
+ *
+ * This shows the user what their form will look like. When it is submitted it
+ * will show the user what the generated XML looks like.
+ */
 class XmlFormBuilderPreview extends FormBase {
 
   /**
@@ -21,7 +22,6 @@ class XmlFormBuilderPreview extends FormBase {
   }
 
   public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state, $form_name = NULL) {
-    $form_state->loadInclude('xml_form_builder', 'inc', 'Preview');
     $form = xml_form_builder_get_form($form, $form_state, $form_name);
     $form['submit'] = [
       '#type' => 'submit',
@@ -31,13 +31,14 @@ class XmlFormBuilderPreview extends FormBase {
   }
 
   public function submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+    $form_state->loadInclude('xml_form_api', 'inc', 'Create');
     try {
-      $xml_form = new XMLForm($form_state);
+      $xml_form = new \XMLForm($form_state);
       $document = $xml_form->submit($form, $form_state);
       dom_document_pretty_print($document->document);
       exit();
     }
-    
+
       catch (Exception $e) {
       $message = 'File: ' . $e->getFile() . '</br>';
       $message .= 'Line: ' . $e->getLine() . '</br>';
@@ -48,4 +49,3 @@ class XmlFormBuilderPreview extends FormBase {
   }
 
 }
-?>

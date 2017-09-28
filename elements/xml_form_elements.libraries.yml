@@ -1,0 +1,34 @@
+inline-css:
+  version: 1.x
+  css:
+    layout:
+      css/inline.css: {}
+indent-css:
+  version: 1.x
+  css:
+    layout:
+      css/indent.css: {}
+tabs:
+  version: 1.x
+  css:
+    layout:
+      theme/ui.core.css: {}
+      theme/ui.tabs.css: {}
+      theme/ui.theme.css: {}
+      css/tabs.css: {}
+  js:
+    js/tabs.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupalSettings
+    - core/jquery.ui.tabs
+tags:
+  version: 1.x
+  css:
+    layout:
+      css/tags.css: {}
+  js:
+      js/tags.js: {}
+  dependencies:
+    - core/jquery

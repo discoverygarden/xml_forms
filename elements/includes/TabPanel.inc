@@ -5,6 +5,8 @@
  * Allows forms to dynamically add new tabs to a tabpanel in a form.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
 
 /**
@@ -25,28 +27,13 @@ class TabPanel {
   // @codingStandardsIgnoreEnd
 
   /**
-   * TabPanel's theme hook.
-   *
-   * @param array $element
-   *   The theme element.
-   *
-   * @return string
-   *   A div string to pass back to theme.
-   */
-  public static function Theme($element) {
-    $children = isset($element['#children']) ? $element['#children'] : '';
-    $description = isset($element['#description']) ? "<div class='description'>{$element['#description']}</div>" : '';
-    return "<div id='{$element['#hash']}'>{$description}{$children}</div>";
-  }
-
-  /**
    * The default #process function for tabpanel's.
    *
    * Adds elements that allow for adding/remove form elements.
    *
    * @param array $element
    *   The theme element.
-   * @param array $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The Drupal form state.
    * @param array $complete_form
    *   An optional complete form.
@@ -54,7 +41,7 @@ class TabPanel {
    * @return array
    *   The processed element.
    */
-  public static function Process(array $element, array &$form_state, array $complete_form = NULL) {
+  public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     // Defaults to TRUE.
     $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE;
     if ($add) {
@@ -152,11 +139,4 @@ class TabPanel {
     return $delete;
   }
 
-}
-
-/**
- * Theme hook for a tabpanel.
- */
-function theme_tabpanel($vars) {
-  return TabPanel::Theme($vars['element']);
 }

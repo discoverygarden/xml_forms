@@ -33,7 +33,7 @@ class JSONFormDefinition {
    *   form, e.g. array($properties, $form)
    */
   public function getPropertiesAndForm() {
-    return array($this->getProperties(), $this->getForm());
+    return [$this->getProperties(), $this->getForm()];
   }
 
   /**
@@ -45,12 +45,12 @@ class JSONFormDefinition {
   public function getProperties() {
     $properties = $this->json->properties;
     $namespaces = object_as_array($properties->namespaces);
-    return array(
+    return [
       'root_name' => $properties->localName,
       'schema_uri' => $properties->schema,
       'namespaces' => $namespaces,
       'default_uri' => $properties->uri,
-    );
+    ];
   }
 
   /**
@@ -78,7 +78,7 @@ class JSONFormDefinition {
     $key = isset($element->key) ? $element->key : NULL;
     $properties = $this->getElementProperties($element);
     $children = $this->getElementChildren($element);
-    return array($key, array_merge($properties, $children));
+    return [$key, array_merge($properties, $children)];
   }
 
   /**
@@ -118,7 +118,7 @@ class JSONFormDefinition {
       'loaded',
       'loading',
     );
-    $controls = array();
+    $controls = [];
     foreach ($element as $key => $value) {
       // Is it a control, or should the element be ignored?
       if (array_search($key, $ignore) === FALSE) {
@@ -143,7 +143,7 @@ class JSONFormDefinition {
    *   A converted array of native representations.
    */
   protected function transformElementProperties(array $property) {
-    $array = array();
+    $array = [];
     foreach ($property as $key => $value) {
       $array[cast_string_to_type($key)] = (is_object($value) || is_array($value)) ?
           $this->transformElementProperties((array) $value) :
@@ -229,7 +229,7 @@ class JSONFormDefinition {
    *   A Drupal representation of form element's child form elements.
    */
   protected function getElementChildren(stdClass $element) {
-    $children = array();
+    $children = [];
     if (isset($element->elements)) {
       foreach ($element->elements as $child) {
         list($key, $value) = $this->getElement($child);
