@@ -19,6 +19,9 @@ xml-form-builder-js:
     js/ElementForm.js: {}
     js/PropertiesForm.js: {}
     js/PreviewPanel.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
 xml-form-builder-element-types-js:
   js:
     js/type_store.js: {}
