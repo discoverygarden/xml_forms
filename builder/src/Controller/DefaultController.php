@@ -23,6 +23,7 @@ class DefaultController extends ControllerBase {
     }
 
     $table = [
+      '#type' => 'table',
       '#header' => [
         ['data' => t('Title')],
         ['data' => t('Type')],
@@ -86,7 +87,6 @@ class DefaultController extends ControllerBase {
         $associate,
       ];
     }
-    $table['#type'] = 'table';
     return $table;
   }
 
