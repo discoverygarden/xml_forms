@@ -4,7 +4,6 @@ namespace Drupal\xml_form_builder\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 
 /**
  * Render the preview form.
@@ -21,7 +20,7 @@ class XmlFormBuilderPreview extends FormBase {
     return 'xml_form_builder_preview';
   }
 
-  public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state, $form_name = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form = xml_form_builder_get_form($form, $form_state, $form_name);
     $form['submit'] = [
       '#type' => 'submit',
@@ -30,7 +29,7 @@ class XmlFormBuilderPreview extends FormBase {
     return $form;
   }
 
-  public function submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_api', 'inc', 'Create');
     try {
       $xml_form = new \XMLForm($form_state);
@@ -38,8 +37,7 @@ class XmlFormBuilderPreview extends FormBase {
       dom_document_pretty_print($document->document);
       exit();
     }
-
-      catch (Exception $e) {
+    catch (Exception $e) {
       $message = 'File: ' . $e->getFile() . '</br>';
       $message .= 'Line: ' . $e->getLine() . '</br>';
       $message .= 'Error: ' . $e->getMessage() . '</br>';

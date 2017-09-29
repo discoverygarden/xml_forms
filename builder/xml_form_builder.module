@@ -262,16 +262,16 @@ function xml_form_builder_get_associate_form_path($form_name) {
  * @return array
  *   The Drupal Form, if it exists FALSE otherwise.
  */
-function xml_form_builder_get_form(array $form, FormStateInterface $form_state, $form_name, $xml = NULL, $parents = array()) {
+function xml_form_builder_get_form(array $form, FormStateInterface $form_state, $form_name, $xml = NULL, $parents = []) {
   $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLForm');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
   if (!XMLFormRepository::Exists($form_name)) {
-    drupal_set_message(t('The form "%name" does not exist.', array('%name' => $form_name)));
+    drupal_set_message(t('The form "%name" does not exist.', ['%name' => $form_name]));
     return FALSE;
   }
   elseif (!XMLFormRepository::Valid($form_name)) {
-    drupal_set_message(t('The Drupal form "%name" exists but is not valid. Please notify the administrator.', array('%name' => $form_name)));
+    drupal_set_message(t('The Drupal form "%name" exists but is not valid. Please notify the administrator.', ['%name' => $form_name]));
     return FALSE;
   }
   try {
@@ -311,31 +311,31 @@ function xml_form_builder_islandora_ingest_steps(FormStateInterface $form_state)
   if (empty($shared_storage['models'])) {
     return;
   }
-  $associations = xml_form_builder_get_associations(array(), $shared_storage['models'], array());
+  $associations = xml_form_builder_get_associations([], $shared_storage['models'], []);
   // If the user has selected association use that one, otherwise assume there
   // is only one association.
   $association = isset($association_step_storage['association']) ? $association_step_storage['association'] : reset($associations);
   $num_associations = count($associations);
-  $select_association_step = ($num_associations > 1) ? array(
+  $select_association_step = ($num_associations > 1) ? [
     'weight' => 0,
     'type' => 'form',
     'form_class' => 'Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm',
     'module' => 'xml_form_builder',
     'file' => 'includes/select_association.form.inc',
-    'args' => array($associations),
-  ) : NULL;
-  $metadata_step = ($num_associations >= 1) ? array(
+    'args' => [$associations],
+  ] : NULL;
+  $metadata_step = ($num_associations >= 1) ? [
     'weight' => 5,
     'type' => 'form',
     'form_class' => 'Drupal\xml_form_builder\Form\XmlFormBuilderIngestForm',
     'module' => 'xml_form_builder',
     'file' => 'includes/ingest.form.inc',
-    'args' => array($association),
-  ) : NULL;
-  return array(
+    'args' => [$association],
+  ] : NULL;
+  return [
     'xml_form_builder_association_step' => $select_association_step,
     'xml_form_builder_metadata_step' => $metadata_step,
-  );
+  ];
 }
 
 /**
