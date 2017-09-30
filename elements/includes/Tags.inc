@@ -41,7 +41,7 @@ class Tags {
     $element['#id'] = $element['#hash'];
     $element['#size'] = isset($element['#size']) ? $element['#size'] : 60;
     $element['#tree'] = TRUE;
-    $element['#after_build'] = array('xml_form_elements_after_build_tags');
+    $element['#after_build'] = ['xml_form_elements_after_build_tags'];
     $element['#prefix'] = "<div class='clear-block' id='ahah-{$element['#id']}-wrapper'>";
     $element['#suffix'] = '</div>';
     foreach (\Drupal\Core\Render\Element::children($element) as $key) {
@@ -196,7 +196,7 @@ function template_preprocess_tags(&$vars) {
   // Hidden Remove Button.
   $vars['remove'] = isset($tags['controls']['remove']) ? $tags['controls']['remove'] : NULL;
   // Used to create tag icons, and hidden input fields.
-  $vars['tags'] = array();
+  $vars['tags'] = [];
   $children = \Drupal\Core\Render\Element::children($tags);
   foreach ($children as $key) {
     $child = $tags[$key];
@@ -208,7 +208,7 @@ function template_preprocess_tags(&$vars) {
   $textfield = array(
     'element' => array_shift($vars['tags']),
   );
-$vars['textfield'] = '<input type="text" id="' . $textfield['element']['#id'] . '" name="' . $textfield['element']['#name'] . '" value="" size="60" class="form-text" />';
+  $vars['textfield'] = '<input type="text" id="' . $textfield['element']['#id'] . '" name="' . $textfield['element']['#name'] . '" value="" size="60" class="form-text" />';
 
 }
 

@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Url;
 
 // Constants.
 define('XML_FORM_BUILDER_LIST_FORMS_PERMS', 'List XML Forms');
@@ -108,11 +109,12 @@ function xml_form_builder_xslts_access() {
 /**
  * Access callback for editing / creating a datastream.
  */
-function xml_form_builder_datastream_access($perm, AbstractObject $object, $dsid) {
+function xml_form_builder_datastream_access($perm, $object, $dsid) {
+  $object = islandora_object_load($object);
   if (isset($object[$dsid])) {
-    return islandora_datastream_access($perm, $object[$dsid]);
+    return AccessResult::allowedIf(islandora_datastream_access($perm, $object[$dsid]));
   }
-  return islandora_object_access($perm, $object);
+  return AccessResult::allowedIf(islandora_object_access($perm, $object));
 }
 
 /**
@@ -250,9 +252,9 @@ function xml_form_builder_get_associate_form_path($form_name) {
  *
  * @param array $form
  *   An array containing any "wrapping" elements.
- * @param array & $form_state
+ * @param \Drupal\Core\Form\FormStateInterface  $form_state
  *   The Drupal Form State
- * @param \Drupal\Core\Form\FormStateInterface $form_name
+ * @param string $form_name
  *   The Form to render.
  * @param string $xml
  *   The metadata to prepopulate the form with,
@@ -343,14 +345,17 @@ function xml_form_builder_islandora_ingest_steps(FormStateInterface $form_state)
  */
 function xml_form_builder_islandora_edit_datastream_registry(AbstractObject $object, AbstractDatastream $datastream) {
   module_load_include('inc', 'xml_form_builder', 'includes/associations');
-  $associations = xml_form_builder_get_associations(array(), $object->models, array($datastream->id));
+  $associations = xml_form_builder_get_associations([], $object->models, [$datastream->id]);
   if (count($associations) > 0) {
-    return array(
-      'xml_form_builder_edit_form_registry' => array(
+    return [
+      'xml_form_builder_edit_form_registry' => [
         'name' => t('Islandora Content Model Forms'),
-        'url' => "islandora/edit_form/{$object->id}/{$datastream->id}",
-      ),
-    );
+        'url' => Url::fromRoute(
+          'xml_form_builder.datastream_form',
+          ['object' => $object->id, 'dsid' => $datastream->id]
+        )->toString(),
+      ],
+    ];
   }
 }
 

@@ -60,12 +60,12 @@ function template_preprocess_tabs(&$vars) {
   $vars['collapsed'] = $tabs['#collapsed'] == TRUE;
   // Get Tabpanels.
   $keys = \Drupal\Core\Render\Element::children($tabs);
-  $children = array();
+  $children = [];
 
   foreach ($keys as $key) {
     $children[$key] = &$tabs[$key];
   }
-  $children = array_filter($children, array('Tabs', 'FilterChildren'));
+  $children = array_filter($children, ['Tabs', 'FilterChildren']);
   // First element has different icons, and title.
   $first = array_shift($children);
   $vars['title'] = isset($first['#title']) ? $first['#title'] : 1;
@@ -75,7 +75,7 @@ function template_preprocess_tabs(&$vars) {
   foreach ($children as $child) {
     $title = isset($child['#title']) ? $child['#title'] : $count;
     $delete = isset($child[TabPanel::DELETE_BUTTON]) ? $child[TabPanel::DELETE_BUTTON]['#id'] : FALSE;
-    $vars['tabpanels'][] = array($title, $child['#hash'], $delete);
+    $vars['tabpanels'][] = [$title, $child['#hash'], $delete];
     $count++;
   }
   // Content Info.
@@ -86,6 +86,6 @@ function template_preprocess_tabs(&$vars) {
     $parents = $tabs['#array_parents'];
     $name = array_pop($parents);
     $vars['content'] = '';
-    drupal_set_message(t('Attempted to create tab %name without defining any child tabpanels.', array('%name' => $name)), 'error');
+    drupal_set_message(t('Attempted to create tab %name without defining any child tabpanels.', ['%name' => $name]), 'error');
   }
 }
