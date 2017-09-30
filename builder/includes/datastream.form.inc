@@ -7,6 +7,8 @@
 
 use Drupal\Core\Form\FormStateInterface;
 
+use Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm;
+
 /**
  * Gets the form associations for the given content models and datastream.
  *
@@ -62,15 +64,15 @@ function xml_form_builder_datastream_form_get_association(FormStateInterface $fo
  *   The form for selecting the association to edit the datastream.
  */
 function xml_form_builder_datastream_form_select_association_form(array $form, FormStateInterface $form_state, array $associations) {
-  module_load_include('inc', 'xml_form_builder', 'includes/select_association.form');
-  $form_state['associations'] = $associations;
-  $form = xml_form_builder_select_association_form($form, $form_state, $associations);
-  $form['next'] = array(
+  $form_state->set('associations', $associations);
+  $select_form = new XmlFormBuilderSelectAssociationForm();
+  $form = $select_form->buildForm($form, $form_state, $associations);
+  $form['next'] = [
     '#type' => 'submit',
     '#value' => t('Next'),
     '#name' => 'next',
-    '#submit' => array('xml_form_builder_datastream_form_select_association_form_submit'),
-  );
+    '#submit' => ['xml_form_builder_datastream_form_select_association_form_submit'],
+  ];
   return $form;
 }
 
@@ -83,14 +85,14 @@ function xml_form_builder_datastream_form_select_association_form(array $form, F
  *   The drupal form state.
  */
 function xml_form_builder_datastream_form_select_association_form_submit(array $form, FormStateInterface $form_state) {
-  $model = $form_state['values']['models'];
-  $form_name = $form_state['values']['available_forms'];
+  $model = $form_state->getValue('models');
+  $form_name = $form_state->getValue('available_forms');
   $association_matches = function($o) use($model, $form_name) {
     return $o['content_model'] == $model && $o['form_name'] == $form_name;
   };
-  $matching_associations = array_filter($form_state['associations'], $association_matches);
-  $form_state['association'] = array_pop($matching_associations);
-  $form_state['rebuild'] = TRUE;
+  $matching_associations = array_filter($form_state->get('associations'), $association_matches);
+  $form_state->set('association', array_pop($matching_associations));
+  $form_state->setRebuild();
 }
 
 /**
