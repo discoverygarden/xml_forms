@@ -160,82 +160,18 @@ function xml_form_builder_datastream_form_metadata_form_submit(array $form, Form
 }
 
 /**
- * Form for selecting which metadata datastream to create.
- *
- * @param array $form
- *   An array representing a form within Drupal.
- * @param array $form_state
- *   An array containing the Drupal form state.
- * @param AbstractObject $object
- *   Object to add the new metadata datastream to.
- *
- * @return array
- *   An array containing the form to be rendered.
- */
-function xml_form_builder_create_metadata_form($form, &$form_state, $object) {
-  $form_state->loadInclude('xml_form_builder', 'inc', 'includes/datastream.form');
-  $form_state->loadInclude('islandora', 'inc', 'includes/utilities');
-
-  $datastreams = xml_form_builder_empty_metadata_datastreams($object);
-  $options = array_combine($datastreams, $datastreams);
-  if ($options) {
-    $form_state['object_id'] = $object->id;
-    $form['dsid'] = [
-      '#title' => t('Datastream ID'),
-      '#type' => 'select',
-      '#options' => $options,
-      '#description' => t('Select the ID of a datastream to create new metadata.'),
-    ];
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#submit' => ['xml_form_builder_create_metadata_form_submit'],
-      '#value' => t('Create'),
-    ];
-  }
-  return $form;
-}
-
-/**
- * Redirects the user to the xml form association form.
- */
-function xml_form_builder_create_metadata_form_submit($form, &$form_state) {
-  $form_state->setRedirect(
-    'xml_form_builder.datastream_form',
-    ['object' => $form_state->get('object_id'), 'dsid' => $form_state->getValue('dsid')]
-  );
-}
-
-/**
- * A form for adding datastreams to an object.
- */
-function xml_form_builder_add_datastream_page(AbstractObject $object) {
-  module_load_include('inc', 'islandora', 'includes/add_datastream.form');
-  return array(
-    'core_form' => \Drupal::formBuilder()->getForm('islandora_add_datastream_form', $object),
-    'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?
-      array(
-        '#type' => 'fieldset',
-        '#title' => t('Add A Metadata Datastream'),
-        'xml_form' => \Drupal::formBuilder()->getForm('xml_form_builder_create_metadata_form', $object),
-      ) :
-      array()
-    ),
-  );
-}
-
-/**
  * Get empty metadata datastreams on an object.
  */
 function xml_form_builder_empty_metadata_datastreams($object) {
   module_load_include('inc', 'xml_form_builder', 'includes/associations');
-  $datastreams = array();
+  $datastreams = [];
   foreach (islandora_get_datastreams_requirements($object) as $dsid => $datastream) {
     if (!isset($object[$dsid])) {
       $datastreams[] = $dsid;
     }
   }
-  $filtered_datastreams = array();
-  foreach (xml_form_builder_get_associations(array(), $object->models, $datastreams) as $key => $value) {
+  $filtered_datastreams = [];
+  foreach (xml_form_builder_get_associations([], $object->models, $datastreams) as $key => $value) {
     $filtered_datastreams[] = $value['dsid'];
   }
   return $filtered_datastreams;

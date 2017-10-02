@@ -61,41 +61,6 @@ define('MENU_XML_FORM_BUILDER_EDIT_DATASTREAM', XML_FORM_BUILDER_EDIT_DATASTREAM
 // @codingStandardsIgnoreEnd
 
 /**
- * @FIXME
- * hook_menu_alter() is gone in Drupal 8. You will have to port its
- * functionality manually. The are several mechanisms for this:
- *
- * To alter routes, you must implement a route subscriber class. An empty one
- * has been generated for you in src/Routing/RouteSubscriber.php.
- *
- * To alter menu link definitions, see hook_menu_links_discovered_alter(). An
- * empty implementation has been created at the end of this file.
- *
- * To alter local task definitions, see hook_menu_local_tasks_alter(). An
- * empty implementation has been created for you at the end of this file.
- *
- * To alter local actions, see hook_menu_local_actions_alter(). An
- * empty implementation has been created for you at the end of this file.
- *
- * Contextual links are altered during rendering only. See
- * hook_contextual_links_view_alter(). An empty implementation has been
- * created for you at the end of this file.
- *
- * @see https://www.drupal.org/node/2118147#alter
- * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Menu%21menu.api.php/function/hook_menu_links_discovered_alter/8
- * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Menu%21menu.api.php/function/hook_menu_local_tasks_alter/8
- * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Menu%21menu.api.php/function/hook_menu_local_actions_alter/8
- * @see https://api.drupal.org/api/drupal/core%21modules%21contextual%21contextual.api.php/function/hook_contextual_links_view_alter/8
- */
-
-function xml_form_builder_menu_alter(&$items) {
-  $items['islandora/object/%islandora_object/manage/datastreams/add']['page callback'] = 'xml_form_builder_add_datastream_page';
-  $items['islandora/object/%islandora_object/manage/datastreams/add']['page arguments'] = array(2);
-  $items['islandora/object/%islandora_object/manage/datastreams/add']['module'] = 'xml_form_builder';
-  $items['islandora/object/%islandora_object/manage/datastreams/add']['file'] = 'includes/datastream.form.inc';
-}
-
-/**
  * Access callback for the XSLTs admin page.
  */
 function xml_form_builder_xslts_access() {
@@ -115,15 +80,6 @@ function xml_form_builder_datastream_access($perm, $object, $dsid) {
     return AccessResult::allowedIf(islandora_datastream_access($perm, $object[$dsid]));
   }
   return AccessResult::allowedIf(islandora_object_access($perm, $object));
-}
-
-/**
- * Implements hook_admin_paths().
- */
-function xml_form_builder_admin_paths() {
-  $paths = array();
-  $paths['islandora/edit_form/*/*'] = TRUE;
-  return $paths;
 }
 
 /**
@@ -379,7 +335,7 @@ function xml_form_builder_update_object(AbstractObject $object, array $associati
   if ($label) {
     $object->label = $label;
   }
-  $object->models = array_merge($object->models, array($association['content_model']));
+  $object->models = array_merge($object->models, [$association['content_model']]);
   $document = $document->document;
   $run_transforms = !\Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
   if (isset($association['self_transform']) && $association['self_transform'] != 'No Transform' && $run_transforms) {
@@ -392,7 +348,7 @@ function xml_form_builder_update_object(AbstractObject $object, array $associati
     $created_dc = xml_form_builder_update_dc_datastream($object, $association['transform'], $document);
   }
 
-  return array($association['dsid'] => $created, 'DC' => $created_dc);
+  return [$association['dsid'] => $created, 'DC' => $created_dc];
 }
 
 /**
@@ -522,29 +478,6 @@ function xml_form_builder_transform_mods_collection_hack(DOMDocument $document) 
   $xslt = new XSLTProcessor();
   $xslt->importStyleSheet($xsl);
   return $xslt->transformToDoc($document);
-}
-
-/**
- * Administration form for xml_form_builder.
- *
- * @param array $form
- *   The form definition.
- * @param array $form_state
- *   The state of the form.
- *
- * @return array
- *   The form definition.
- */
-function xml_form_builder_settings_form(array $form, array &$form_state) {
-  $form = array(
-    'xml_form_builder_use_default_dc_xslts' => array(
-      '#type' => 'checkbox',
-      '#title' => t('Use Default DC XSLTs'),
-      '#description' => t('Enable the use of default metadata datastream to DC transforms.'),
-      '#default_value' => \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
-    ),
-  );
-  return system_settings_form($form);
 }
 
 /**

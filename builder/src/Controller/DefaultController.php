@@ -316,4 +316,24 @@ class DefaultController extends ControllerBase {
     drupal_set_message(t('Successfully enabled association.'));
     return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
   }
+
+  /**
+   * A form for adding datastreams to an object.
+   */
+  public function xml_form_builder_add_datastream_page(AbstractObject $object) {
+    module_load_include('inc', 'islandora', 'includes/add_datastream.form');
+    return [
+      'core_form' => \Drupal::formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
+      'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?
+        [
+          '#type' => 'details',
+          '#open' => TRUE,
+          '#title' => t('Add A Metadata Datastream'),
+          'xml_form' => \Drupal::formBuilder()->getForm('\Drupal\xml_form_builder\Form\XmlFormBuilderCreateMetadataForm', $object),
+        ] :
+        []
+      ),
+    ];
+  }
+
 }

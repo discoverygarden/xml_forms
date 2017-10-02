@@ -1,0 +1,5 @@
+services:
+  xml_form_builder.route_subscriber:
+    class: Drupal\xml_form_builder\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
