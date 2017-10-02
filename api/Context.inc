@@ -2,6 +2,8 @@
 
 /**
  * @file
+ * Defines several Context related classes.
+ *
  * Defines the three types of XPath context that can be used when defining forms
  * (document, parent, self). Also it defines a Class for determining which
  * DOMNode a given context refers to.
@@ -57,7 +59,7 @@ class Context {
    *
    * @param XMLDocument $document
    *   Document to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   Element to check.
    *
    * @return bool
@@ -174,7 +176,7 @@ class XMLFormsContextException extends Exception {
    *
    * @param ContextType $type
    *   The context type to build an exception for.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element being referred to when the exception is thrown.
    * @param Exception $message
    *   The error message to throw.
@@ -202,8 +204,7 @@ class XMLFormsContextException extends Exception {
 }
 
 /**
- * Represents Exceptions that can be attributed directly to a mis-configured
- * element context definition.
+ * Exception for a mis-configured element context definition.
  */
 class XMLFormsContextDefinitionException extends XMLFormsContextException {
 
@@ -212,7 +213,7 @@ class XMLFormsContextDefinitionException extends XMLFormsContextException {
    *
    * @param ContextType $type
    *   The context type to build an exception for.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element being referred to when the exception is thrown.
    */
   public function __construct(ContextType $type, FormElement $element) {
@@ -223,8 +224,9 @@ class XMLFormsContextDefinitionException extends XMLFormsContextException {
 }
 
 /**
- * The given context DOMNode could not be found. In some cases, this is
- * acceptable; in others, it is not.
+ * The given context DOMNode could not be found.
+ *
+ * In some cases, this is acceptable; in others, it is not.
  */
 class XMLFormsContextNotFoundException extends XMLFormsContextException {
 
@@ -233,7 +235,7 @@ class XMLFormsContextNotFoundException extends XMLFormsContextException {
    *
    * @param ContextType $type
    *   The context type to build an exception for.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element being referred to when the exception is thrown.
    */
   public function __construct(ContextType $type, FormElement $element) {
