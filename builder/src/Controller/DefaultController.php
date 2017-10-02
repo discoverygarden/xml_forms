@@ -7,6 +7,7 @@ use Drupal\Core\Link;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use XMLFormRepository;
+use AbstractObject;
 
 /**
  * Default controller for the xml_form_builder module.
@@ -321,7 +322,7 @@ class DefaultController extends ControllerBase {
    * A form for adding datastreams to an object.
    */
   public function xml_form_builder_add_datastream_page(AbstractObject $object) {
-    module_load_include('inc', 'islandora', 'includes/add_datastream.form');
+    module_load_include('inc', 'xml_form_builder', 'includes/datastream.form');
     return [
       'core_form' => \Drupal::formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
       'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?

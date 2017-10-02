@@ -26,17 +26,16 @@ class XmlFormBuilderCreateMetadataForm extends FormBase {
     $datastreams = xml_form_builder_empty_metadata_datastreams($object);
     $options = array_combine($datastreams, $datastreams);
     if ($options) {
-      $form_state['object_id'] = $object->id;
+      $form_state->set('object_id', $object->id);
       $form['dsid'] = [
-        '#title' => t('Datastream ID'),
+        '#title' => $this->t('Datastream ID'),
         '#type' => 'select',
         '#options' => $options,
-        '#description' => t('Select the ID of a datastream to create new metadata.'),
+        '#description' => $this->t('Select the ID of a datastream to create new metadata.'),
       ];
       $form['submit'] = [
         '#type' => 'submit',
-        '#submit' => ['xml_form_builder_create_metadata_form_submit'],
-        '#value' => t('Create'),
+        '#value' => $this->t('Create'),
       ];
     }
     return $form;
