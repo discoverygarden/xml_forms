@@ -103,22 +103,6 @@ function xml_form_builder_forms($form_id, $args) {
 }
 
 /**
- * Downloads the XML Form Definition to the clients computer..
- *
- * @param string $form_name
- *   The name of the form to download.
- */
-function xml_form_builder_export($form_name) {
-  module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
-  header('Content-Type: text/xml', TRUE);
-  header('Content-Disposition: attachment; filename="' . $form_name . '.xml"');
-  $definition = XMLFormRepository::Get($form_name);
-  $definition->formatOutput = TRUE;
-  echo $definition->saveXML();
-  exit();
-}
-
-/**
  * Gets the path to the copy page for the given form name.
  *
  * @param string $form_name

@@ -14,6 +14,15 @@ use AbstractObject;
  */
 class DefaultController extends ControllerBase {
 
+
+  /**
+   * Show the Main page.
+   *
+   * Here, the user can select which action they would like to do.
+   *
+   * @return array
+   *   The table to display.
+   */
   public function xml_form_builder_main() {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     $names = XMLFormRepository::GetNames();
@@ -143,6 +152,12 @@ class DefaultController extends ControllerBase {
     return [$associations_list];
   }
 
+  /**
+   * Downloads the XML Form Definition to the clients computer..
+   *
+   * @param string $form_name
+   *   The name of the form to download.
+   */
   public function xml_form_builder_export($form_name) {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     header('Content-Type: text/xml', TRUE);
