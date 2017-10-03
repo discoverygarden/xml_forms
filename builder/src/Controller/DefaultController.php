@@ -339,13 +339,13 @@ class DefaultController extends ControllerBase {
   public function xml_form_builder_add_datastream_page(AbstractObject $object) {
     module_load_include('inc', 'xml_form_builder', 'includes/datastream.form');
     return [
-      'core_form' => \Drupal::formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
+      'core_form' => $this->formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
       'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?
         [
           '#type' => 'details',
           '#open' => TRUE,
           '#title' => t('Add A Metadata Datastream'),
-          'xml_form' => \Drupal::formBuilder()->getForm('\Drupal\xml_form_builder\Form\XmlFormBuilderCreateMetadataForm', $object),
+          'xml_form' => $this->formBuilder()->getForm('\Drupal\xml_form_builder\Form\XmlFormBuilderCreateMetadataForm', $object),
         ] :
         []
       ),
