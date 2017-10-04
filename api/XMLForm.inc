@@ -50,8 +50,8 @@ class XMLForm extends Drupal\objective_forms\Form {
    * @param array $parents
    *   An array containing an offset of parents.
    */
-  public function __construct(FormStateInterface $form_state, $parents = array(), $name = NULL) {
-    parent::__construct(array(), $form_state, $parents);
+  public function __construct(FormStateInterface $form_state, $parents = [], $name = NULL) {
+    parent::__construct([], $form_state, $parents);
     if ($this->storage->initialized) {
       $this->initializeFromStorage();
     }
@@ -192,7 +192,7 @@ class XMLForm extends Drupal\objective_forms\Form {
    *   the corresponding FormElement.
    */
   public function flattenDrupalForm($form) {
-    $flattened = array();
+    $flattened = [];
     foreach (\Drupal\Core\Render\Element::children($form) as $key) {
       $child_element = $form[$key];
       if (isset($child_element['#hash'])) {

@@ -7,12 +7,22 @@ use Drupal\Core\Link;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use XMLFormRepository;
+use AbstractObject;
 
 /**
  * Default controller for the xml_form_builder module.
  */
 class DefaultController extends ControllerBase {
 
+
+  /**
+   * Show the Main page.
+   *
+   * Here, the user can select which action they would like to do.
+   *
+   * @return array
+   *   The table to display.
+   */
   public function xml_form_builder_main() {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     $names = XMLFormRepository::GetNames();
@@ -142,6 +152,12 @@ class DefaultController extends ControllerBase {
     return [$associations_list];
   }
 
+  /**
+   * Downloads the XML Form Definition to the clients computer..
+   *
+   * @param string $form_name
+   *   The name of the form to download.
+   */
   public function xml_form_builder_export($form_name) {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     header('Content-Type: text/xml', TRUE);
@@ -317,15 +333,23 @@ class DefaultController extends ControllerBase {
     return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
   }
 
-
-  public function XmlFormBuilderDatastreamForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state, AbstractObject $object = NULL, $dsid = NULL) {
-    $form_state->loadInclude('xml_form_builder', 'inc', 'includes/datastream.form');
-    // Leave this here for legacy reasons.
-    $form_state->set(['datastream'], isset($object[$dsid]) ? $object[$dsid] : FALSE);
-    $associations = xml_form_builder_datastream_form_get_associations($form_state, $object->models, $dsid);
-    $association = xml_form_builder_datastream_form_get_association($form_state, $associations);
-    return isset($association) ?
-      xml_form_builder_datastream_form_metadata_form($form, $form_state, $object, $association) :
-      xml_form_builder_datastream_form_select_association_form($form, $form_state, $associations);
+  /**
+   * A form for adding datastreams to an object.
+   */
+  public function xml_form_builder_add_datastream_page(AbstractObject $object) {
+    module_load_include('inc', 'xml_form_builder', 'includes/datastream.form');
+    return [
+      'core_form' => $this->formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
+      'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?
+        [
+          '#type' => 'details',
+          '#open' => TRUE,
+          '#title' => t('Add A Metadata Datastream'),
+          'xml_form' => $this->formBuilder()->getForm('\Drupal\xml_form_builder\Form\XmlFormBuilderCreateMetadataForm', $object),
+        ] :
+        []
+      ),
+    ];
   }
+
 }

@@ -178,7 +178,7 @@ function xml_form_elements_datepicker_xml_form_elements_process($element, FormSt
  *   The form element to render in response to the AJAX request.
  */
 function xml_form_elements_ajax_callback($form, FormStateInterface $form_state) {
-  module_load_include('inc', 'objective_forms', 'Utils');
+  $form_state->loadInclude('objective_forms', 'inc', 'Utils');
   return find_element($form, $form_state->getTriggeringElement()['#ajax']['params']['render']);
 }
 

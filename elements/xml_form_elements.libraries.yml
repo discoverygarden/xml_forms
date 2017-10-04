@@ -23,6 +23,7 @@ tabs:
     - core/jquery.once
     - core/drupalSettings
     - core/jquery.ui.tabs
+    - core/drupal
 tags:
   version: 1.x
   css:
@@ -32,3 +33,4 @@ tags:
       js/tags.js: {}
   dependencies:
     - core/jquery
+    - core/drupal
