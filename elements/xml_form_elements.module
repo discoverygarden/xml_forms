@@ -434,6 +434,7 @@ function xml_form_elements_form_element_tags_ajax_delete(FormElement $element, a
  *   The Drupal form state.
  */
 function xml_form_elements_form_element_tags_ajax_edit(FormElement $element, array &$form, FormStateInterface $form_state) {
+  $form_state->loadInclude('objective_forms', 'inc', 'Utils');
   $triggering_element = $form_state->getTriggeringElement();
   $children = \Drupal\Core\Render\Element::children($form);
   $input_field = &$form[array_shift($children)];
