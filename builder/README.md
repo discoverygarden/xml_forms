@@ -1,27 +1,43 @@
-# Islandora XML Forms Builder 
+# Islandora XML Forms Builder
 
 ## Introduction
 
-This Module Provides an interface for Creating/Editing/Copying/Deleting/Exporting XML Based Forms.
+This Module Provides an interface for
+Creating/Editing/Copying/Deleting/Exporting XML Based Forms.
 
-XML based form definitions are stored within the Drupal database, and are Created/Copied/Deleted/Exported though HTML 
-forms. XML based forms are edited though an ExtJS application.
+XML based form definitions are stored within the Drupal database, and are
+Created/Copied/Deleted/Exported though HTML forms. XML based forms are
+edited though an ExtJS application.
 
 ## Installation
 
-Install as usual, see [this](https://drupal.org/documentation/install/modules-themes/modules-7) for further information.
+Install as usual, see
+[this](https://drupal.org/documentation/install/modules-themes/modules-7)
+for further information.
 
 ## Troubleshooting/Issues
 
-Having problems or solved a problem? Check out the Islandora google groups for a solution.
+Having problems or solved one? Create an issue, check out the Islandora Google
+groups.
 
-* [Islandora Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora)
-* [Islandora Dev Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora-dev)
-* Note if you get error "XML form definition is not valid." during ingest you need to update your libxml2 version to 2.7+
+* [Users](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora)
+* [Devs](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora-dev)
+
+or contact [discoverygarden](http://support.discoverygarden.ca).
+
+## Maintainers/Sponsors
+
+Current maintainers:
+
+* [discoverygarden](http://www.discoverygarden.ca)
 
 ## Development
 
-If you would like to contribute to this module, please check out [CONTRIBUTING.md](CONTRIBUTING.md). In addition, we have helpful [Documentation for Developers](https://github.com/Islandora/islandora/wiki#wiki-documentation-for-developers) info, as well as our [Developers](http://islandora.ca/developers) section on the [Islandora.ca](http://islandora.ca) site.
+If you would like to contribute to this module, please check out the helpful
+[Documentation](https://github.com/Islandora/islandora/wiki#wiki-documentation-for-developers),
+[Developers](http://islandora.ca/developers) section on Islandora.ca and create
+an issue, pull request and or contact
+[discoverygarden](http://support.discoverygarden.ca).
 
 ## License
 
