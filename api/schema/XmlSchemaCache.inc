@@ -8,9 +8,8 @@
 //  * @file
 //  * Handles schema caching so that they don't need to be downloaded each request.
 //  */
-// 
+//
 // define('XML_SCHEMA_API_CACHE_LOCATION', variable_get('file_public_path', \Drupal\Core\DrupalKernel::findSitePath() . '/files') . '/schemas');
-
 
 /**
  * Stores/retrieves schema documents from the file location on disk.
