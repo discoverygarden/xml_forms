@@ -390,7 +390,7 @@ class InsertOrderElement extends InsertOrderNode {
     $within_min_range = $this->min <= $count;
     // If max is non-numeric, it's assumed to be 'unbounded'.
     $within_max_range = is_numeric($this->max) ? $count <= $this->max : TRUE;
-    return $within_min_range && $meets_max_range;
+    return $within_min_range && $within_max_range;
   }
 
   /**
