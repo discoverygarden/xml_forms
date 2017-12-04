@@ -249,7 +249,7 @@ function xml_form_elements_get_creative_commons($commercial, $derivatives, $juri
   if ($response->code != 200) {
     return FALSE;
   }
-  return simplexml_load_string($response->data, 'SimpleXMLElement');
+  return simplexml_load_string($response->data);
 // @codingStandardsIgnoreEnd
 }
 
