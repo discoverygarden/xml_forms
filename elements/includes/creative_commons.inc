@@ -245,12 +245,10 @@ function xml_form_elements_get_creative_commons($commercial, $derivatives, $juri
 //       ),
 //     )
 //   ));
-// @codingStandardsIgnoreStart
   if ($response->code != 200) {
     return FALSE;
   }
   return simplexml_load_string($response->data);
-// @codingStandardsIgnoreEnd
 }
 
 /**
