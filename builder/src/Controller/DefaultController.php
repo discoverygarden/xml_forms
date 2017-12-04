@@ -164,7 +164,7 @@ class DefaultController extends ControllerBase {
       else {
         $label = $cmodel;
       }
-      $associations_list['#items'][] = ['#markup' => $label . $this->$renderer->render($form_table)];
+      $associations_list['#items'][] = ['#markup' => $label . $this->renderer->render($form_table)];
     }
 
     return [$associations_list];
