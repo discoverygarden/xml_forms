@@ -96,16 +96,16 @@ class Actions implements FormPropertyInterface {
    */
   public function getAppropriateAction(XMLDocument $document, FormElement $element, $value = NULL) {
     if ($this->shouldDelete($document, $element, $value)) {
-      return array(ActionInterface::DELETE, $this->delete);
+      return [ActionInterface::DELETE, $this->delete];
     }
     elseif ($this->shouldUpdate($document, $element, $value)) {
-      return array(ActionInterface::UPDATE, $this->update);
+      return [ActionInterface::UPDATE, $this->update];
     }
     // If node is not registered.
     elseif ($this->shouldCreate($document, $element, $value)) {
-      return array(ActionInterface::CREATE, $this->create);
+      return [ActionInterface::CREATE, $this->create];
     }
-    return array(ActionInterface::UNDEFINED, NULL);
+    return [ActionInterface::UNDEFINED, NULL];
   }
 
   /**
@@ -182,12 +182,12 @@ class Actions implements FormPropertyInterface {
    *   a Drupal Form.
    */
   public function toDrupalForm() {
-    return array(
+    return [
       'create' => isset($this->create) ? $this->create->toDrupalForm() : NULL,
       'read' => isset($this->read) ? $this->read->toDrupalForm() : NULL,
       'update' => isset($this->update) ? $this->update->toDrupalForm() : NULL,
       'delete' => isset($this->delete) ? $this->delete->toDrupalForm() : NULL,
-    );
+    ];
   }
 
 }

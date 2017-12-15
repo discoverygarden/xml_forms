@@ -5,8 +5,9 @@
  * Implementation of the objective_forms Form class.
  */
 
-use Drupal\objective_forms;
-
+use Drupal\Core\Render\Element;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\objective_forms\Form;
 use Drupal\Core\Form\FormStateInterface;
 
 use Drupal\objective_forms\FormElement;
@@ -18,7 +19,7 @@ module_load_include('inc', 'xml_form_api', 'Actions');
 /**
  * The XML Form class.
  */
-class XMLForm extends Drupal\objective_forms\Form {
+class XMLForm extends Form {
 
   /**
    * The document the form manipulates.
@@ -163,7 +164,7 @@ class XMLForm extends Drupal\objective_forms\Form {
     // Have parent offset so let's grab only the portion of the form to
     // submit!
     if (!empty($this->parents)) {
-      $form =& \Drupal\Component\Utility\NestedArray::getValue($form_in, $this->parents);
+      $form =& NestedArray::getValue($form_in, $this->parents);
     }
     else {
       $form =& $form_in;
@@ -193,7 +194,7 @@ class XMLForm extends Drupal\objective_forms\Form {
    */
   public function flattenDrupalForm($form) {
     $flattened = [];
-    foreach (\Drupal\Core\Render\Element::children($form) as $key) {
+    foreach (Element::children($form) as $key) {
       $child_element = $form[$key];
       if (isset($child_element['#hash'])) {
         $flattened[$child_element['#hash']] = $child_element;
@@ -206,11 +207,12 @@ class XMLForm extends Drupal\objective_forms\Form {
   /**
    * Getter for the form name.
    *
-   * @return string|NULL
+   * @return string|null
    *   The name of the form if it was given during instantiation; otherwise,
    *   NULL.
    */
   public function getFormName() {
     return $this->name;
   }
+
 }

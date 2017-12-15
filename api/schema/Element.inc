@@ -46,7 +46,7 @@ class XMLSchemaElement extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $type = new LazyMember(array($this, 'createType'));
+    $type = new LazyMember([$this, 'createType']);
     $this->protected->addMember('type', $type);
     if ($this->getType()->localName == 'complexType') {
       $this->protected->addMember('complexType', $type);

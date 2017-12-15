@@ -33,10 +33,10 @@ class XMLSchemaSimpleContent extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'extension' => $this->createChild(XMLSchemaExtension::LOCAL_NAME),
       'restriction' => $this->createChild(XMLSchemaRestriction::LOCAL_NAME),
-    ));
+    ]);
   }
 
   /**
@@ -55,7 +55,7 @@ class XMLSchemaSimpleContent extends XMLSchemaNode {
    * @param InsertOrderNode $parent
    *   Mainly there because it's in the abstraction. Won't do a thing.
    *
-   * @return NULL
+   * @return null
    *   Always null.
    */
   public function asInsertOrderNode(InsertOrderNode $parent = NULL) {

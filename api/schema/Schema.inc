@@ -5,6 +5,8 @@
  * XMLSchema class.
  */
 
+use Drupal\Component\Utility\Unicode;
+
 module_load_include('inc', 'php_lib', 'ReadOnlyProtectedMembers');
 module_load_include('inc', 'php_lib', 'DOMHelpers');
 module_load_include('inc', 'php_lib', 'String');
@@ -21,7 +23,7 @@ module_load_include('inc', 'xml_schema_api', 'XmlSchemaCache');
 class XMLSchema {
 
   /**
-   * Constants
+   * Constants.
    */
   const PREFIX = 'xs';
   const URI = 'http://www.w3.org/2001/XMLSchema';
@@ -86,11 +88,11 @@ class XMLSchema {
   public function __construct($filename, $namespace = NULL) {
     $filename = trim($filename);
     self::$schemas[$filename] = $this;
-    $this->protected = new ReadOnlyProtectedMembers(array(
+    $this->protected = new ReadOnlyProtectedMembers([
       'filename' => $filename,
       'location' => $this->getSchemaLocation($filename),
       'namespace' => $namespace,
-    ));
+    ]);
     $this->loadSchema($filename);
   }
 
@@ -101,7 +103,7 @@ class XMLSchema {
    *   An array of ('protected', 'includes', 'imports').
    */
   public function __sleep() {
-    return array('protected', 'includes', 'imports');
+    return ['protected', 'includes', 'imports'];
   }
 
   /**
@@ -147,7 +149,7 @@ class XMLSchema {
    */
   protected function getSchemaLocation($filename) {
     $index = strrpos($filename, '/');
-    return \Drupal\Component\Utility\Unicode::substr($filename, 0, $index);
+    return Unicode::substr($filename, 0, $index);
   }
 
   /**
@@ -169,15 +171,15 @@ class XMLSchema {
     else {
       $scheme = parse_url($this->location, PHP_URL_SCHEME);
       if ($scheme == 'http') {
-        $matches = array();
+        $matches = [];
         $location = $this->location;
         if (($count = preg_match_all('/\.\.\//', $filename, $matches, PREG_OFFSET_CAPTURE)) > 0) {
           for ($i = 0; $i < $count; $i++) {
             $index = strrpos($location, '/');
-            $location = \Drupal\Component\Utility\Unicode::substr($location, 0, $index);
+            $location = Unicode::substr($location, 0, $index);
           }
           // Add +3 for "../".
-          $filename = \Drupal\Component\Utility\Unicode::substr($filename, $matches[0][$count - 1][1] + 3);
+          $filename = Unicode::substr($filename, $matches[0][$count - 1][1] + 3);
         }
         $path = $location . '/' . $filename;
         return $path;
@@ -220,7 +222,7 @@ class XMLSchema {
     else {
       $doc = new DOMDocument();
       if (!@$doc->load($filename)) {
-        throw new Exception(t('Failed to find document %filename', array('%filename' => $filename)));
+        throw new Exception(t('Failed to find document %filename', ['%filename' => $filename]));
       }
       XmlSchemaCache::Set($filename, $doc);
       return $doc;
@@ -251,7 +253,7 @@ class XMLSchema {
    * Load included schemas.
    */
   protected function loadIncludedFiles() {
-    $this->includes = array();
+    $this->includes = [];
     $included_files = $this->getIncludedFiles();
     foreach ($included_files as $include_file) {
       $filename = $this->getFullPathToSchema($include_file);
@@ -272,7 +274,7 @@ class XMLSchema {
    *   An array of included schema files.
    */
   protected function getIncludedFiles() {
-    $included_files = array();
+    $included_files = [];
     $result = $this->xpath->query('//xs:include');
     if ($result && $result->length > 0) {
       for ($i = 0; $i < $result->length; $i++) {
@@ -287,7 +289,7 @@ class XMLSchema {
    * Load imported schemas.
    */
   protected function loadImportedFiles() {
-    $this->imports = array();
+    $this->imports = [];
     $imported_files = $this->getImportedFiles();
     foreach ($imported_files as $import_file) {
       list($filename, $namespace) = $import_file;
@@ -309,13 +311,13 @@ class XMLSchema {
    *   attributes of the imported files.
    */
   protected function getImportedFiles() {
-    $imported_files = array();
+    $imported_files = [];
     $result = $this->xpath->query('//xs:import');
     if ($result && $result->length > 0) {
       for ($i = 0; $i < $result->length; $i++) {
         $location = $result->item($i)->getAttribute('schemaLocation');
         $namespace = $result->item($i)->getAttribute('namespace');
-        $imported_files[] = array($location, $namespace);
+        $imported_files[] = [$location, $namespace];
       }
     }
     return $imported_files;
@@ -355,7 +357,7 @@ class XMLSchema {
       }
       return $results;
     }
-    return array();
+    return [];
   }
 
   /**
@@ -398,7 +400,7 @@ class XMLSchema {
    * @param string $name
    *   The type name to look for.
    *
-   * @return DOMNode|NULL
+   * @return DOMNode|null
    *   The found DOMNode if it is the only one found; NULL if none or multiple
    *   are found.
    */
@@ -417,7 +419,7 @@ class XMLSchema {
    * @param string $name
    *   The name of the element to look for.
    *
-   * @return DOMNode|NULL
+   * @return DOMNode|null
    *   The found DOMNode if it is the only one found; NULL if none or multiple
    *   are found.
    */
@@ -436,7 +438,7 @@ class XMLSchema {
    * @param string $name
    *   The name of the element to look for.
    *
-   * @return DOMNode|NULL
+   * @return DOMNode|null
    *   The found DOMNode if it is the only one found; NULL if none or multiple
    *   are found.
    */

@@ -5,6 +5,11 @@
  * Defines callbacks and resources needed for the 'datepicker' form element.
  */
 
+use Drupal\Component\Utility\Html;
+
+/**
+ *
+ */
 class Datepicker {
 
   /**
@@ -20,11 +25,11 @@ class Datepicker {
       $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
       // @todo: add Element::addRequiredResources().
       Element::addUIWidgets('ui.datepicker');
-      Element::addUIThemeStyles(array(
+      Element::addUIThemeStyles([
         'ui.core.css',
         'ui.datepicker.css',
         'ui.theme.css',
-      ));
+      ]);
       Element::addJS('datepicker.js');
       $load = FALSE;
     }
@@ -62,13 +67,13 @@ function theme_datepicker_xml_form_elements($variables) {
   $element_val = $array_switch ? $element['#value']['value'] : $element['#value'];
   $size = empty($element['#size']) ? '' : ' size="' . $element['#size'] . '"';
   $maxlength = empty($element['#maxlength']) ? '' : ' maxlength="' . $element['#maxlength'] . '"';
-  $class = array('form-text', 'datepicker');
+  $class = ['form-text', 'datepicker'];
   $output = '';
   _form_set_class($element, $class);
   if (isset($element['#field_prefix'])) {
     $output .= '<span class="field-prefix">' . $element['#field_prefix'] . '</span> ';
   }
-  $output .= '<input type="text"' . $maxlength . ' name="' . $element['#name'] . '" id="' . $element['#id'] . '"' . $size . ' value="' . \Drupal\Component\Utility\Html::escape($element_val) . '"' . drupal_attributes($element['#attributes']) . ' />';
+  $output .= '<input type="text"' . $maxlength . ' name="' . $element['#name'] . '" id="' . $element['#id'] . '"' . $size . ' value="' . Html::escape($element_val) . '"' . drupal_attributes($element['#attributes']) . ' />';
   if (isset($element['#field_suffix'])) {
     $output .= ' <span class="field-suffix">' . $element['#field_suffix'] . '</span>';
   }

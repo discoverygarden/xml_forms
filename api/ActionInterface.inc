@@ -11,7 +11,7 @@
 interface ActionInterface {
 
   /**
-   * Constants
+   * Constants.
    */
   const UNDEFINED = 0;
   // Create a DOMNode.
@@ -64,4 +64,5 @@ interface ActionInterface {
    *   Drupal Form Property '#actions'.
    */
   public function toDrupalForm();
+
 }

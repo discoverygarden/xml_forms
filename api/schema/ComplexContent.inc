@@ -29,10 +29,10 @@ class XMLSchemaComplexContent extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'extension' => $this->createChild(XMLSchemaExtension::LOCAL_NAME),
       'restriction' => $this->createChild(XMLSchemaRestriction::LOCAL_NAME),
-    ));
+    ]);
   }
 
   /**

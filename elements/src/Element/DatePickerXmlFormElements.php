@@ -12,6 +12,9 @@ use Drupal\Core\Render\Element\FormElement;
  */
 class DatePickerXmlFormElements extends FormElement {
 
+  /**
+   *
+   */
   public function getInfo() {
     $info = [
       '#input' => TRUE,
@@ -23,6 +26,10 @@ class DatePickerXmlFormElements extends FormElement {
     return $info;
   }
 
+  /**
+   *
+   */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
   }
+
 }

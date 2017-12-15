@@ -29,14 +29,14 @@ class XMLSchemaChoice extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'element' => $this->createChildren(XMLSchemaElement::LOCAL_NAME),
       'choice' => $this->createChildren(XMLSchemaChoice::LOCAL_NAME),
       'sequence' => $this->createChildren(XMLSchemaSequence::LOCAL_NAME),
       'group' => $this->createChildren(XMLSchemaGroup::LOCAL_NAME),
       // All children in the correct order.
       'children' => $this->createChildren(),
-    ));
+    ]);
   }
 
   /**

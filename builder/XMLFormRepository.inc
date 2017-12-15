@@ -6,7 +6,9 @@
  */
 
 module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
-
+/**
+ *
+ */
 class XMLFormRepository extends XMLFormDatabase {
 
   /**
@@ -111,14 +113,14 @@ class XMLFormRepository extends XMLFormDatabase {
    */
   public static function GetNames() {
     $hook = self::getFormsFromHook();
-    $hook_names = array();
+    $hook_names = [];
     foreach ($hook as $key => $array) {
-      $hook_names[] = array('name' => $key, 'indb' => FALSE);
+      $hook_names[] = ['name' => $key, 'indb' => FALSE];
     }
-    usort($hook_names, array('XMLFormRepository', 'ComparisonFunction'));
+    usort($hook_names, ['XMLFormRepository', 'ComparisonFunction']);
 
     $db_names = parent::GetNames();
-    usort($hook_names, array('XMLFormRepository', 'ComparisonFunction'));
+    usort($hook_names, ['XMLFormRepository', 'ComparisonFunction']);
 
     $names = array_merge($hook_names, $db_names);
 
@@ -149,7 +151,7 @@ class XMLFormRepository extends XMLFormDatabase {
    */
   public static function GetValidNames() {
     $form_names = self::GetNames();
-    $valid_names = array();
+    $valid_names = [];
     foreach ($form_names as $form_name) {
       if (self::Valid($form_name['name'])) {
         $valid_names[] = $form_name;
@@ -196,4 +198,5 @@ class XMLFormRepository extends XMLFormDatabase {
     }
     return FALSE;
   }
+
 }

@@ -26,7 +26,7 @@ class XMLFormProcessAction {
   /**
    * FormElement to be processed.
    *
-   * @var FormElement
+   * @var \Drupal\objective_forms\FormElement
    */
   public $element;
 
@@ -42,7 +42,7 @@ class XMLFormProcessAction {
    *
    * @param ActionInterface $action
    *   The appropriate action that will be performed.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The FormElement that the action will be performed on.
    * @param mixed $value
    *   The value that will be used in execution.
@@ -77,7 +77,7 @@ class XMLFormProcessor {
   /**
    * Submitted form values.
    *
-   * @var FormValues
+   * @var \Drupal\objective_forms\FormValues
    */
   protected $values;
 
@@ -97,7 +97,7 @@ class XMLFormProcessor {
 
   /**
    *
-   * @var FormElementRegistry
+   * @var \Drupal\objective_forms\FormElementRegistry
    */
   protected $elementRegistry;
 
@@ -107,11 +107,11 @@ class XMLFormProcessor {
    * This is used to modify the given document with the values and actions
    * specified by the submitted form.
    *
-   * @param FormValues $values
+   * @param \Drupal\objective_forms\FormValues $values
    *   The submitted values for this form.
    * @param XMLDocument $document
    *   The document to be modified with the submitted values.
-   * @param FormElementRegistry $registry
+   * @param \Drupal\objective_forms\FormElementRegistry $registry
    *   Registry to access form element information for modifying the document.
    */
   public function __construct(FormValues $values, XMLDocument $document, FormElementRegistry $registry) {
@@ -124,7 +124,7 @@ class XMLFormProcessor {
   /**
    * The actual form processor.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element we are processing on.
    *
    * @return XMLDocument
@@ -161,7 +161,7 @@ class XMLFormProcessor {
    *   An array of actions.
    */
   protected function getActions(array &$elements, $type) {
-    $actions = array();
+    $actions = [];
     foreach ($elements as $key => $element) {
       $value = $this->values->getValue($element->hash);
       $action = isset($element->actions->$type) ? $element->actions->$type : NULL;
@@ -209,7 +209,7 @@ class XMLFormProcessor {
   /**
    * Cleanups orphan DOMNodes from the registry.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to check against.
    */
   protected function cleanupNodeRegistry(FormElement $element) {
@@ -249,14 +249,14 @@ class XMLFormProcessor {
   /**
    * If registered node element is no longer in the form, add a delete action.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to get delete actions for.
    *
    * @return array
    *   An array of XMLFormProcessActions.
    */
   protected function getRemovedFormElementsDeleteActions(FormElement $element) {
-    $actions = array();
+    $actions = [];
     $elements = $element->flatten();
     $filtered_elements = $this->filterElements($elements);
     $registered = $this->nodeRegistry->getRegistered();
@@ -291,4 +291,5 @@ class XMLFormProcessor {
     $filtered_elements = array_filter($elements, $filter_function);
     return $filtered_elements;
   }
+
 }

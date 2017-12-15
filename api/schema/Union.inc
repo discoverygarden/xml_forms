@@ -50,7 +50,7 @@ class XMLSchemaUnion extends XMLSchemaNode {
    * @param InsertOrderNode $parent
    *   Mainly there because it's in the abstraction. Won't do a thing.
    *
-   * @return NULL
+   * @return null
    *   Always null.
    */
   public function asInsertOrderNode(InsertOrderNode $parent = NULL) {

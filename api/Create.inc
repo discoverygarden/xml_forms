@@ -44,37 +44,43 @@ class Create implements ActionInterface {
   protected $schemaPath;
 
   /**
-   * Either Create::ELEMENT, Create::ATTRIBUTE, Create::XML
-   * @var integer
+   * Either Create::ELEMENT, Create::ATTRIBUTE, Create::XML.
+   *
+   * @var int
    */
   protected $type;
 
   /**
    * The full name for the Element or Attribute we are creating.
+   *
    * @var string
    */
   protected $name;
 
   /**
    * The namespace prefix for the Element or Attribute we are creating.
+   *
    * @var string
    */
   protected $prefix;
 
   /**
    * The local name for the Element or Attribute we are creating.
+   *
    * @var string
    */
   protected $localName;
 
   /**
    * The XML snippet we are creating.
+   *
    * @var string
    */
   protected $xml;
 
   /**
    * The value used to create the Element, Attribute or XML Snippit.
+   *
    * @var string
    */
   protected $value;
@@ -117,14 +123,14 @@ class Create implements ActionInterface {
    *   The array of return values.
    */
   public function toDrupalForm() {
-    return array(
+    return [
       'path' => $this->path->path,
       'context' => (string) $this->path->context,
       'schema' => $this->schemaPath,
       'type' => $this->type,
       'prefix' => $this->prefix,
       'value' => $this->value,
-    );
+    ];
   }
 
   /**
@@ -132,7 +138,7 @@ class Create implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.
@@ -150,7 +156,7 @@ class Create implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.
@@ -186,11 +192,11 @@ class Create implements ActionInterface {
    *   A DOMNode to use for action execution.
    */
   protected function doCreate(XMLDocument $document, $value) {
-    $action = array(
+    $action = [
       self::ELEMENT => 'createElement',
       self::ATTRIBUTE => 'createAttribute',
       self::XML => 'createXML',
-    );
+    ];
     try {
       return $this->{$action[$this->type]}($document, $value);
     }
@@ -278,7 +284,7 @@ class Create implements ActionInterface {
           "xmlns";
       $root_attributes .= "$attribute = '$uri' ";
     }
-    $xml = strtr($this->value, array('%value%' => $value));
+    $xml = strtr($this->value, ['%value%' => $value]);
     $xml = "<root {$root_attributes}>$xml</root>";
     $this->fragment = $document->document->createDocumentFragment();
     // Prevent Drupal from catching the error.

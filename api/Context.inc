@@ -9,13 +9,13 @@
  * DOMNode a given context refers to.
  */
 
+use Drupal\php_lib\Enum;
 use Drupal\objective_forms\FormElement;
-use Drupal\php_lib;
 
 /**
  * Enumerated types for Context.
  */
-class ContextType extends Drupal\php_lib\Enum {
+class ContextType extends Enum {
   const __DEFAULT = 'document';
   const DOCUMENT = 'document';
   const PARENT = 'parent';
@@ -80,7 +80,7 @@ class Context {
    *
    * @param XMLDocument $document
    *   The document to get the node for.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The node to grab.
    *
    * @return DOMNode
@@ -104,7 +104,7 @@ class Context {
    *
    * @param XMLDocument $document
    *   The document to get the element from.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to get parent context from.
    *
    * @throws XMLFormsContextNotFoundException
@@ -138,7 +138,7 @@ class Context {
    *
    * @param XMLDocument $document
    *   The document to grab self context from.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to grab self context from within that document.
    *
    * @throws XMLFormsContextNotFoundException

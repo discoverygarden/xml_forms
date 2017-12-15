@@ -5,7 +5,6 @@ namespace Drupal\xml_form_builder\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-
 /**
  */
 class XmlFormBuilderDatastreamForm extends FormBase {
@@ -17,13 +16,13 @@ class XmlFormBuilderDatastreamForm extends FormBase {
     return 'xml_form_builder_datastream_form';
   }
 
-/**
- * Datastream form.
- *
- * Displays a select association form if more than one association is defined
- * for the given datastream.
- */
-  public function buildForm(array $form, FormStateInterface $form_state, $object = NULL, $dsid =NULL) {
+  /**
+   * Datastream form.
+   *
+   * Displays a select association form if more than one association is defined
+   * for the given datastream.
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, $object = NULL, $dsid = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/datastream.form');
 
     // Leave this here for legacy reasons.

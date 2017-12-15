@@ -5,10 +5,13 @@
  * Provides a wrapper class around the database table were forms are stored.
  */
 
+/**
+ *
+ */
 class XMLFormDatabase {
 
   /**
-   * Constants
+   * Constants.
    */
   const TABLE = 'xml_forms';
 
@@ -30,7 +33,7 @@ class XMLFormDatabase {
     // @TODO: integrate 'fancy' 'dynamic' self::table
     $count = db_select('xml_forms', 'xf')
       ->condition('xf.name', $form_name)
-      ->fields('xf', array('name'))
+      ->fields('xf', ['name'])
       ->countQuery()
       ->execute()
       ->fetchField();
@@ -107,10 +110,10 @@ class XMLFormDatabase {
    *   form's name; e.g. array('name' => 'name').
    */
   public static function GetNames() {
-    $names = array();
+    $names = [];
     $result = db_query('SELECT name FROM {xml_forms}')->fetchCol();
     foreach ($result as $data) {
-      $names[] = array('name' => $data, 'indb' => TRUE);
+      $names[] = ['name' => $data, 'indb' => TRUE];
     }
     return $names;
   }
@@ -124,7 +127,7 @@ class XMLFormDatabase {
    */
   public static function GetValidNames() {
     $form_names = self::GetNames();
-    $valid_names = array();
+    $valid_names = [];
     foreach ($form_names as $key => $form_name) {
       if (self::Valid($form_name)) {
         $valid_names[$key] = $form_name;
@@ -199,7 +202,7 @@ class XMLFormDatabase {
         $definition = XMLFormDefinition::upgradeToLatestVersion($definition);
       }
       $num = db_update(self::TABLE)
-        ->fields(array('form' => $definition->saveXML()))
+        ->fields(['form' => $definition->saveXML()])
         ->condition('name', $form_name)
         ->execute();
       if ($num) {

@@ -55,7 +55,7 @@ class XMLFormDefinitionVersion {
   public static function getAllVersions() {
     static $versions = NULL;
     if (empty($versions)) {
-      $versions = array();
+      $versions = [];
       $path = self::getPathToSchemaDefinitionDirectory();
       $files = scandir($path);
       foreach ($files as $filename) {
@@ -118,10 +118,10 @@ class XMLFormDefinitionVersion {
     else {
       // Files with a version of 0 or 1 may not have their version declared.
       // This checks manually to confirm in these cases.
-      $undeclared_versions = array(
+      $undeclared_versions = [
         new XMLFormDefinitionVersion(0),
         new XMLFormDefinitionVersion(1),
-      );
+      ];
       foreach ($undeclared_versions as $version) {
         if (self::isValid($definition, $version)) {
           return $version;
@@ -269,10 +269,10 @@ class XMLFormDefinition {
     else {
       // Files with a version of 0 or 1 may not have their version declared.
       // Check manually to see if this is the case.
-      $undeclared_versions = array(
+      $undeclared_versions = [
         new XMLFormDefinitionVersion(0),
         new XMLFormDefinitionVersion(1),
-      );
+      ];
       foreach ($undeclared_versions as $version) {
         if (self::isValid($definition, $version)) {
           return $version;
@@ -405,12 +405,12 @@ class XMLFormDefinition {
    *   The extracted properties from the XML Form Definition.
    */
   public function getProperties() {
-    $paths = array(
+    $paths = [
       'root_name' => '/definition/properties/root_name',
       'default_uri' => '/definition/properties/namespaces/@default',
       'schema_uri' => '/definition/properties/schema_uri',
-    );
-    $properties = array();
+    ];
+    $properties = [];
     $xpath = new DOMXPath($this->definition);
     foreach ($paths as $key => $path) {
       $results = $xpath->query($path);
@@ -452,7 +452,7 @@ class XMLFormDefinition {
    *   The Drupal representation of this element's properties declaration.
    */
   protected function getElementProperties(SimpleXMLElement $element) {
-    $output = array();
+    $output = [];
     if (isset($element->properties)) {
       $properties = $element->properties->children();
       foreach ($properties as $property) {
@@ -483,7 +483,7 @@ class XMLFormDefinition {
       // in forms. Remove this at some point.
       return $type === 'datepicker' ? XML_FORM_ELEMENTS_DATEPICKER_THEME : $type;
     }
-    $output = array();
+    $output = [];
     foreach ($children as $child) {
       $name = cast_string_to_type((string) $this->getElementPropertyName($child));
       $output[$name] = $this->getElementProperty($child);
@@ -518,7 +518,7 @@ class XMLFormDefinition {
    *   All the transformed child declarations.
    */
   protected function getElementChildren(SimpleXMLElement $element) {
-    $output = array();
+    $output = [];
     if (isset($element->children)) {
       $elements = $element->children->children();
       foreach ($elements as $element) {
@@ -592,7 +592,7 @@ class XMLFormDefinitionGenerator {
    *
    * @param SimpleXMLElement $parent
    *   The parent element to add the new element to.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to add.
    */
   protected static function AddElement(SimpleXMLElement $parent, FormElement $element) {

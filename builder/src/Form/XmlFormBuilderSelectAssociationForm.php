@@ -24,7 +24,7 @@ class XmlFormBuilderSelectAssociationForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, array $associations = []) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/select_association.form');
-    $get_default = function($name, $default) use($form_state) {
+    $get_default = function ($name, $default) use ($form_state) {
       return $form_state->getValue($name) ? $form_state->getValue($name) : $default;
     };
     $form_state->set('associations', $associations);
@@ -79,7 +79,7 @@ class XmlFormBuilderSelectAssociationForm extends FormBase {
   /**
    * Undoes any changes the regular submit handler did.
    */
-  function undoSubmit(array $form, FormStateInterface $form_state) {
+  public function undoSubmit(array $form, FormStateInterface $form_state) {
     $association_step_storage = &islandora_ingest_form_get_step_storage($form_state, 'xml_form_builder_association_step');
     unset($association_step_storage['association']);
   }

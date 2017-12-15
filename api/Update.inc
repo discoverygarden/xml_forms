@@ -52,10 +52,10 @@ class Update implements ActionInterface {
    *   The array of return values.
    */
   public function toDrupalForm() {
-    return array(
+    return [
       'path' => $this->path->path,
       'context' => (string) $this->path->context,
-    );
+    ];
   }
 
   /**
@@ -63,7 +63,7 @@ class Update implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.
@@ -80,7 +80,7 @@ class Update implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.

@@ -51,7 +51,7 @@ class XMLSchemaAny extends XMLSchemaNode {
    *   An array of valid names.
    */
   public function getValidNames() {
-    $names = array();
+    $names = [];
     // @todo implement!
     return $names;
   }

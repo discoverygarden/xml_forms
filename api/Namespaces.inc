@@ -31,7 +31,7 @@ class XMLFormsNamespaceException extends Exception {
  */
 class Namespaces implements IteratorAggregate {
   /**
-   * Constants
+   * Constants.
    */
   const XMLNS = 'http://www.w3.org/2000/xmlns/';
 
@@ -64,7 +64,7 @@ class Namespaces implements IteratorAggregate {
    */
   public function __construct(array &$namespaces = NULL, $default = NULL) {
     $this->default = $default;
-    $this->namespaces = isset($namespaces) ? $namespaces : array();
+    $this->namespaces = isset($namespaces) ? $namespaces : [];
   }
 
   /**

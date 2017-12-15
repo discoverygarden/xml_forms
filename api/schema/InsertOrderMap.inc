@@ -118,8 +118,8 @@ abstract class InsertOrderCompositor extends InsertOrderNode {
    */
   public function __construct($min, $max, InsertOrderCompositor $parent = NULL) {
     parent::__construct($min, $max, $parent);
-    $this->children = array();
-    $this->children[0] = array();
+    $this->children = [];
+    $this->children[0] = [];
   }
 
   /**
@@ -127,8 +127,8 @@ abstract class InsertOrderCompositor extends InsertOrderNode {
    */
   public function __clone() {
     $children = $this->children[0];
-    $this->children = array();
-    $this->children[0] = array();
+    $this->children = [];
+    $this->children[0] = [];
     foreach ($children as $child) {
       $this->addChild(clone $child);
     }
@@ -225,7 +225,7 @@ abstract class InsertOrderCompositor extends InsertOrderNode {
    *   An array of DOMElements in their correct insert order.
    */
   public function getOrder() {
-    $order = array();
+    $order = [];
     $count = count($this->children);
     for ($i = 0; $i < $count; $i++) {
       foreach ($this->children[$i] as $child) {
@@ -356,14 +356,14 @@ class InsertOrderElement extends InsertOrderNode {
   public function __construct($name, $min, $max, InsertOrderCompositor $parent = NULL) {
     parent::__construct($min, $max, $parent);
     $this->name = $name;
-    $this->matches = array();
+    $this->matches = [];
   }
 
   /**
    * Forces clones not to copy the matched DOMElements.
    */
   public function __clone() {
-    $this->matches = array();
+    $this->matches = [];
   }
 
   /**
@@ -471,14 +471,14 @@ class InsertOrderAny extends InsertOrderNode {
   public function __construct(array $names, $min, $max, InsertOrderNode $parent = NULL) {
     parent::__construct($min, $max, $parent);
     $this->names = $names;
-    $this->matches = array();
+    $this->matches = [];
   }
 
   /**
    * Forces clones not to copy the matched DOMElements.
    */
   public function __clone() {
-    $this->matches = array();
+    $this->matches = [];
   }
 
   /**

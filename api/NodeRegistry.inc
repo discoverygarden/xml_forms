@@ -46,7 +46,7 @@ class NodeRegistry implements Serializable {
    * Creates an instance of the NodeRegistry.
    */
   public function __construct() {
-    $this->registered = array();
+    $this->registered = [];
     $this->restoredRequired = FALSE;
   }
 
@@ -60,7 +60,7 @@ class NodeRegistry implements Serializable {
    *   String representing the serialized object.
    */
   public function serialize() {
-    $data = array();
+    $data = [];
     foreach ($this->registered as $key => $node) {
       $data[$key] = get_dom_node_xpath($node);
     }

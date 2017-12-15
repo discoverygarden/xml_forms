@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Cache\Cache;
+
 // @FIXME
 // // @FIXME
 // // This looks like another module's variable. You'll need to rewrite this call
@@ -8,10 +10,8 @@
 //  * @file
 //  * Handles schema caching so that they don't need to be downloaded each request.
 //  */
-// 
+//
 // define('XML_SCHEMA_API_CACHE_LOCATION', variable_get('file_public_path', \Drupal\Core\DrupalKernel::findSitePath() . '/files') . '/schemas');
-
-
 /**
  * Stores/retrieves schema documents from the file location on disk.
  *
@@ -72,7 +72,7 @@ class XmlSchemaCache {
    */
   protected static function ClearCacheTable() {
     // Empty to start with.
-    \Drupal::cache(self::TYPE)->set(self::ID, array(), \Drupal\Core\Cache\Cache::PERMANENT);
+    \Drupal::cache(self::TYPE)->set(self::ID, [], Cache::PERMANENT);
   }
 
   /**
@@ -167,7 +167,6 @@ class XmlSchemaCache {
     }
     return FALSE;
   }
-
 
   /**
    * Caches the given document with the given filename.

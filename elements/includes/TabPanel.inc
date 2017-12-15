@@ -15,7 +15,7 @@ module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
 class TabPanel {
 
   /**
-   * Constants
+   * Constants.
    */
   const ADD_BUTTON = 'add-tabpanel';
   const DELETE_BUTTON = 'delete-tabpanel';
@@ -80,19 +80,19 @@ class TabPanel {
     $add['#prefix'] = '<div class="ui-tabpanel-add-button">';
     $add['#suffix'] = '</div>';
     $add['#limit_validation_errors'][] = $element['#parents'];
-    $add['#ajax'] = array(
-      'params' => array(
+    $add['#ajax'] = [
+      'params' => [
         'target' => $tabs['#hash'],
         'render' => $tabs['#hash'],
         'action' => 'add',
         'child' => $element['#hash'],
-      ),
+      ],
       'callback' => 'xml_form_elements_ajax_callback',
       // The parents wrapper is set to the parents hash.
       'wrapper' => $tabs['#hash'],
       'method' => 'replaceWith',
       'effect' => 'fade',
-    );
+    ];
     return $add;
   }
 
@@ -116,26 +116,26 @@ class TabPanel {
     $delete['#size'] = 30;
     $delete['#id'] = $delete['#name'] = $element['#hash'] . '-remove';
     $delete['#value'] = $label;
-    $delete['#attributes'] = array(
+    $delete['#attributes'] = [
       // Triggered via javascript.
       'style' => 'display:none',
-    );
+    ];
     $delete['#prefix'] = '<div class="ui-tabpanel-delete-button">';
     $delete['#suffix'] = '</div>';
-    $delete['#limit_validation_errors'] = array();
-    $delete['#ajax'] = array(
+    $delete['#limit_validation_errors'] = [];
+    $delete['#ajax'] = [
       'callback' => 'xml_form_elements_ajax_callback',
-      'params' => array(
+      'params' => [
         'target' => $tabs['#hash'],
         'render' => $tabs['#hash'],
         'action' => 'delete',
         'child' => $element['#hash'],
-      ),
+      ],
       // The parent's wrapper is set to the parent's hash.
       'wrapper' => $tabs['#hash'],
       'method' => 'replaceWith',
       'effect' => 'fade',
-    );
+    ];
     return $delete;
   }
 

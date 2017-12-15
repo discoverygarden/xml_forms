@@ -46,7 +46,7 @@ class Path {
    *
    * @param XMLDocument $document
    *   The document containing the element to query.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element inside the document to query.
    *
    * @see Context::getNode()

@@ -35,18 +35,18 @@ class XMLFormPrePopulator {
   /**
    * Populate a Drupal form.
    *
-   * @param FormElement $root
+   * @param \Drupal\objective_forms\FormElement $root
    *   The root element of the form to populate.
    */
   public function prePopulate(FormElement $root) {
     $this->prePopulateElement($root);
-    $root->eachDecendant(array($this, 'prePopulateElement'));
+    $root->eachDecendant([$this, 'prePopulateElement']);
   }
 
   /**
    * Populate a Drupal form from a given element.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element of the form to populate from.
    */
   public function prePopulateElement(FormElement $element) {
@@ -57,7 +57,7 @@ class XMLFormPrePopulator {
   /**
    * Get the default value for the given element.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to get the default value for.
    *
    * @return string
@@ -71,7 +71,7 @@ class XMLFormPrePopulator {
   /**
    * Set the FormElement default value if appropriate.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The FormElement to set the default value for.
    * @param string $value
    *   The value to set as the default for that FormElement.

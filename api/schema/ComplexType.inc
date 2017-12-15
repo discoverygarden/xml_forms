@@ -34,14 +34,14 @@ class XMLSchemaComplexType extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'complexContent' => $this->createChild(XMLSchemaComplexContent::LOCAL_NAME),
       'simpleContent' => $this->createChild(XMLSchemaSimpleContent::LOCAL_NAME),
       'all' => $this->createChild(XMLSchemaAll::LOCAL_NAME),
       'choice' => $this->createChild(XMLSchemaChoice::LOCAL_NAME),
       'sequence' => $this->createChild(XMLSchemaSequence::LOCAL_NAME),
       'group' => $this->createChild(XMLSchemaGroup::LOCAL_NAME),
-    )
+    ]
     );
   }
 

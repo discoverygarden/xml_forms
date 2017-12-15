@@ -90,7 +90,7 @@ class XMLDocument {
    */
   public function __sleep() {
     $this->xml = $this->document->saveXML();
-    return array('namespaces', 'schema', 'registry', 'xml');
+    return ['namespaces', 'schema', 'registry', 'xml'];
   }
 
   /**

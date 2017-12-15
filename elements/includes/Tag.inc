@@ -15,7 +15,7 @@ module_load_include('inc', 'xml_form_elements', 'includes/Element');
 class Tag {
 
   /**
-   * Constants
+   * Constants.
    */
   const REMOVE_BUTTON = 'remove-tag';
   const EDIT_BUTTON = 'edit-tag';
@@ -48,4 +48,5 @@ class Tag {
     $element['#value'] = isset($element['#value']) ? $element['#value'] : FALSE;
     return $element;
   }
+
 }

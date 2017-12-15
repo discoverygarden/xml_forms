@@ -2,6 +2,7 @@
 
 namespace Drupal\xml_form_builder\Controller;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,7 +14,6 @@ use AbstractObject;
  * Default controller for the xml_form_builder module.
  */
 class DefaultController extends ControllerBase {
-
 
   /**
    * Show the Main page.
@@ -183,8 +183,8 @@ class DefaultController extends ControllerBase {
 
     if (!\XMLFormDatabase::Exists($form_name)) {
       drupal_set_message(t('Form "%name" does not exist.', [
-        '%name' => $form_name
-        ]), 'error');
+        '%name' => $form_name,
+      ]), 'error');
       throw new NotFoundHttpException();
     }
     $builder = [
@@ -225,7 +225,7 @@ class DefaultController extends ControllerBase {
     }
     catch (Exception $e) {
       $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
-      drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
+      drupal_set_message(Xss::filter($msg), 'error');
     }
     return [];
   }
@@ -278,9 +278,9 @@ class DefaultController extends ControllerBase {
       else {
         db_insert('xml_form_builder_association_hooks')
           ->fields([
-          'id' => $id,
-          'enabled' => (int) FALSE,
-        ])
+            'id' => $id,
+            'enabled' => (int) FALSE,
+          ])
           ->execute();
       }
       drupal_set_message(t('Successfully disabled association.'));
@@ -323,9 +323,9 @@ class DefaultController extends ControllerBase {
       else {
         db_insert('xml_form_builder_association_hooks')
           ->fields([
-          'id' => $id,
-          'enabled' => (int) TRUE,
-        ])
+            'id' => $id,
+            'enabled' => (int) TRUE,
+          ])
           ->execute();
       }
     }

@@ -5,6 +5,11 @@
  * Code for creative commons form elements.
  */
 
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Url;
+use Drupal\Component\Utility\Html;
+
+
 /**
  * Creates a creative_commons form element.
  *
@@ -15,13 +20,13 @@
  *   The element definition.
  */
 function xml_form_elements_creative_commons($element, &$form_state) {
-  $modification_options = array(
+  $modification_options = [
     'y' => t('Yes'),
     'n' => t('No'),
     'sa' => t('Yes, as long as others share alike'),
-  );
+  ];
 
-  $countries = array(
+  $countries = [
     'international' => t('International'),
     'ar' => t('Argentina'),
     'au' => t('Australia'),
@@ -81,19 +86,19 @@ function xml_form_elements_creative_commons($element, &$form_state) {
     'ug' => t('Uganda'),
     'us' => t('United states'),
     'vn' => t('Vietnam'),
-  );
+  ];
 
-  $commercial_options = array(
+  $commercial_options = [
     'y' => t('Yes'),
     'n' => t('No'),
-  );
+  ];
 
   // Get an ID for ajax.
   if (isset($form_state['storage']['xml_form_elements'][$element['#name']]['license_output_id'])) {
     $license_output_id = $form_state['storage']['xml_form_elements'][$element['#name']]['license_output_id'];
   }
   else {
-    $license_output_id = \Drupal\Component\Utility\Html::getId('license_output');
+    $license_output_id = Html::getId('license_output');
     $form_state['storage']['xml_form_elements'][$element['#name']]['license_output_id'] = $license_output_id;
   }
 
@@ -134,47 +139,47 @@ function xml_form_elements_creative_commons($element, &$form_state) {
   }
 
   // Form elements.
-  $element['license_fieldset'] = array(
+  $element['license_fieldset'] = [
     '#type' => 'fieldset',
     '#collapsed' => FALSE,
     '#collapsible' => TRUE,
     '#title' => t('License'),
-  );
+  ];
 
-  $element['license_fieldset']['allow_modifications'] = array(
+  $element['license_fieldset']['allow_modifications'] = [
     '#type' => 'select',
     '#title' => t('Allow modifications of your work?'),
     '#options' => $modification_options,
     '#default_value' => $derivatives,
-    '#ajax' => array(
+    '#ajax' => [
       'wrapper' => $license_output_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
-    ),
-  );
+    ],
+  ];
 
-  $element['license_fieldset']['allow_commercial'] = array(
+  $element['license_fieldset']['allow_commercial'] = [
     '#type' => 'select',
     '#title' => t('Allow commercial uses of your work?'),
     '#options' => $commercial_options,
     '#default_value' => $commercial,
-    '#ajax' => array(
+    '#ajax' => [
       'wrapper' => $license_output_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
-    ),
-  );
+    ],
+  ];
 
-  $element['license_fieldset']['license_jurisdiction'] = array(
+  $element['license_fieldset']['license_jurisdiction'] = [
     '#type' => 'select',
     '#title' => t('License Jurisdiction'),
     '#options' => $countries,
     '#default_value' => $jurisdiction,
-    '#ajax' => array(
+    '#ajax' => [
       'wrapper' => $license_output_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
-    ),
-  );
+    ],
+  ];
   // Value gets populated if default value is populated.
-  if (\Drupal\Core\Url::fromRoute("<current>")->toString() == 'system/ajax' || !$element['#value'] ||
+  if (Url::fromRoute("<current>")->toString() == 'system/ajax' || !$element['#value'] ||
     (isset($element['#default_value']) && $element['#value'] == $element['#default_value'])) {
     $element['#tree'] = TRUE;
   }
@@ -186,15 +191,15 @@ function xml_form_elements_creative_commons($element, &$form_state) {
   $response = xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction);
   if ($response) {
     $form_state['storage']['xml_form_elements'][$element['#name']]['license_uri'] = (string) $response->{'license-uri'};
-    $element['license_fieldset']['license_output'] = array(
+    $element['license_fieldset']['license_output'] = [
       '#type' => 'item',
       '#id' => $license_output_id,
       '#markup' => '<strong>' . t('Selected license:') . '</strong><div>' . $response->html->asXml() . '</div>',
-    );
+    ];
   }
   else {
     $form_state['storage']['xml_form_elements'][$element['#name']]['license_uri'] = xml_form_elements_creative_commons_value($commercial, $derivatives, $jurisdiction);
-    $element['license_fieldset']['license_output'] = array();
+    $element['license_fieldset']['license_output'] = [];
   }
 
   return $element;
@@ -206,7 +211,7 @@ function xml_form_elements_creative_commons($element, &$form_state) {
 function xml_form_elements_creative_commons_ajax(&$form, &$form_state) {
   $parents = $form_state['triggering_element']['#parents'];
   array_pop($parents);
-  $creative_commons_element = \Drupal\Component\Utility\NestedArray::getValue($form, $parents);
+  $creative_commons_element = NestedArray::getValue($form, $parents);
 
   return $creative_commons_element['license_output'];
 }
@@ -229,23 +234,22 @@ function xml_form_elements_creative_commons_ajax(&$form, &$form_state) {
  */
 function xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction) {
   // @FIXME
-// drupal_http_request() has been replaced by the Guzzle HTTP client, which is bundled
-// with Drupal core.
-// 
-// 
-// @see https://www.drupal.org/node/1862446
-// @see http://docs.guzzlephp.org/en/latest
-// $response = drupal_http_request(url(
-//     'http://api.creativecommons.org/rest/1.5/license/standard/get',
-//     array(
-//       'query' => array(
-//         'commercial' => $commercial,
-//         'derivatives' => $derivatives,
-//         'jurisdiction' => $jurisdiction,
-//       ),
-//     )
-//   ));
-
+  // drupal_http_request() has been replaced by the Guzzle HTTP client, which is bundled
+  // with Drupal core.
+  //
+  //
+  // @see https://www.drupal.org/node/1862446
+  // @see http://docs.guzzlephp.org/en/latest
+  // $response = drupal_http_request(url(
+  //     'http://api.creativecommons.org/rest/1.5/license/standard/get',
+  //     array(
+  //       'query' => array(
+  //         'commercial' => $commercial,
+  //         'derivatives' => $derivatives,
+  //         'jurisdiction' => $jurisdiction,
+  //       ),
+  //     )
+  //   ));
   if ($response->code != 200) {
     return FALSE;
   }

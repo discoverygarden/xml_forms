@@ -5,7 +5,7 @@
  * Callbacks and functions used in the Copy Form Page.
  */
 
-use \Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Validates the name Drupal Form Element.
@@ -21,7 +21,7 @@ function xml_form_builder_copy_validate_name(array $element, FormStateInterface 
   module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
   $form_name = $form_state->getValue('form_name');
   if (XMLFormRepository::Exists($form_name)) {
-    $error_msg = t('The given form name "%name" is already in use. Form names must be unique.', array('%name' => $form_name));
+    $error_msg = t('The given form name "%name" is already in use. Form names must be unique.', ['%name' => $form_name]);
     $form_state->setErrorByName('form_name', $error_msg);
   }
 }

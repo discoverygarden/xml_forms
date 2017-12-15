@@ -18,7 +18,7 @@ abstract class XMLSchemaNode {
    *
    * @var DOMElement[]
    */
-  protected static $nodes = array();
+  protected static $nodes = [];
 
   /**
    * The top level schema.
@@ -89,7 +89,7 @@ abstract class XMLSchemaNode {
    *   The node to use for this instance.
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
-    $this->protected = new LazyMembers(array('node' => $node));
+    $this->protected = new LazyMembers(['node' => $node]);
     self::register($this);
     $this->validateConstructorArguments($node);
     $this->schema = $schema;
@@ -192,7 +192,7 @@ abstract class XMLSchemaNode {
    * @param string $local_name
    *   The LOCAL_NAME to use in the search.
    *
-   * @return DOMElement|NULL
+   * @return DOMElement|null
    *   Either the only child found, the first child found out of many,
    *   or NULL if there weren't any.
    */
@@ -214,7 +214,7 @@ abstract class XMLSchemaNode {
    *   An array of XMLSchemaLOCAL_NAME objects.
    */
   protected function createChildren($local_name = NULL) {
-    $output = array();
+    $output = [];
     $children = $this->findChildren($local_name);
     foreach ($children as $child) {
       $output[] = $this->createNodeTypedObject($child);
@@ -228,7 +228,7 @@ abstract class XMLSchemaNode {
    * @param string $local_name
    *   A LOCAL_NAME to filter the children by.
    *
-   * @return XMLSchemaNode|NULL
+   * @return XMLSchemaNode|null
    *   An XMLSchemaLOCAL_NAME object if a child is found and created; NULL
    *   otherwise.
    */
@@ -243,7 +243,7 @@ abstract class XMLSchemaNode {
    * @param DOMElement $node
    *   The DOMNode to create a typed object for.
    *
-   * @return XMLSchemaNode|NULL
+   * @return XMLSchemaNode|null
    *   An XMLSchemaLOCAL_NAME object if that class exists; NULL otherwise.
    */
   protected function createNodeTypedObject(DOMElement $node) {
@@ -268,7 +268,7 @@ abstract class XMLSchemaNode {
   public function getMinMaxOccurs() {
     $min = $this->node->hasAttribute('minOccurs') ? $this->node->getAttribute('minOccurs') : 1;
     $max = $this->node->hasAttribute('maxOccurs') ? $this->node->getAttribute('maxOccurs') : 1;
-    return array($min, $max);
+    return [$min, $max];
   }
 
 }

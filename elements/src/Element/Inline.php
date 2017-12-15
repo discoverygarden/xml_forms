@@ -14,6 +14,9 @@ use Drupal\Core\Render\Element\FormElement;
  */
 class Inline extends FormElement {
 
+  /**
+   *
+   */
   public function getInfo() {
     $info = [
       '#input' => FALSE,
@@ -30,6 +33,10 @@ class Inline extends FormElement {
     return $info;
   }
 
+  /**
+   *
+   */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
   }
+
 }

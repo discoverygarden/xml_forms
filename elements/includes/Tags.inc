@@ -5,14 +5,17 @@
  * Class for form tags.
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 module_load_include('inc', 'xml_form_elements', 'includes/Tag');
-
+/**
+ *
+ */
 class Tags {
 
   /**
-   * Constants
+   * Constants.
    */
   const ADD_BUTTON = 'add-tag';
 
@@ -44,7 +47,7 @@ class Tags {
     $element['#after_build'] = ['xml_form_elements_after_build_tags'];
     $element['#prefix'] = "<div class='clear-block' id='ahah-{$element['#id']}-wrapper'>";
     $element['#suffix'] = '</div>';
-    foreach (\Drupal\Core\Render\Element::children($element) as $key) {
+    foreach (Element::children($element) as $key) {
       $child = $element[$key];
       $hash = $child['#hash'];
       $element['controls']['edit'][$hash] = self::createEditButton($element, $child);
@@ -68,8 +71,8 @@ class Tags {
   public static function AfterBuild(array $form_element, FormStateInterface $form_state) {
     if ($form_element['#required']) {
       // 2 to include the controls element.
-      $require = (count(\Drupal\Core\Render\Element::children($form_element)) == 2) ? TRUE : FALSE;
-      foreach (\Drupal\Core\Render\Element::children($form_element) as $key) {
+      $require = (count(Element::children($form_element)) == 2) ? TRUE : FALSE;
+      foreach (Element::children($form_element) as $key) {
         $child = &$form_element[$key];
         $child['#required'] = $require;
       }
@@ -91,20 +94,20 @@ class Tags {
     $button['#weight'] = 4;
     $button['#size'] = 30;
     $button['#id'] = $button['#name'] = $element['#hash'] . '-add';
-    $button['#attributes'] = array('style' => 'display:none');
+    $button['#attributes'] = ['style' => 'display:none'];
     $button['#value'] = t('Add');
     $button['#limit_validation_errors'][] = $element['#parents'];
-    $button['#ajax'] = array(
+    $button['#ajax'] = [
       'callback' => 'xml_form_elements_ajax_callback',
-      'params' => array(
+      'params' => [
         'render' => $element['#hash'],
         'target' => $element['#hash'],
         'action' => 'add',
-      ),
+      ],
       'wrapper' => "ahah-{$element['#id']}-wrapper",
       'method' => 'replaceWith',
       'effect' => 'fade',
-    );
+    ];
     return $button;
   }
 
@@ -125,20 +128,20 @@ class Tags {
     $button['#weight'] = 4;
     $button['#size'] = 30;
     $button['#id'] = $button['#name'] = $child['#hash'] . '-remove';
-    $button['#attributes'] = array('style' => 'display:none');
+    $button['#attributes'] = ['style' => 'display:none'];
     $button['#limit_validation_errors'][] = $element['#parents'];
-    $button['#ajax'] = array(
+    $button['#ajax'] = [
       'callback' => 'xml_form_elements_ajax_callback',
-      'params' => array(
+      'params' => [
         'render' => $element['#hash'],
         'target' => $element['#hash'],
         'child' => $child['#hash'],
         'action' => 'delete',
-      ),
+      ],
       'wrapper' => "ahah-{$element['#id']}-wrapper",
       'method' => 'replaceWith',
       'effect' => 'fade',
-    );
+    ];
     return $button;
   }
 
@@ -159,20 +162,20 @@ class Tags {
     $button['#weight'] = 4;
     $button['#size'] = 30;
     $button['#id'] = $button['#name'] = $child['#hash'] . '-edit';
-    $button['#attributes'] = array('style' => 'display:none');
+    $button['#attributes'] = ['style' => 'display:none'];
     $button['#limit_validation_errors'][] = $element['#parents'];
-    $button['#ajax'] = array(
+    $button['#ajax'] = [
       'callback' => 'xml_form_elements_ajax_callback',
-      'params' => array(
+      'params' => [
         'render' => $element['#hash'],
         'target' => $element['#hash'],
         'child' => $child['#hash'],
         'action' => 'edit',
-      ),
+      ],
       'wrapper' => "ahah-{$element['#id']}-wrapper",
       'method' => 'replaceWith',
       'effect' => 'fade',
-    );
+    ];
     return $button;
   }
 
@@ -197,7 +200,7 @@ function template_preprocess_tags(&$vars) {
   $vars['remove'] = isset($tags['controls']['remove']) ? $tags['controls']['remove'] : NULL;
   // Used to create tag icons, and hidden input fields.
   $vars['tags'] = [];
-  $children = \Drupal\Core\Render\Element::children($tags);
+  $children = Element::children($tags);
   foreach ($children as $key) {
     $child = $tags[$key];
     if (isset($child['#type']) && $child['#type'] == 'tag') {
@@ -205,9 +208,9 @@ function template_preprocess_tags(&$vars) {
     }
   }
   // First tag is the textfield; all others show up as icons with hidden inputs.
-  $textfield = array(
+  $textfield = [
     'element' => array_shift($vars['tags']),
-  );
+  ];
   $vars['textfield'] = '<input type="text" id="' . $textfield['element']['#id'] . '" name="' . $textfield['element']['#name'] . '" value="' . $textfield['element']['#value'] . '" size="60" class="form-text" />';
 
 }

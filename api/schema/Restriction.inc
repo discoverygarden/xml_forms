@@ -37,13 +37,13 @@ class XMLSchemaRestriction extends XMLSchemaNode {
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
     $base = $node->getAttribute('base');
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'base' => $this->findExtension($base),
       'all' => $this->createChild(XMLSchemaAll::LOCAL_NAME),
       'choice' => $this->createChild(XMLSchemaChoice::LOCAL_NAME),
       'sequence' => $this->createChild(XMLSchemaSequence::LOCAL_NAME),
       'group' => $this->createChild(XMLSchemaGroup::LOCAL_NAME),
-    ));
+    ]);
   }
 
   /**
@@ -62,7 +62,7 @@ class XMLSchemaRestriction extends XMLSchemaNode {
    * @param string $base
    *   Not even used.
    *
-   * @return NULL
+   * @return null
    *   yougetnothing.youlose.gooddaysir.willywonka.gif
    */
   protected function findExtension($base) {

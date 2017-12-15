@@ -49,10 +49,11 @@ class XMLSchemaList extends XMLSchemaNode {
    * @param InsertOrderNode $parent
    *   The parent, with an insert order applied, as an InsertOrderNode.
    *
-   * @return NULL
+   * @return null
    *   What it says on the tin.
    */
   public function asInsertOrderNode(InsertOrderNode $parent = NULL) {
     return NULL;
   }
+
 }

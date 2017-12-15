@@ -30,11 +30,11 @@ class XMLSchemaGroup extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'all' => $this->createType(XMLSchemaAll::LOCAL_NAME),
       'choice' => $this->createType(XMLSchemaChoice::LOCAL_NAME),
       'sequence' => $this->createType(XMLSchemaSequence::LOCAL_NAME),
-    ));
+    ]);
   }
 
   /**

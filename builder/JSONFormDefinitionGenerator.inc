@@ -5,6 +5,8 @@
  * Provides a class that generates the required JSON for Form Builder GUI.
  */
 
+use Drupal\Core\Render\Element;
+
 module_load_include('inc', 'php_lib', 'String');
 
 /**
@@ -50,7 +52,7 @@ class JSONFormDefinitionGenerator {
    * Gets the Form Properties as an array.
    */
   public static function GetPropertiesArray(array $properties) {
-    $namespaces = isset($properties['namespaces']) ? $properties['namespaces'] : array();
+    $namespaces = isset($properties['namespaces']) ? $properties['namespaces'] : [];
     $properties = [
       'localName' => $properties['root_name'],
       'uri' => isset($properties['default_uri']) ? $properties['default_uri'] : NULL,
@@ -102,13 +104,13 @@ class JSONFormDefinitionGenerator {
    */
   protected static function GetElement(array $element, $identifier = NULL) {
     $json = [];
-    foreach (\Drupal\Core\Render\Element::properties($element) as $key) {
+    foreach (Element::properties($element) as $key) {
       // Remove the #.
       $name = trim($key, '#');
       $json[$name] = $element[$key];
     }
     $json['children'] = [];
-    foreach (\Drupal\Core\Render\Element::children($element) as $key) {
+    foreach (Element::children($element) as $key) {
       $json['children'][] = self::GetElement($element[$key], $key);
     }
     // These two are ExtJS specific.

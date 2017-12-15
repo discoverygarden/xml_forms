@@ -9,6 +9,9 @@ use Drupal\Core\Controller\ControllerBase;
  */
 class DefaultController extends ControllerBase {
 
+  /**
+   *
+   */
   public function xml_forms_get_schema($filename) {
     $path = drupal_get_path('module', 'xml_forms') . '/schema';
     $full_filename = "$path/$filename";

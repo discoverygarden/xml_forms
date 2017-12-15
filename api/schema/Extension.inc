@@ -32,14 +32,14 @@ class XMLSchemaExtension extends XMLSchemaNode {
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
     $base = $node->getAttribute('base');
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'base' => $this->findExtension($base),
       'choice' => $this->createChild(XMLSchemaChoice::LOCAL_NAME),
       'sequence' => $this->createChild(XMLSchemaSequence::LOCAL_NAME),
       'group' => $this->createChild(XMLSchemaGroup::LOCAL_NAME),
       // All children in the correct order.
       'children' => $this->createChildren(),
-    ));
+    ]);
   }
 
   /**

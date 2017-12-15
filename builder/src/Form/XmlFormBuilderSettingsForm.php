@@ -1,16 +1,14 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\xml_form_builder\Form\XmlFormBuilderSettingsForm.
- */
-
 namespace Drupal\xml_form_builder\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
+/**
+ *
+ */
 class XmlFormBuilderSettingsForm extends ConfigFormBase {
 
   /**
@@ -45,17 +43,19 @@ class XmlFormBuilderSettingsForm extends ConfigFormBase {
     return ['xml_form_builder.settings'];
   }
 
-  public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  /**
+   *
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [
       'xml_form_builder_use_default_dc_xslts' => [
         '#type' => 'checkbox',
         '#title' => t('Use Default DC XSLTs'),
         '#description' => t('Enable the use of default metadata datastream to DC transforms.'),
         '#default_value' => \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
-      ]
-      ];
+      ],
+    ];
     return parent::buildForm($form, $form_state);
   }
 
 }
-?>

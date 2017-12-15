@@ -13,7 +13,7 @@
  */
 function xml_form_builder_get_default_dc_xslt_mappings() {
   $query = db_select('xml_form_builder_default_xslts', 'mappings')
-    ->fields('mappings', array());
+    ->fields('mappings', []);
 
   return $query->execute()
     ->fetchAllAssoc('id', PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ function xml_form_builder_get_default_dc_xslt_mappings() {
  */
 function xml_form_builder_get_default_dc_xslt_mappings_with_xslt_name() {
   $query = db_select('xml_form_builder_default_xslts', 'mappings')
-    ->fields('mappings', array());
+    ->fields('mappings', []);
 
   $alias = $query->join('xml_form_builder_xslts', 'x', 'x.xslt_id = mappings.xslt_id');
   $query->addField($alias, 'name', 'xslt_name');
@@ -44,7 +44,7 @@ function xml_form_builder_get_default_dc_xslt_mappings_with_xslt_name() {
  */
 function xml_form_builder_get_xslts() {
   $query = db_select('xml_form_builder_xslts', 'XSLTs')
-    ->fields('XSLTs', array());
+    ->fields('XSLTs', []);
 
   return $query->execute()
     ->fetchAllAssoc('xslt_id', PDO::FETCH_ASSOC);
@@ -87,10 +87,10 @@ function xml_form_builder_get_default_transform($content_model, $dsid) {
 function xml_form_builder_add_xslt($transform, $name) {
   return db_insert('xml_form_builder_xslts')
     ->fields(
-      array(
+      [
         'xslt' => $transform,
         'name' => $name,
-      )
+      ]
     )
     ->execute();
 }
@@ -125,12 +125,12 @@ function xml_form_builder_remove_xslt($xslt_id) {
 function xml_form_builder_add_default_dc_transform_mapping($content_model, $dsid, $xslt_id, $name) {
   return db_insert('xml_form_builder_default_xslts')
     ->fields(
-      array(
+      [
         'content_model' => $content_model,
         'dsid' => $dsid,
         'xslt_id' => $xslt_id,
         'name' => $name,
-      )
+      ]
     )
     ->execute();
 }

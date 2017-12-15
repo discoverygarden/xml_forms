@@ -18,12 +18,12 @@ use Drupal\Core\Form\FormStateInterface;
  *   models label.
  */
 function xml_form_builder_select_association_form_get_models(array $associations) {
-  $get_model = function($o) {
+  $get_model = function ($o) {
     return $o['content_model'];
   };
   $models = array_map($get_model, $associations);
   $models = array_unique($models);
-  $get_label = function($o) {
+  $get_label = function ($o) {
     return islandora_object_load($o)->label;
   };
   $model_labels = array_map($get_label, $models);
@@ -40,11 +40,11 @@ function xml_form_builder_select_association_form_get_models(array $associations
  *   An associative array where the keys/value is the form name.
  */
 function xml_form_builder_select_association_form_get_forms(array $associations, $selected_model) {
-  $get_selected_models = function($o) use($selected_model) {
+  $get_selected_models = function ($o) use ($selected_model) {
     return $o['content_model'] == $selected_model;
   };
   $selected_model_associations = array_filter($associations, $get_selected_models);
-  $get_form = function($o) {
+  $get_form = function ($o) {
     return $o['form_name'];
   };
   $forms = array_map($get_form, $selected_model_associations);
@@ -67,13 +67,13 @@ function xml_form_builder_select_association_form_ajax_callback(array $form, arr
     return $form['available_forms'];
   }
   else {
-    return array(
+    return [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#attributes' => array(
+      '#attributes' => [
         'id' => 'forms_wrapper',
-      ),
-    );
+      ],
+    ];
   }
 }
 
@@ -88,7 +88,7 @@ function xml_form_builder_select_association_form_ajax_callback(array $form, arr
  *   The Drupal form state.
  */
 function xml_form_builder_select_association_form_value_callback(array $element, $input, FormStateInterface $form_state) {
-  $association_matches = function($o) use($form_state) {
+  $association_matches = function ($o) use ($form_state) {
     return $o['content_model'] == $form_state->getValue('models') && $o['form_name'] == $form_state->getValue('available_forms');
   };
   $filtered_associations = array_filter($form_state->get('associations'), $association_matches);

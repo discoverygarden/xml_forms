@@ -2,6 +2,7 @@
 
 namespace Drupal\xml_form_builder\Form;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -20,6 +21,9 @@ class XmlFormBuilderPreview extends FormBase {
     return 'xml_form_builder_preview';
   }
 
+  /**
+   *
+   */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form = xml_form_builder_get_form($form, $form_state, $form_name);
     $form['submit'] = [
@@ -29,6 +33,9 @@ class XmlFormBuilderPreview extends FormBase {
     return $form;
   }
 
+  /**
+   *
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_api', 'inc', 'Create');
     try {
@@ -41,7 +48,7 @@ class XmlFormBuilderPreview extends FormBase {
       $message = 'File: ' . $e->getFile() . '</br>';
       $message .= 'Line: ' . $e->getLine() . '</br>';
       $message .= 'Error: ' . $e->getMessage() . '</br>';
-      drupal_set_message(\Drupal\Component\Utility\Xss::filter($message), 'error');
+      drupal_set_message(Xss::filter($message), 'error');
       $form_state->setRebuild(TRUE);
     }
   }

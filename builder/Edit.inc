@@ -14,7 +14,7 @@ function xml_form_builder_edit_include_css() {
   return [
     '#attached' => [
       'library' => ['xml_form_builder/xml-form-builder-css'],
-    ]
+    ],
   ];
 }
 
@@ -25,7 +25,7 @@ function xml_form_builder_edit_include_js() {
   return [
     '#attached' => [
       'library' => ['xml_form_builder/xml-form-builder-js'],
-    ]
+    ],
   ];
 }
 
