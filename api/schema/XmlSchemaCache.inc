@@ -1,16 +1,11 @@
 <?php
 
-use Drupal\Core\Cache\Cache;
+/**
+ * @file
+ * Handles schema caching so that they don't need to be downloaded each request.
+ */
 
-// @FIXME
-// // @FIXME
-// // This looks like another module's variable. You'll need to rewrite this call
-// // to ensure that it uses the correct configuration object.
-// /**
-//  * @file
-//  * Handles schema caching so that they don't need to be downloaded each request.
-//  */
-//
+use Drupal\Core\Cache\Cache;
 
 /**
  * Stores/retrieves schema documents from the file location on disk.
@@ -25,7 +20,7 @@ class XmlSchemaCache {
   const ID = 'xml-schema-table';
   const TYPE = 'cache';
 
-  const LOCATION = 'public://schema';
+  const LOCATION = 'public://schemas';
 
   // @deprecated Constants
   // @codingStandardsIgnoreStart
