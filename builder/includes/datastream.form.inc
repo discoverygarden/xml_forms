@@ -173,7 +173,7 @@ function xml_form_builder_empty_metadata_datastreams($object) {
     }
   }
   $filtered_datastreams = [];
-  foreach (xml_form_builder_get_associations([], $object->models, $datastreams) as $key => $value) {
+  foreach (xml_form_builder_get_associations([], $object->models, $datastreams) as $value) {
     $filtered_datastreams[] = $value['dsid'];
   }
   return $filtered_datastreams;

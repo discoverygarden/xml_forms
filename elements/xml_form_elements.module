@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormState;
 /**
  * Constants.
  */
+// @codingStandardsIgnoreStart
 define('XML_FORM_ELEMENTS_TABS_THEME', 'tabs');
 define('XML_FORM_ELEMENTS_TABS_CONTENT_THEME', 'tabs_content');
 define('XML_FORM_ELEMENTS_TABPANEL_THEME', 'tabpanel');
@@ -30,7 +31,7 @@ define('XML_FORM_ELEMENTS_JQUERY_THEME_PATH', XML_FORM_ELEMENTS_PATH . 'theme/')
 define('XML_FORM_ELEMENTS_JS_PATH', XML_FORM_ELEMENTS_PATH . 'js/');
 define('XML_FORM_ELEMENTS_CSS_PATH', XML_FORM_ELEMENTS_PATH . 'css/');
 define('XML_FORM_ELEMENTS_IMAGES_PATH', XML_FORM_ELEMENTS_PATH . 'images/');
-
+// @codingStandardsIgnoreEnd
 /**
  * Implements hook_element_info_alter().
  */
@@ -229,7 +230,7 @@ function xml_form_elements_form_element_tabs_ajax_add(FormElement $element, arra
     // objective_forms "Form" objects; however, the "Form" object itself does
     // not itself maintain the required state, and so is unable to build the
     // form with the '#hash' values intact.
-    $form_state->setError($element->toArray(), $this->t('Using tabs outside of XML forms is not supported.'));
+    $form_state->setError($element->toArray(), t('Using tabs outside of XML forms is not supported.'));
     return;
   }
 
@@ -560,7 +561,10 @@ function xml_form_elements_creative_commons_value_callback(&$element, $input, Fo
       return $form_state['storage']['xml_form_elements'][$element['#name']]['license_uri'];
     }
     else {
-      extract($input['license_fieldset']);
+      $license_fieldset = $input['license_fieldset'];
+      $allow_commercial = $license_fieldset['allow_commercial'];
+      $allow_modifications = $license_fieldset['allow_modifications'];
+      $license_jurisdiction = $license_fieldset['license_jurisdiction'];
       return xml_form_elements_creative_commons_value($allow_commercial, $allow_modifications, $license_jurisdiction);
     }
   }

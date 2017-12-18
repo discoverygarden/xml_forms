@@ -11,6 +11,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Url;
 
 // Constants.
+// @codingStandardsIgnoreStart
 define('XML_FORM_BUILDER_LIST_FORMS_PERMS', 'List XML Forms');
 define('XML_FORM_BUILDER_CREATE_FORMS_PERMS', 'Create XML Forms');
 define('XML_FORM_BUILDER_EDIT_FORMS_PERMS', 'Edit XML Forms');
@@ -40,7 +41,6 @@ define('XML_FORM_BUILDER_EDIT_DATASTREAM_MENU', 'islandora/edit_form/%islandora_
 // Hooks.
 define('XML_FORM_BUILDER_GET_FORM_MODIFY_DEFINITION_HOOK', 'xml_form_builder_get_form_modify_definition');
 
-// @codingStandardsIgnoreStart
 define('PERM_XML_FORM_BUILDER_LIST_FORMS', XML_FORM_BUILDER_LIST_FORMS_PERMS);
 define('PERM_XML_FORM_BUILDER_CREATE_FORMS', XML_FORM_BUILDER_CREATE_FORMS_PERMS);
 define('PERM_XML_FORM_BUILDER_EDIT_FORMS', XML_FORM_BUILDER_EDIT_FORMS_PERMS);

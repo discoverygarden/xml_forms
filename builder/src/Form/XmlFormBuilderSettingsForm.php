@@ -50,11 +50,11 @@ class XmlFormBuilderSettingsForm extends ConfigFormBase {
     $form = [
       'xml_form_builder_use_default_dc_xslts' => [
         '#type' => 'checkbox',
-        '#title' => t('Use Default DC XSLTs'),
-        '#description' => t('Enable the use of default metadata datastream to DC transforms.'),
-        '#default_value' => \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
-      ],
-    ];
+        '#title' => $this->t('Use Default DC XSLTs'),
+        '#description' => $this->t('Enable the use of default metadata datastream to DC transforms.'),
+        '#default_value' => $this->config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
+      ]
+      ];
     return parent::buildForm($form, $form_state);
   }
 

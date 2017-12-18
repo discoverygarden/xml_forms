@@ -103,7 +103,7 @@ function xml_form_elements_creative_commons($element, &$form_state) {
   }
 
   // Figure out license state.
-  if (!isset($form_state['input'][$element['#name']]) && isset($element['#default_value'])) {
+  if (!isset($form_state->values[$element['#name']]) && isset($element['#default_value'])) {
     // Reversing this array facilitates value_callback mangling by community.
     $default_value_array = array_reverse(explode('/', $element['#default_value']));
     $properties = explode('-', array_pop($default_value_array));
@@ -133,9 +133,9 @@ function xml_form_elements_creative_commons($element, &$form_state) {
     $jurisdiction = empty($default_value_array[1]) ? 'international' : $default_value_array[1];
   }
   else {
-    $derivatives = isset($form_state['input'][$element['#name']]['license_fieldset']['allow_modifications']) ? $form_state['input'][$element['#name']]['license_fieldset']['allow_modifications'] : 'y';
-    $commercial = isset($form_state['input'][$element['#name']]['license_fieldset']['allow_commercial']) ? $form_state['input'][$element['#name']]['license_fieldset']['allow_commercial'] : 'y';
-    $jurisdiction = isset($form_state['input'][$element['#name']]['license_fieldset']['license_jurisdiction']) ? $form_state['input'][$element['#name']]['license_fieldset']['license_jurisdiction'] : 'ca';
+    $derivatives = isset($form_state->values[$element['#name']]['license_fieldset']['allow_modifications']) ? $form_state->values[$element['#name']]['license_fieldset']['allow_modifications'] : 'y';
+    $commercial = isset($form_state->values[$element['#name']]['license_fieldset']['allow_commercial']) ? $form_state->values[$element['#name']]['license_fieldset']['allow_commercial'] : 'y';
+    $jurisdiction = isset($form_state->values[$element['#name']]['license_fieldset']['license_jurisdiction']) ? $form_state->values[$element['#name']]['license_fieldset']['license_jurisdiction'] : 'ca';
   }
 
   // Form elements.
@@ -250,10 +250,11 @@ function xml_form_elements_get_creative_commons($commercial, $derivatives, $juri
   //       ),
   //     )
   //   ));
+  throw new Exception('Not implemented.');
   if ($response->code != 200) {
     return FALSE;
   }
-  return simplexml_load_string($response->data, 'SimpleXMLElement');
+  return simplexml_load_string($response->data);
 }
 
 /**

@@ -44,7 +44,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     };
 
     $associations = array_map($create_table_rows, $associations);
-    $use_default_transforms = \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
+    $use_default_transforms = $this->config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
 
     $header = [
       $this->t('Content model'),

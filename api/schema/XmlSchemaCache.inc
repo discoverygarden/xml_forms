@@ -11,7 +11,7 @@ use Drupal\Core\Cache\Cache;
 //  * Handles schema caching so that they don't need to be downloaded each request.
 //  */
 //
-// define('XML_SCHEMA_API_CACHE_LOCATION', variable_get('file_public_path', \Drupal\Core\DrupalKernel::findSitePath() . '/files') . '/schemas');
+
 /**
  * Stores/retrieves schema documents from the file location on disk.
  *
@@ -24,6 +24,8 @@ class XmlSchemaCache {
    */
   const ID = 'xml-schema-table';
   const TYPE = 'cache';
+
+  const LOCATION = 'public://schema';
 
   // @deprecated Constants
   // @codingStandardsIgnoreStart
@@ -86,10 +88,10 @@ class XmlSchemaCache {
    */
   protected static function ClearCachedFiles() {
     if (self::LocationExists()) {
-      $files = scandir(XML_SCHEMA_API_CACHE_LOCATION);
+      $files = scandir(static::LOCATION);
       foreach ($files as $file) {
         if ($file != "." && $file != "..") {
-          $full_filename = XML_SCHEMA_API_CACHE_LOCATION . "/" . $file;
+          $full_filename = static::LOCATION . "/" . $file;
           if (filetype($full_filename) != "dir") {
             unlink($full_filename);
           }
@@ -97,7 +99,7 @@ class XmlSchemaCache {
       }
       return TRUE;
     }
-    return @mkdir(XML_SCHEMA_API_CACHE_LOCATION, 0775, FALSE);
+    return @mkdir(static::LOCATION, 0775, FALSE);
   }
 
   /**
@@ -111,7 +113,7 @@ class XmlSchemaCache {
    *   unfinished.
    */
   public static function LocationExists($filename = NULL) {
-    $filename = empty($filename) ? XML_SCHEMA_API_CACHE_LOCATION : $filename;
+    $filename = empty($filename) ? static::LOCATION : $filename;
     return file_exists($filename);
   }
 
@@ -179,7 +181,7 @@ class XmlSchemaCache {
   public static function Set($filename, DOMDocument $doc) {
     // Only Creates if none existed.
     if (self::Create()) {
-      $cached_filename = file_create_filename('schema.xsd', XML_SCHEMA_API_CACHE_LOCATION);
+      $cached_filename = file_create_filename('schema.xsd', static::LOCATION);
       if (@$doc->save($cached_filename) != FALSE) {
         $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
         $cache[$filename] = $cached_filename;
