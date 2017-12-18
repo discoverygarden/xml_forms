@@ -14,8 +14,16 @@ module_load_include('inc', 'php_lib', 'DOMHelpers.inc');
  *
  * Also generates additional FormElements for FormElements that represent
  * several DOMNodes.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormGenerator {
+// @codingStandardsIgnoreEnd
 
   /**
    * The form we're generating.
@@ -134,12 +142,12 @@ class XMLFormGenerator {
   /**
    * Registers an array of duplicated elements to an array of nodes.
    *
-   * @see XMLFormGenerator::createDuplicates()
-   *
    * @param array $elements
    *   The array of elements to register.
    * @param array $nodes
    *   The array of nodes to register the elements to.
+   *
+   * @see XMLFormGenerator::createDuplicates()
    */
   protected function registerDuplicates(array $elements, array $nodes) {
     $count = count($elements);

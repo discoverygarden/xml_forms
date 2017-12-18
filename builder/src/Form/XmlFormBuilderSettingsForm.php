@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
 /**
- *
+ * Settings/configuration form.
  */
 class XmlFormBuilderSettingsForm extends ConfigFormBase {
 
@@ -44,7 +44,7 @@ class XmlFormBuilderSettingsForm extends ConfigFormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [
@@ -53,8 +53,8 @@ class XmlFormBuilderSettingsForm extends ConfigFormBase {
         '#title' => $this->t('Use Default DC XSLTs'),
         '#description' => $this->t('Enable the use of default metadata datastream to DC transforms.'),
         '#default_value' => $this->config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts'),
-      ]
-      ];
+      ],
+    ];
     return parent::buildForm($form, $form_state);
   }
 

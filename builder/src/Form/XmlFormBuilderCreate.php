@@ -20,7 +20,7 @@ class XmlFormBuilderCreate extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $type = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'Create');
@@ -107,7 +107,7 @@ class XmlFormBuilderCreate extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');

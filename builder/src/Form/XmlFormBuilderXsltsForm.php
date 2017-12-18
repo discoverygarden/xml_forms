@@ -90,10 +90,11 @@ class XmlFormBuilderXsltsForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/db');
     if (in_array('xslts', $form_state->getTriggeringElement()['#array_parents'])) {
+      $message_set = FALSE;
       foreach ($form_state->getValue('xslts_table') as $uid => $delete) {
         if ($delete) {
           if (xml_form_builder_xslt_is_a_default($uid)) {
-            if (!isset($message_set)) {
+            if (!$message_set) {
               $form_state->setErrorByName('xslts_table', $this->t('Please delete any transforms using the XSLTs first.'));
               $message_set = TRUE;
             }

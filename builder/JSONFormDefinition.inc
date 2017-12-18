@@ -11,8 +11,16 @@ module_load_include('inc', 'php_lib', 'Misc');
 
 /**
  * Given some JSON, it retrieves the form properties and a Drupal form.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormBuilder.info" instead of just "XMLFormBuilder"... ideally, this
+ * should move somewhere under the Drupal\xml_form_builder namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class JSONFormDefinition {
+// @codingStandardsIgnoreEnd
 
   /**
    * Instantiates the JSONForm definition.
@@ -61,8 +69,7 @@ class JSONFormDefinition {
    */
   public function getForm() {
     $root = $this->json->elements[0];
-    list($key, $value) = $this->getElement($root);
-    return $value;
+    return $this->getElement($root)[1];
   }
 
   /**

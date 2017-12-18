@@ -13,8 +13,16 @@ module_load_include('inc', 'xml_form_api', 'XMLDocument');
 
 /**
  * Encapsulates the required data to perform a CRUD action.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormProcessAction {
+// @codingStandardsIgnoreEnd
 
   /**
    * ActionInterface to perform.
@@ -71,8 +79,16 @@ class XMLFormProcessAction {
 
 /**
  * Process the form to generate a Document.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormProcessor {
+// @codingStandardsIgnoreEnd
 
   /**
    * Submitted form values.
@@ -96,6 +112,7 @@ class XMLFormProcessor {
   protected $nodeRegistry;
 
   /**
+   * Registry to access form element information for modifying the document.
    *
    * @var \Drupal\objective_forms\FormElementRegistry
    */
@@ -275,13 +292,13 @@ class XMLFormProcessor {
   /**
    * Filters out elements that are hidden by #access and not to be processed.
    *
-   * @param array $elements
+   * @param \Drupal\objective_forms\FormElement[] $elements
    *   An array containing flattened FormElements.
    *
-   * @return array
+   * @return \Drupal\objective_forms\FormElement[]
    *   An array of filtered FormElements.
    */
-  protected function filterElements($elements) {
+  protected function filterElements(array $elements) {
     $filter_function = function ($filter_element) {
       if (isset($filter_element->controls['#access'])) {
         return $filter_element->controls['#access'];

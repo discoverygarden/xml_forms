@@ -25,7 +25,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations.form');
@@ -163,7 +163,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $object_keys = [

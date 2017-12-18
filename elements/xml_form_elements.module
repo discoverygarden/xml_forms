@@ -32,6 +32,7 @@ define('XML_FORM_ELEMENTS_JS_PATH', XML_FORM_ELEMENTS_PATH . 'js/');
 define('XML_FORM_ELEMENTS_CSS_PATH', XML_FORM_ELEMENTS_PATH . 'css/');
 define('XML_FORM_ELEMENTS_IMAGES_PATH', XML_FORM_ELEMENTS_PATH . 'images/');
 // @codingStandardsIgnoreEnd
+
 /**
  * Implements hook_element_info_alter().
  */
@@ -146,7 +147,7 @@ function xml_form_elements_tags_process(array $element, FormStateInterface $form
  * @return array
  *   The processed element.
  */
-function xml_form_elements_tag_process($element, FormStateInterface $form_state, $complete_form) {
+function xml_form_elements_tag_process(array $element, FormStateInterface $form_state, array $complete_form) {
   $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
   return Tag::Process($element, $form_state, $complete_form);
 }
@@ -164,7 +165,7 @@ function xml_form_elements_tag_process($element, FormStateInterface $form_state,
  * @return array
  *   The processed element.
  */
-function xml_form_elements_datepicker_xml_form_elements_process($element, FormStateInterface $form_state, $complete_form) {
+function xml_form_elements_datepicker_xml_form_elements_process(array $element, FormStateInterface $form_state, array $complete_form) {
   $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Datepicker');
   return Datepicker::Process($element, $form_state, $complete_form);
 }
@@ -180,7 +181,7 @@ function xml_form_elements_datepicker_xml_form_elements_process($element, FormSt
  * @return array
  *   The form element to render in response to the AJAX request.
  */
-function xml_form_elements_ajax_callback($form, FormStateInterface $form_state) {
+function xml_form_elements_ajax_callback(array $form, FormStateInterface $form_state) {
   $form_state->loadInclude('objective_forms', 'inc', 'Utils');
   return find_element($form, $form_state->getTriggeringElement()['#ajax']['params']['render']);
 }
@@ -459,7 +460,7 @@ function xml_form_elements_form_element_tags_ajax_edit(FormElement $element, arr
  * @param array $elements
  *   An array representing the given element.
  */
-function xml_form_elements_default_value_to_markup($elements) {
+function xml_form_elements_default_value_to_markup(array $elements) {
   if (empty($elements['#markup']) && !empty($elements['#default_value'])) {
     $elements['#markup'] = $elements['#default_value'];
   }
@@ -472,7 +473,7 @@ function xml_form_elements_default_value_to_markup($elements) {
  * @param array $elements
  *   An array representing the given element.
  */
-function xml_form_elements_remove_empty_markup($elements) {
+function xml_form_elements_remove_empty_markup(array $elements) {
   $children = Element::children($elements);
   if (!empty($elements['#markup']) || count($children) > 0) {
     return $elements;
@@ -503,7 +504,7 @@ function theme_xml_form_element(&$elements) {
  * @return string
  *   The rendered children if there is markup, nothing otherwise.
  */
-function xml_form_elements_defaultable_markup($children, &$elements) {
+function xml_form_elements_defaultable_markup($children, array &$elements) {
   if (!empty($children)) {
     return $children;
   }
@@ -532,7 +533,7 @@ function xml_form_elements_defaultable_markup($children, &$elements) {
  * @return array
  *   The form element.
  */
-function xml_form_elements_creative_commons_process($element, FormStateInterface $form_state, $complete_form) {
+function xml_form_elements_creative_commons_process(array $element, FormStateInterface $form_state, array $complete_form) {
   $form_state->loadInclude('xml_form_elements', 'inc', 'includes/creative_commons');
   return xml_form_elements_creative_commons($element, $form_state);
 }
@@ -554,7 +555,7 @@ function xml_form_elements_creative_commons_process($element, FormStateInterface
  * @return string
  *   The license URI.
  */
-function xml_form_elements_creative_commons_value_callback(&$element, $input, FormStateInterface $form_state) {
+function xml_form_elements_creative_commons_value_callback(array &$element, array $input, FormStateInterface $form_state) {
   $form_state->loadInclude('xml_form_elements', 'inc', 'includes/creative_commons');
   if (isset($input) && $input && Url::fromRoute("<current>")->toString() != 'system/ajax') {
     if (isset($form_state['storage']['xml_form_elements'][$element['#name']]['license_uri'])) {

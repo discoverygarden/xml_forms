@@ -2,7 +2,7 @@ name: 'Islandora XML Form Builder'
 description: 'Provides an interface for creating, editing, copying, deleting and exporting XML-based forms.'
 package: 'Islandora Tools'
 dependencies:
-  - xml_form_api
+  - :xml_form_api
 core: 8.x
 php: '5.5.9'
 type: module

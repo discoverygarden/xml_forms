@@ -14,8 +14,17 @@ use Drupal\objective_forms\FormElement;
 
 /**
  * Enumerated types for Context.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class ContextType extends Enum {
+// @codingStandardsIgnoreEnd
+
   const __DEFAULT = 'document';
   const DOCUMENT = 'document';
   const PARENT = 'parent';
@@ -32,10 +41,20 @@ class ContextType extends Enum {
 }
 
 /**
+ * Represent the contenxt and facilitate evaluation of the referred node.
+ *
  * Stores the type of context a Path uses, and retrieve the DOMNode a context
  * refers to.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Context {
+// @codingStandardsIgnoreEnd
 
   /**
    * The type of context this class represents.
@@ -67,7 +86,7 @@ class Context {
    */
   public function exists(XMLDocument $document, FormElement $element) {
     try {
-      $node = $this->getNode($document->registry, $element);
+      $this->getNode($document->registry, $element);
       return TRUE;
     }
     catch (XMLFormsContextException $e) {
@@ -168,8 +187,16 @@ class Context {
 
 /**
  * Represents exceptions that can occur when looking for the context DOMNode.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormsContextException extends Exception {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constructor function for the XMLFormsContextException class.
@@ -178,7 +205,7 @@ class XMLFormsContextException extends Exception {
    *   The context type to build an exception for.
    * @param \Drupal\objective_forms\FormElement $element
    *   The form element being referred to when the exception is thrown.
-   * @param Exception $message
+   * @param string $message
    *   The error message to throw.
    */
   public function __construct(ContextType $type, FormElement $element, $message) {
@@ -205,8 +232,16 @@ class XMLFormsContextException extends Exception {
 
 /**
  * Exception for a mis-configured element context definition.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormsContextDefinitionException extends XMLFormsContextException {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constructor function for the XMLFormsContextDefinitionException class.
@@ -227,8 +262,16 @@ class XMLFormsContextDefinitionException extends XMLFormsContextException {
  * The given context DOMNode could not be found.
  *
  * In some cases, this is acceptable; in others, it is not.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormsContextNotFoundException extends XMLFormsContextException {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constructor function for the XMLFormsContextNotFoundException class.

@@ -19,8 +19,16 @@ module_load_include('inc', 'xml_schema_api', 'XmlSchemaCache');
  * Nigel sez: "Ignoring imported documents for the most part, as they are not
  * used much in FGDC; this will be an issue we will need to address in the
  * future."
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLSchema {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constants.
@@ -162,7 +170,6 @@ class XMLSchema {
    *   The full path to the schema.
    */
   protected function getFullPathToSchema($filename) {
-    $doc = new DOMDocument();
     $filename = trim($filename);
     $scheme = parse_url($filename, PHP_URL_SCHEME);
     if ($scheme == 'http') {
@@ -198,7 +205,7 @@ class XMLSchema {
    */
   protected function loadSchema($filename) {
     $this->schema = $this->loadDocument($filename);
-    $this->configureXPath();
+    $this->configureXpath();
     $this->loadIncludedFiles();
     $this->loadImportedFiles();
   }
@@ -232,7 +239,7 @@ class XMLSchema {
   /**
    * Configure this schema's XPath.
    */
-  protected function configureXPath() {
+  protected function configureXpath() {
     $this->xpath = new DOMXPath($this->schema);
     $this->xpath->registerNamespace(self::PREFIX, self::URI);
     $this->registerNamespaces();

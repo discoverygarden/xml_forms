@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
+ * Metadata creation form.
  */
 class XmlFormBuilderCreateMetadataForm extends FormBase {
 

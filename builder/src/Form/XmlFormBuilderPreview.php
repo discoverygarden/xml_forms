@@ -22,7 +22,7 @@ class XmlFormBuilderPreview extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form = xml_form_builder_get_form($form, $form_state, $form_name);
@@ -34,7 +34,7 @@ class XmlFormBuilderPreview extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_api', 'inc', 'Create');

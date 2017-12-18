@@ -9,8 +9,16 @@ module_load_include('inc', 'xml_schema_api', 'Node');
 
 /**
  * Models an <xs:list> DOMElement.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLSchemaList extends XMLSchemaNode {
+// @codingStandardsIgnoreEnd
   /**
    * Constants.
    */
@@ -22,25 +30,13 @@ class XMLSchemaList extends XMLSchemaNode {
   // @codingStandardsIgnoreEnd
 
   /**
-   * Constructor function for the XMLSchemaList class.
-   *
-   * @param XMLSchema $schema
-   *   The schema to use for the DOMElement.
-   * @param DOMElement $node
-   *   The node to use for this instance.
-   */
-  public function __construct(XMLSchema $schema, DOMElement $node) {
-    parent::__construct($schema, $node);
-  }
-
-  /**
    * Returns the local name of this object.
    *
    * @return string
    *   The local name of this object.
    */
   protected function getLocalName() {
-    return self::LOCAL_NAME;
+    return static::LOCAL_NAME;
   }
 
   /**

@@ -19,7 +19,7 @@ class XmlFormBuilderCopy extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'Copy');
@@ -61,7 +61,7 @@ class XmlFormBuilderCopy extends FormBase {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');

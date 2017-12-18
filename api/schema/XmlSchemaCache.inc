@@ -11,8 +11,16 @@ use Drupal\Core\Cache\Cache;
  * Stores/retrieves schema documents from the file location on disk.
  *
  * The mappings of urls to actual files are stored in the Drupal cache.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XmlSchemaCache {
+// @codingStandardsIgnoreEnd
 
   /**
    * The Drupal cache ID where the mappings of urls to actual files are stored.
@@ -33,8 +41,8 @@ class XmlSchemaCache {
    * @return bool
    *   TRUE if the cache exists; FALSE otherwise.
    */
-  public static function Exists() {
-    return \Drupal::cache(self::TYPE)->get(self::ID) && self::LocationExists();
+  public static function exists() {
+    return \Drupal::cache(static::TYPE)->get(static::ID) && static::locationExists();
   }
 
   /**
@@ -43,10 +51,10 @@ class XmlSchemaCache {
    * @return bool
    *   TRUE if the cache was created or already exists; FALSE otherwise.
    */
-  public static function Create() {
-    if (!self::Exists()) {
+  public static function create() {
+    if (!static::Exists()) {
       // Clear will initialize the table and files location.
-      return self::Clear();
+      return static::Clear();
     }
     return TRUE;
   }
@@ -58,18 +66,18 @@ class XmlSchemaCache {
    *   TRUE if the cache was successfully cleared or initialized; FALSE if it
    *   fails.
    */
-  public static function Clear() {
+  public static function clear() {
     // Assumed to always work.
-    self::ClearCacheTable();
-    return self::ClearCachedFiles();
+    static::clearCacheTable();
+    return static::clearCachedFiles();
   }
 
   /**
    * Clears the Cache table.
    */
-  protected static function ClearCacheTable() {
+  protected static function clearCacheTable() {
     // Empty to start with.
-    \Drupal::cache(self::TYPE)->set(self::ID, [], Cache::PERMANENT);
+    \Drupal::cache(static::TYPE)->set(static::ID, [], Cache::PERMANENT);
   }
 
   /**
@@ -81,8 +89,8 @@ class XmlSchemaCache {
    *   TRUE if the cached files were successfully cleared, or if the cached file
    *   location was successfully created.
    */
-  protected static function ClearCachedFiles() {
-    if (self::LocationExists()) {
+  protected static function clearCachedFiles() {
+    if (static::locationExists()) {
       $files = scandir(static::LOCATION);
       foreach ($files as $file) {
         if ($file != "." && $file != "..") {
@@ -107,7 +115,7 @@ class XmlSchemaCache {
    *   TRUE if the cache exists; FALSE otherwise. Hmm ... this comment was also
    *   unfinished.
    */
-  public static function LocationExists($filename = NULL) {
+  public static function locationExists($filename = NULL) {
     $filename = empty($filename) ? static::LOCATION : $filename;
     return file_exists($filename);
   }
@@ -122,15 +130,15 @@ class XmlSchemaCache {
    * @return DOMDocument
    *   The cached DOMDocument if found; FALSE otherwise.
    */
-  public static function Get($filename) {
-    $cached_filename = self::GetCachedFilename($filename);
+  public static function get($filename) {
+    $cached_filename = static::getCachedFilename($filename);
     if ($cached_filename !== FALSE) {
       $doc = new DOMDocument();
       if (!@$doc->load($cached_filename)) {
         // Failed to load clear instance from the cache.
-        $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
+        $cache = \Drupal::cache(static::TYPE)->get(static::ID)->data;
         unset($cache[$filename]);
-        \Drupal::cache(self::TYPE)->set(self::ID, $cache);
+        \Drupal::cache(static::TYPE)->set(static::ID, $cache);
         return FALSE;
       }
       // Success.
@@ -149,17 +157,17 @@ class XmlSchemaCache {
    * @return string
    *   The location of the cached if found; FALSE otherwise.
    */
-  public static function GetCachedFilename($filename) {
+  public static function getCachedFilename($filename) {
     // Only Creates if none existed.
-    if (self::Create()) {
-      $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
+    if (static::create()) {
+      $cache = \Drupal::cache(static::TYPE)->get(static::ID)->data;
       if (isset($filename) && isset($cache[$filename])) {
-        if (self::LocationExists($cache[$filename])) {
+        if (static::LocationExists($cache[$filename])) {
           return $cache[$filename];
         }
         // Failed to find the file clear instance from the cache.
         unset($cache[$filename]);
-        \Drupal::cache(self::TYPE)->set(self::ID, $cache);
+        \Drupal::cache(static::TYPE)->set(static::ID, $cache);
       }
     }
     return FALSE;
@@ -173,14 +181,14 @@ class XmlSchemaCache {
    * @param DOMDocument $doc
    *   The schema file.
    */
-  public static function Set($filename, DOMDocument $doc) {
+  public static function set($filename, DOMDocument $doc) {
     // Only Creates if none existed.
-    if (self::Create()) {
+    if (self::create()) {
       $cached_filename = file_create_filename('schema.xsd', static::LOCATION);
       if (@$doc->save($cached_filename) != FALSE) {
-        $cache = \Drupal::cache(self::TYPE)->get(self::ID)->data;
+        $cache = \Drupal::cache(static::TYPE)->get(static::ID)->data;
         $cache[$filename] = $cached_filename;
-        \Drupal::cache(self::TYPE)->set(self::ID, $cache);
+        \Drupal::cache(static::TYPE)->set(static::ID, $cache);
       }
     }
   }

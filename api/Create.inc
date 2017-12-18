@@ -13,8 +13,16 @@ module_load_include('inc', 'xml_schema_api', 'InsertOrderMap');
 
 /**
  * Create action class for XMLDocuments.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Create implements ActionInterface {
+// @codingStandardsIgnoreEnd
 
   /**
    * Create types.
@@ -272,7 +280,7 @@ class Create implements ActionInterface {
    * @return DOMNode
    *   The DOMNode that is created.
    */
-  protected function createXML(XMLDocument $document, $value) {
+  protected function createXml(XMLDocument $document, DOMElement $value) {
     // Sigh... Oh DOM-API, you're so backwards and useless.
     // We have to do this for namespaces to work correctly; there is no clean
     // workaround for this. User will have to put both the prefix and namespace

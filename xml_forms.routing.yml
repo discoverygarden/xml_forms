@@ -2,6 +2,6 @@ xml_forms.get_schema:
   path: '/schema/{filename}'
   defaults:
     _title: schema
-    _controller: '\Drupal\xml_forms\Controller\DefaultController::xml_forms_get_schema'
+    _controller: '\Drupal\xml_forms\Controller\DefaultController::getSchema'
   requirements:
     _permission: 'access content'

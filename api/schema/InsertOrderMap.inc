@@ -10,8 +10,16 @@ module_load_include('inc', 'xml_schema_api', 'Element');
 
 /**
  * Models Insert order constraints.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 abstract class InsertOrderNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * The parent of this InsertOrderNode.
@@ -96,8 +104,16 @@ abstract class InsertOrderNode {
 
 /**
  * Models a generic compositor constraint (either All, Sequence or Choice).
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 abstract class InsertOrderCompositor extends InsertOrderNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * Child Insert Order Constraints. Compositors can repeat.
@@ -259,64 +275,46 @@ abstract class InsertOrderCompositor extends InsertOrderNode {
 
 /**
  * Models an All InsertOrder constraint.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class InsertOrderAll extends InsertOrderCompositor {
-
-  /**
-   * Create an InsertOrderAll node.
-   *
-   * @param mixed $min
-   *   The minimum bound as an integer, or the string 'unbounded' if none.
-   * @param mixed $max
-   *   The maximum bound as an integer, or the string 'unbounded' if none.
-   * @param InsertOrderCompositor $parent
-   *   The parent InsertOrderCompositor, if it exists.
-   */
-  public function __construct($min, $max, InsertOrderCompositor $parent = NULL) {
-    parent::__construct($min, $max, $parent);
-  }
+// @codingStandardsIgnoreEnd
 
 }
 
 /**
  * Models a Choice InsertOrder constraint.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class InsertOrderChoice extends InsertOrderCompositor {
-
-  /**
-   * Create an InsertOrderChoice node.
-   *
-   * @param mixed $min
-   *   The minimum bound as an integer, or the string 'unbounded' if none.
-   * @param mixed $max
-   *   The maximum bound as an integer, or the string 'unbounded' if none.
-   * @param InsertOrderCompositor $parent
-   *   The parent InsertOrderChoice, if it exists.
-   */
-  public function __construct($min, $max, InsertOrderCompositor $parent = NULL) {
-    parent::__construct($min, $max, $parent);
-  }
+// @codingStandardsIgnoreEnd
 
 }
 
 /**
  * Models a Sequence InsertOrder node.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class InsertOrderSequence extends InsertOrderCompositor {
-
-  /**
-   * Create an InsertOrderSequence node.
-   *
-   * @param mixed $min
-   *   The minimum bound as an integer, or the string 'unbounded' if none.
-   * @param mixed $max
-   *   The maximum bound as an integer, or the string 'unbounded' if none.
-   * @param InsertOrderCompositor $parent
-   *   The parent InsertOrderSequence, if it exists.
-   */
-  public function __construct($min, $max, InsertOrderCompositor $parent = NULL) {
-    parent::__construct($min, $max, $parent);
-  }
+// @codingStandardsIgnoreEnd
 
 }
 
@@ -324,8 +322,16 @@ class InsertOrderSequence extends InsertOrderCompositor {
  * Models the Elements InsertOrder constraint.
  *
  * DOMElements get stored as matches in this Object.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class InsertOrderElement extends InsertOrderNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * The name of the Element that this models.
@@ -439,8 +445,16 @@ class InsertOrderElement extends InsertOrderNode {
  * Models the Any Element constraint.
  *
  * DOMElements get stored as matches in this Object.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class InsertOrderAny extends InsertOrderNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * The names of the elements that this models.
@@ -505,7 +519,7 @@ class InsertOrderAny extends InsertOrderNode {
     $within_min_range = $this->min <= $count;
     // If max is non-numeric its assumed to be 'unbounded'.
     $within_max_range = is_numeric($this->max) ? $count <= $this->max : TRUE;
-    return $within_min_range && $meets_max_range;
+    return $within_min_range && $within_max_range;
   }
 
   /**
@@ -558,8 +572,16 @@ class InsertOrderAny extends InsertOrderNode {
 
 /**
  * A tree-like structure that models where elements can be insert into.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class InsertOrderMap {
+// @codingStandardsIgnoreEnd
 
   /**
    * The schema.

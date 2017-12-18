@@ -8,11 +8,20 @@
 module_load_include('inc', 'php_lib', 'DOMHelpers');
 
 /**
- * Registers the DOMNodes that defined the 'self' context of FormElements. A
- * FormElement can have at most one DOMNode representing its 'self' context, but
- * a DOMNode can represent the 'self' context for multiple FormElements.
+ * Registers the DOMNodes that defined the 'self' context of FormElements.
+ *
+ * A FormElement can have at most one DOMNode representing its 'self' context,
+ * but a DOMNode can represent the 'self' context for multiple FormElements.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class NodeRegistry implements Serializable {
+// @codingStandardsIgnoreEnd
 
   /**
    * A map of FormElements to the DOMNodes that represents its 'self' context.

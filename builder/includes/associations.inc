@@ -55,8 +55,6 @@ function xml_form_builder_get_associations(array $forms = [], array $models = []
 /**
  * Gets an array of all associations stored in the database.
  *
- * @note Constrained by the given parameters.
- *
  * Effectively it works as if each parameter has is and'ed with the others.
  *
  * @param array $forms
@@ -71,6 +69,8 @@ function xml_form_builder_get_associations(array $forms = [], array $models = []
  *
  * @return array
  *   All the associations that match the given constraints.
+ *
+ * @note Constrained by the given parameters.
  */
 function xml_form_builder_get_database_associations(array $forms = [], array $models = [], array $dsids = []) {
   $query = db_select('xml_form_builder_form_associations', 'fa')->fields('fa');
@@ -99,8 +99,6 @@ function xml_form_builder_get_database_associations(array $forms = [], array $mo
 /**
  * Gets an array of all hook defined associations.
  *
- * @note Constrained by the given parameters.
- *
  * @param array $forms
  *   Limit the associations returned to only ones that associate the given
  *   forms.
@@ -115,6 +113,8 @@ function xml_form_builder_get_database_associations(array $forms = [], array $mo
  *
  * @return array
  *   All the associations that match the given constraints.
+ *
+ * @note Constrained by the given parameters.
  */
 function xml_form_builder_get_hook_associations(array $forms = [], array $models = [], array $dsids = [], $only_enabled = TRUE) {
   $associations = \Drupal::moduleHandler()->invokeAll('xml_form_builder_form_associations');
@@ -202,7 +202,7 @@ function xml_form_builder_get_transform_file($transform) {
  * @return DOMDocument
  *   The transformed document.
  */
-function xml_form_builder_transform_document($transform, $source_document) {
+function xml_form_builder_transform_document($transform, DOMDocument $source_document) {
   if ($transform !== NULL) {
     if ($transform instanceof DOMDocument) {
       $xsl = $transform;

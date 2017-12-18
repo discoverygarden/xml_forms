@@ -14,8 +14,16 @@ use Drupal\objective_forms\FormPropertyInterface;
 
 /**
  * Container Class for all actions.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Actions implements FormPropertyInterface {
+// @codingStandardsIgnoreEnd
 
   /**
    * Create one or more DOMNodes in the Document.
@@ -48,10 +56,13 @@ class Actions implements FormPropertyInterface {
   /**
    * Creates and Actions instance.
    *
-   * @param array $value
+   * @param mixed $value
    *   Array of property values that can be set.
    */
   public function __construct($value) {
+    if (!is_array($value)) {
+      throw new InvalidArgumentException(\Drupal::t('The "$value" parameter to Actions must be an array.'));
+    }
     if (isset($value['create']) && is_array($value['create'])) {
       $this->create = new Create($value['create']);
     }

@@ -11,8 +11,16 @@ module_load_include('inc', 'php_lib', 'String');
 
 /**
  * Generates two JSON strings that can be used by the Form Builder GUI.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormBuilder.info" instead of just "XMLFormBuilder"... ideally, this
+ * should move somewhere under the Drupal\xml_form_builder namespace at
+ * somepoint... because of this, we've left it with only the original
+ * "XMLForm" prefix, to avoid having to carry through the change.
  */
 class JSONFormDefinitionGenerator {
+// @codingStandardsIgnoreEnd
 
   /**
    * Creates an array that contains two JSON strings.
@@ -29,9 +37,9 @@ class JSONFormDefinitionGenerator {
    *   properties and the second value is a JSON string that describes the
    *   Drupal form, e.g. array($properties, $form).
    */
-  public static function Create(array &$properties, array &$form) {
-    $properties = self::GetProperties($properties);
-    $form = self::GetForm($form);
+  public static function create(array &$properties, array &$form) {
+    $properties = static::getProperties($properties);
+    $form = static::getForm($form);
     return [$properties, $form];
   }
 
@@ -44,14 +52,14 @@ class JSONFormDefinitionGenerator {
    * @return string
    *   The JSON representation of the Form Properties.
    */
-  public static function GetProperties(array $properties) {
-    return json_encode(self::GetPropertiesArray($properties));
+  public static function getProperties(array $properties) {
+    return json_encode(static::getPropertiesArray($properties));
   }
 
   /**
    * Gets the Form Properties as an array.
    */
-  public static function GetPropertiesArray(array $properties) {
+  public static function getPropertiesArray(array $properties) {
     $namespaces = isset($properties['namespaces']) ? $properties['namespaces'] : [];
     $properties = [
       'localName' => $properties['root_name'],
@@ -71,20 +79,20 @@ class JSONFormDefinitionGenerator {
    * @return string
    *   The JSON representation of the Drupal Form.
    */
-  public static function GetForm(array $form) {
-    return json_encode(self::GetFormArray($form));
+  public static function getForm(array $form) {
+    return json_encode(static::getFormArray($form));
   }
 
   /**
    * Gets the Drupal Form as an array.
    */
-  public static function GetFormArray(array $form) {
+  public static function getFormArray(array $form) {
     $elements = [
       'key' => 'Root',
       'text' => 'Elements',
       'children' => [],
     ];
-    $elements = self::GetElement($form);
+    $elements = static::getElement($form);
     $elements['key'] = empty($elements['key']) ? 'Root' : $elements['key'];
     $elements['text'] = "{$elements['key']} ({$elements['type']})";
     return ['expanded' => TRUE, 'children' => $elements];
@@ -102,7 +110,7 @@ class JSONFormDefinitionGenerator {
    *   An array that represents a ExtJS JSON object that represents the Drupal
    *   Form Element.
    */
-  protected static function GetElement(array $element, $identifier = NULL) {
+  protected static function getElement(array $element, $identifier = NULL) {
     $json = [];
     foreach (Element::properties($element) as $key) {
       // Remove the #.
@@ -111,7 +119,7 @@ class JSONFormDefinitionGenerator {
     }
     $json['children'] = [];
     foreach (Element::children($element) as $key) {
-      $json['children'][] = self::GetElement($element[$key], $key);
+      $json['children'][] = static::getElement($element[$key], $key);
     }
     // These two are ExtJS specific.
     $json['key'] = $identifier;

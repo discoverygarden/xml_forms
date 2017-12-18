@@ -12,8 +12,16 @@ module_load_include('inc', 'xml_schema_api', 'SimpleType');
 
 /**
  * Models an <xs:element> DOMElement.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLSchemaAny extends XMLSchemaNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constants.
@@ -27,10 +35,16 @@ class XMLSchemaAny extends XMLSchemaNode {
    *   The schema to use for the DOMElement.
    * @param DOMElement $node
    *   The node to use for this instance.
+   *
+   * @codingStandardsIgnoreStart
+   * XXX: Flagged as a "possibly useless override; however, rolls with a NULL
+   * default... Could potentially get into a weird situation if it was ever
+   * used? The call to the parent with a NULL may break things.
    */
   public function __construct(XMLSchema $schema, DOMElement $node = NULL) {
     parent::__construct($schema, $node);
   }
+  // @codingStandardsIgnoreEnd
 
   /**
    * Returns the local name of this object.

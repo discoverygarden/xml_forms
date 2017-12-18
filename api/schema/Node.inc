@@ -10,8 +10,16 @@ module_load_include('inc', 'php_lib', 'LazyMembers');
 
 /**
  * Contains functions common to the all schema element tags.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 abstract class XMLSchemaNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * Array of DOMElement nodes.

@@ -1,3 +1,4 @@
+// @codingStandardsIgnoreFile
 For the sake of convenience, GML 3.2 XML schemas (version 19136 DIS - 2005 november) are (temporarily) provided with the 19139 set of schemas. The following changes were applied to the GML schemas to enable locale referencing:
 
 -1- "referenceSystems.xsd" :

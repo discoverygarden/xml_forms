@@ -23,7 +23,7 @@ use Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm;
  * @return array
  *   An array of found associations.
  */
-function xml_form_builder_datastream_form_get_associations(FormStateInterface $form_state, $models, $dsid) {
+function xml_form_builder_datastream_form_get_associations(FormStateInterface $form_state, array $models, $dsid) {
   module_load_include('inc', 'xml_form_builder', 'includes/associations');
   if ($form_state->get('associations')) {
     return $form_state->get('associations');
