@@ -5,8 +5,9 @@ namespace Drupal\xml_form_builder\Controller;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
-use Drupal\Core\Render\Renderer;
+use Drupal\Core\Render\RendererInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use XMLFormRepository;
 use AbstractObject;
@@ -16,12 +17,17 @@ use AbstractObject;
  */
 class DefaultController extends ControllerBase {
 
+  /**
+   * Rendering service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
   protected $renderer;
 
   /**
    * Constructor for dependency injection.
    */
-  public function __construct(Renderer $renderer) {
+  public function __construct(RendererInterface $renderer) {
     $this->renderer = $renderer;
   }
 
@@ -30,7 +36,7 @@ class DefaultController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('renderer'),
+      $container->get('renderer')
     );
   }
 
