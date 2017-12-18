@@ -5,11 +5,12 @@
  * Action class.
  */
 
-module_load_include('inc', 'objective_forms', 'FormPropertyInterface');
 module_load_include('inc', 'xml_form_api', 'Create');
 module_load_include('inc', 'xml_form_api', 'Read');
 module_load_include('inc', 'xml_form_api', 'Update');
 module_load_include('inc', 'xml_form_api', 'Delete');
+
+use Drupal\objective_forms\FormPropertyInterface;
 
 /**
  * Container Class for all actions.
