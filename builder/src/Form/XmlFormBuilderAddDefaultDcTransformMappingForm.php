@@ -5,7 +5,6 @@ namespace Drupal\xml_form_builder\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-
 /**
  * Add a default DC transform form.
  */

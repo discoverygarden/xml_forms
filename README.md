@@ -76,7 +76,8 @@ for further information.
 
 ## Configuration
 
-Create and import forms at Administration » Form Builder (admin/islandora/xmlform).
+Create and import forms at Administration » Form Builder
+(admin/islandora/xmlform).
 
 ![image](https://cloud.githubusercontent.com/assets/2371345/9818577/b47086fe-587f-11e5-919c-fd98c5d637b6.png)
 

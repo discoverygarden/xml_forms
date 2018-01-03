@@ -1,3 +1,4 @@
+// @codingStandardsIgnoreFile
 Ext.formbuilder.elementTypeStore = Ext.data.Store({
   storeId: 'ElementTypes',
   fields: ['display', 'value'],

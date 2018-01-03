@@ -7,7 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 /**
  * Add an XSLT form.
  */
@@ -55,9 +54,9 @@ class XmlFormBuilderAddXsltForm extends FormBase {
       '#title' => $this->t('XSLT'),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          'xsl xslt'
-          ]
+          'xsl xslt',
         ],
+      ],
     ];
 
     $form['submit'] = [

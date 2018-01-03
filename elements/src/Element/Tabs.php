@@ -12,6 +12,9 @@ use Drupal\Core\Render\Element\FormElement;
  */
 class Tabs extends FormElement {
 
+  /**
+   *
+   */
   public function getInfo() {
     $info = [
       '#input' => TRUE,
@@ -24,6 +27,10 @@ class Tabs extends FormElement {
     return $info;
   }
 
+  /**
+   *
+   */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
   }
+
 }

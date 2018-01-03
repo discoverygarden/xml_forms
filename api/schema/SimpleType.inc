@@ -13,8 +13,16 @@ module_load_include('inc', 'xml_schema_api', 'Restriction');
 
 /**
  * Models an <xs:simpleType> DOMElement.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLSchemaSimpleType extends XMLSchemaNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constants.
@@ -36,11 +44,11 @@ class XMLSchemaSimpleType extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $this->protected->addMembers(array(
+    $this->protected->addMembers([
       'restriction' => $this->createChild(XMLSchemaRestriction::LOCAL_NAME),
       'list' => $this->createChild(XMLSchemaList::LOCAL_NAME),
       'union' => $this->createChild(XMLSchemaUnion::LOCAL_NAME),
-    ));
+    ]);
   }
 
   /**
@@ -59,7 +67,7 @@ class XMLSchemaSimpleType extends XMLSchemaNode {
    * @param InsertOrderNode $parent
    *   Mainly there because it's in the abstraction. Won't do a thing.
    *
-   * @return NULL
+   * @return null
    *   Always null.
    */
   public function asInsertOrderNode(InsertOrderNode $parent = NULL) {

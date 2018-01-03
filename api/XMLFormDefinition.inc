@@ -15,8 +15,16 @@ module_load_include('inc', 'php_lib', 'Array');
 
 /**
  * The version number and related transforms/schemas of an XMLFormDefinition.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormDefinitionVersion {
+// @codingStandardsIgnoreEnd
 
   /**
    * The version which this class represents.
@@ -41,7 +49,7 @@ class XMLFormDefinitionVersion {
    * @return string
    *   Exactly what you'd expect.
    */
-  public static function getPathToXSLTransformDirectory() {
+  public static function getPathToXslTransformDirectory() {
     return drupal_get_path('module', 'xml_form_api') . '/data/transforms';
   }
 
@@ -55,8 +63,8 @@ class XMLFormDefinitionVersion {
   public static function getAllVersions() {
     static $versions = NULL;
     if (empty($versions)) {
-      $versions = array();
-      $path = self::getPathToSchemaDefinitionDirectory();
+      $versions = [];
+      $path = static::getPathToSchemaDefinitionDirectory();
       $files = scandir($path);
       foreach ($files as $filename) {
         if (preg_match('/^.*\.xsd$/', $filename)) {
@@ -82,7 +90,7 @@ class XMLFormDefinitionVersion {
    *   TRUE if the version is valid; FALSE otherwise.
    */
   public static function isValid($version) {
-    $versions = self::getAllVersions();
+    $versions = static::getAllVersions();
     return array_search($version, $versions) !== FALSE;
   }
 
@@ -93,7 +101,7 @@ class XMLFormDefinitionVersion {
    *   The latest version number.
    */
   public static function getLatestVersion() {
-    $versions = self::getAllVersions();
+    $versions = static::getAllVersions();
     $latest_version = array_pop($versions);
     return new XMLFormDefinitionVersion($latest_version);
   }
@@ -113,17 +121,17 @@ class XMLFormDefinitionVersion {
     $declares_version = $definition->documentElement->hasAttribute('version');
     if ($declares_version) {
       $version = (int) $definition->documentElement->getAttribute('version');
-      return self::isValid($definition, $version);
+      return static::isValid($definition, $version);
     }
     else {
       // Files with a version of 0 or 1 may not have their version declared.
       // This checks manually to confirm in these cases.
-      $undeclared_versions = array(
+      $undeclared_versions = [
         new XMLFormDefinitionVersion(0),
         new XMLFormDefinitionVersion(1),
-      );
+      ];
       foreach ($undeclared_versions as $version) {
-        if (self::isValid($definition, $version)) {
+        if (static::isValid($definition, $version)) {
           return $version;
         }
       }
@@ -139,7 +147,7 @@ class XMLFormDefinitionVersion {
    *   The XML Form Definition Schema number.
    */
   public function __construct($version) {
-    if (self::isValid($version)) {
+    if (static::isValid($version)) {
       $this->version = $version;
     }
   }
@@ -161,7 +169,7 @@ class XMLFormDefinitionVersion {
    *   The next version number if given is not the latest; FALSE otherwise.
    */
   public function getNextVersion() {
-    $versions = self::getAllVersions();
+    $versions = static::getAllVersions();
     $position = array_search($this->get(), $versions);
     $next_position = ++$position;
     if (isset($versions[$next_position])) {
@@ -178,7 +186,7 @@ class XMLFormDefinitionVersion {
    *   TRUE if it is the latest, FALSE otherwise.
    */
   public function isLatestVersion() {
-    $latest = self::getLatestVersion();
+    $latest = static::getLatestVersion();
     return $this->get() == $latest->get();
   }
 
@@ -189,7 +197,7 @@ class XMLFormDefinitionVersion {
    *   The schema filename.
    */
   public function getSchemaFileName() {
-    $path = self::getPathToSchemaDefinitionDirectory();
+    $path = static::getPathToSchemaDefinitionDirectory();
     return $path . '/' . $this->version . '.xsd';
   }
 
@@ -200,7 +208,7 @@ class XMLFormDefinitionVersion {
    *   The transform filename.
    */
   public function getTransformFileName() {
-    $path = self::getPathToXSLTransformDirectory();
+    $path = static::getPathToXslTransformDirectory();
     return $path . '/' . $this->version . '.xsl';
   }
 
@@ -229,8 +237,16 @@ class XMLFormDefinitionVersion {
 
 /**
  * Validates and transforms XML Form Definitions into Drupal form arrays.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormDefinition {
+// @codingStandardsIgnoreEnd
 
   /**
    * The DOMDocument that represents the Form Definition.
@@ -244,14 +260,14 @@ class XMLFormDefinition {
    *
    * Also validates the document against that version number.
    *
-   * @throws Exception
-   *  If the Version can not be determined or if the definition is not valid.
-   *
    * @param DOMDocument $definition
    *   The XML Form Definition.
    *
    * @return float
    *   The version of the XML Form Definition, or FALSE if invalid.
+   *
+   * @throws Exception
+   *   If the Version can not be determined or if the definition is not valid.
    */
   public static function getVersion(DOMDocument $definition) {
     if (empty($definition->documentElement)) {
@@ -261,7 +277,7 @@ class XMLFormDefinition {
     if ($declares_version) {
       $version = (int) $definition->documentElement->getAttribute('version');
       $version = new XMLFormDefinitionVersion($version);
-      if (self::isValid($definition, $version)) {
+      if (static::isValid($definition, $version)) {
         return $version;
       }
       throw new Exception(t('XML form definition is not valid.'));
@@ -269,12 +285,12 @@ class XMLFormDefinition {
     else {
       // Files with a version of 0 or 1 may not have their version declared.
       // Check manually to see if this is the case.
-      $undeclared_versions = array(
+      $undeclared_versions = [
         new XMLFormDefinitionVersion(0),
         new XMLFormDefinitionVersion(1),
-      );
+      ];
       foreach ($undeclared_versions as $version) {
-        if (self::isValid($definition, $version)) {
+        if (static::isValid($definition, $version)) {
           return $version;
         }
       }
@@ -312,7 +328,7 @@ class XMLFormDefinition {
    *   The upgraded version of the XML Form Definition.
    */
   public static function upgradeVersion(DOMDocument &$definition) {
-    $current = self::getVersion($definition);
+    $current = static::getVersion($definition);
     $next = $current->getNextVersion();
     if ($next) {
       // There exists a version to upgrade to.
@@ -335,7 +351,7 @@ class XMLFormDefinition {
    */
   public static function upgradeToLatestVersion(DOMDocument $definition) {
     do {
-      $version = self::upgradeVersion($definition);
+      $version = static::upgradeVersion($definition);
     } while (!$version->isLatestVersion());
     return $definition;
   }
@@ -350,8 +366,8 @@ class XMLFormDefinition {
    *   If the form definition is invalid.
    */
   public function __construct(DOMDocument $definition) {
-    $this->definition = self::upgradeToLatestVersion($definition);
-    if (!self::isValid($this->definition)) {
+    $this->definition = static::upgradeToLatestVersion($definition);
+    if (!static::isValid($this->definition)) {
       throw new Exception('Unable to create XMLFormDefinition.');
     }
   }
@@ -387,7 +403,7 @@ class XMLFormDefinition {
    * @return XMLDocument
    *   An initialized XMLDocument.
    */
-  public function createXMLDocument($xml = NULL) {
+  public function createXmlDocument($xml = NULL) {
     module_load_include('inc', 'xml_form_api', 'XMLDocument');
     $properties = $this->getProperties();
     // @todo change to name.
@@ -405,12 +421,12 @@ class XMLFormDefinition {
    *   The extracted properties from the XML Form Definition.
    */
   public function getProperties() {
-    $paths = array(
+    $paths = [
       'root_name' => '/definition/properties/root_name',
       'default_uri' => '/definition/properties/namespaces/@default',
       'schema_uri' => '/definition/properties/schema_uri',
-    );
-    $properties = array();
+    ];
+    $properties = [];
     $xpath = new DOMXPath($this->definition);
     foreach ($paths as $key => $path) {
       $results = $xpath->query($path);
@@ -452,11 +468,11 @@ class XMLFormDefinition {
    *   The Drupal representation of this element's properties declaration.
    */
   protected function getElementProperties(SimpleXMLElement $element) {
-    $output = array();
+    $output = [];
     if (isset($element->properties)) {
       $properties = $element->properties->children();
       foreach ($properties as $property) {
-        $name = self::getElementPropertyName($property);
+        $name = static::getElementPropertyName($property);
         $output["#$name"] = $this->getElementProperty($property);
       }
     }
@@ -483,7 +499,7 @@ class XMLFormDefinition {
       // in forms. Remove this at some point.
       return $type === 'datepicker' ? XML_FORM_ELEMENTS_DATEPICKER_THEME : $type;
     }
-    $output = array();
+    $output = [];
     foreach ($children as $child) {
       $name = cast_string_to_type((string) $this->getElementPropertyName($child));
       $output[$name] = $this->getElementProperty($child);
@@ -518,7 +534,7 @@ class XMLFormDefinition {
    *   All the transformed child declarations.
    */
   protected function getElementChildren(SimpleXMLElement $element) {
-    $output = array();
+    $output = [];
     if (isset($element->children)) {
       $elements = $element->children->children();
       foreach ($elements as $element) {
@@ -533,8 +549,16 @@ class XMLFormDefinition {
 
 /**
  * Creates an XML Form Definition from a Drupal form and an array of properties.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormDefinitionGenerator {
+// @codingStandardsIgnoreEnd
 
   /**
    * Creates a DOMDocument that defines an XML Form.
@@ -547,12 +571,12 @@ class XMLFormDefinitionGenerator {
    * @return DOMDocument
    *   An XML Form Definition.
    */
-  public static function Create(array &$properties, array &$form) {
+  public static function create(array &$properties, array &$form) {
     $latest = XMLFormDefinitionVersion::getLatestVersion();
     $definition = new SimpleXMLElement("<definition xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' version='{$latest->get()}'/>");
-    self::AddProperties($definition, $properties);
+    static::addProperties($definition, $properties);
     // @todo no registry defined...
-    self::AddElement($definition->addChild('form'), new FormElement(NULL, $form));
+    static::addElement($definition->addChild('form'), new FormElement(NULL, $form));
     $xml = $definition->asXML();
     $definition = new DOMDocument();
     $definition->loadXML($xml);
@@ -567,7 +591,7 @@ class XMLFormDefinitionGenerator {
    * @param array $properties
    *   The form properties.
    */
-  protected static function AddProperties(SimpleXMLElement $definition, array &$properties) {
+  protected static function addProperties(SimpleXMLElement $definition, array &$properties) {
     $form_properties = $definition->addChild('properties');
     if (isset($properties['root_name'])) {
       $form_properties->addChild('root_name', $properties['root_name']);
@@ -592,19 +616,19 @@ class XMLFormDefinitionGenerator {
    *
    * @param SimpleXMLElement $parent
    *   The parent element to add the new element to.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to add.
    */
-  protected static function AddElement(SimpleXMLElement $parent, FormElement $element) {
+  protected static function addElement(SimpleXMLElement $parent, FormElement $element) {
     $properties = $parent->addChild('properties');
     foreach ($element->controls as $key => $value) {
-      self::AddElementProperty($properties, $key, $value);
+      static::addElementProperty($properties, $key, $value);
     }
     $children = $parent->addChild('children');
     foreach ($element->children as $key => $child) {
       $element = $children->addChild('element');
       $element->addAttribute('name', $key);
-      self::AddElement($element, $child);
+      static::addElement($element, $child);
     }
   }
 
@@ -618,9 +642,9 @@ class XMLFormDefinitionGenerator {
    * @param mixed $value
    *   The property's value.
    */
-  protected static function AddElementProperty(SimpleXMLElement $properties, $key, $value) {
-    $property = self::CreateElementProperty($properties, $key);
-    self::SetElementProperty($property, $value);
+  protected static function addElementProperty(SimpleXMLElement $properties, $key, $value) {
+    $property = static::createElementProperty($properties, $key);
+    static::setElementProperty($property, $value);
   }
 
   /**
@@ -634,9 +658,9 @@ class XMLFormDefinitionGenerator {
    * @return SimpleXMLElement
    *   The created Element Property.
    */
-  protected static function CreateElementProperty(SimpleXMLElement $properties, $key) {
+  protected static function createElementProperty(SimpleXMLElement $properties, $key) {
     $key = trim($key, '#');
-    if (!self::IsValidXMLTag($key)) {
+    if (!static::isValidXmlTag($key)) {
       $property = $properties->addChild('index');
       $property->addAttribute('key', cast_type_to_string($key));
       return $property;
@@ -652,11 +676,11 @@ class XMLFormDefinitionGenerator {
    * @param mixed $value
    *   The value to assign to the $property.
    */
-  protected static function SetElementProperty(SimpleXMLElement $property, $value) {
+  protected static function setElementProperty(SimpleXMLElement $property, $value) {
     $value = ($value instanceof FormPropertyInterface) ? $value->toDrupalForm() : $value;
     if (is_array($value)) {
       foreach ($value as $key => $item) {
-        self::AddElementProperty($property, $key, $item);
+        static::addElementProperty($property, $key, $item);
       }
     }
     else {
@@ -675,7 +699,7 @@ class XMLFormDefinitionGenerator {
    * @return bool
    *   TRUE if the name is valid FALSE otherwise.
    */
-  protected static function IsValidXMLTag($tag_name) {
+  protected static function isValidXmlTag($tag_name) {
     // Start [A-Z] | "_" | [a-z].
     // Everything else is start plus | "-" | "." | [0-9].
     return (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $tag_name) > 0) ? TRUE : FALSE;

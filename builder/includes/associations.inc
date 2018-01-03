@@ -19,7 +19,7 @@
  *   The requested association if it exists, FALSE otherwise.
  */
 function xml_form_builder_get_association($id) {
-  $associations = xml_form_builder_get_associations(array(), array(), array(), FALSE);
+  $associations = xml_form_builder_get_associations([], [], [], FALSE);
   foreach ($associations as $association) {
     if ($association['id'] == $id) {
       return $association;
@@ -46,7 +46,7 @@ function xml_form_builder_get_association($id) {
  * @return array
  *   All the associations that match the given constraints.
  */
-function xml_form_builder_get_associations(array $forms = array(), array $models = array(), array $dsids = array(), $only_enabled = TRUE) {
+function xml_form_builder_get_associations(array $forms = [], array $models = [], array $dsids = [], $only_enabled = TRUE) {
   $associations = xml_form_builder_get_database_associations($forms, $models, $dsids);
   $associations = array_merge($associations, xml_form_builder_get_hook_associations($forms, $models, $dsids, $only_enabled));
   return $associations;
@@ -54,8 +54,6 @@ function xml_form_builder_get_associations(array $forms = array(), array $models
 
 /**
  * Gets an array of all associations stored in the database.
- *
- * @note Constrained by the given parameters.
  *
  * Effectively it works as if each parameter has is and'ed with the others.
  *
@@ -71,10 +69,12 @@ function xml_form_builder_get_associations(array $forms = array(), array $models
  *
  * @return array
  *   All the associations that match the given constraints.
+ *
+ * @note Constrained by the given parameters.
  */
-function xml_form_builder_get_database_associations(array $forms = array(), array $models = array(), array $dsids = array()) {
+function xml_form_builder_get_database_associations(array $forms = [], array $models = [], array $dsids = []) {
   $query = db_select('xml_form_builder_form_associations', 'fa')->fields('fa');
-  $add_conditions = function($query, $label, array $values) {
+  $add_conditions = function ($query, $label, array $values) {
     if (!empty($values)) {
       $conditions = db_or();
       foreach ($values as $value) {
@@ -86,7 +86,7 @@ function xml_form_builder_get_database_associations(array $forms = array(), arra
   $add_conditions($query, 'form_name', $forms);
   $add_conditions($query, 'content_model', $models);
   $add_conditions($query, 'dsid', $dsids);
-  $associations = array();
+  $associations = [];
   foreach ($query->execute() as $result) {
     $result->title_field = unserialize($result->title_field);
     $associations[$result->id] = (array) $result;
@@ -98,8 +98,6 @@ function xml_form_builder_get_database_associations(array $forms = array(), arra
 
 /**
  * Gets an array of all hook defined associations.
- *
- * @note Constrained by the given parameters.
  *
  * @param array $forms
  *   Limit the associations returned to only ones that associate the given
@@ -115,14 +113,16 @@ function xml_form_builder_get_database_associations(array $forms = array(), arra
  *
  * @return array
  *   All the associations that match the given constraints.
+ *
+ * @note Constrained by the given parameters.
  */
-function xml_form_builder_get_hook_associations(array $forms = array(), array $models = array(), array $dsids = array(), $only_enabled = TRUE) {
+function xml_form_builder_get_hook_associations(array $forms = [], array $models = [], array $dsids = [], $only_enabled = TRUE) {
   $associations = \Drupal::moduleHandler()->invokeAll('xml_form_builder_form_associations');
   // @todo Remove (deprecated) invokation if
   // "islandora_xml_form_builder_form_associations".
   $associations += \Drupal::moduleHandler()->invokeAll('islandora_xml_form_builder_form_associations');
   // Filter associations based on given parameters.
-  $filtered_associations = array();
+  $filtered_associations = [];
   foreach ($associations as $id => $association) {
     $association['id'] = $id;
     $exclude = !empty($forms) && !in_array($association['form_name'], $forms);
@@ -145,7 +145,7 @@ function xml_form_builder_get_hook_associations(array $forms = array(), array $m
   }
   // Only include enabled associations.
   if ($only_enabled) {
-    $filtered_associations = array_filter($filtered_associations, function($o) {
+    $filtered_associations = array_filter($filtered_associations, function ($o) {
       return $o['enabled'];
     });
   }
@@ -169,7 +169,6 @@ function xml_form_builder_get_self_transforms() {
   $tranforms['No Transform'] = 'No Transform';
   return $tranforms;
 }
-
 
 /**
  * Gets the path to the transform identified by the given transform name.
@@ -203,7 +202,7 @@ function xml_form_builder_get_transform_file($transform) {
  * @return DOMDocument
  *   The transformed document.
  */
-function xml_form_builder_transform_document($transform, $source_document) {
+function xml_form_builder_transform_document($transform, DOMDocument $source_document) {
   if ($transform !== NULL) {
     if ($transform instanceof DOMDocument) {
       $xsl = $transform;
@@ -229,7 +228,7 @@ function xml_form_builder_transform_document($transform, $source_document) {
  */
 function xml_form_builder_xml_form_builder_get_transforms() {
   $p = drupal_get_path('module', 'xml_form_builder');
-  $transforms = array();
+  $transforms = [];
   $include_path = "$p/transforms";
   $dir = opendir($include_path);
   if ($dir !== FALSE) {
@@ -250,7 +249,7 @@ function xml_form_builder_xml_form_builder_get_transforms() {
  */
 function xml_form_builder_xml_form_builder_get_self_transforms() {
   $path = drupal_get_path('module', 'xml_form_builder');
-  $transforms = array();
+  $transforms = [];
   $include_path = "$path/self_transforms";
   $dir = opendir($include_path);
   if ($dir !== FALSE) {

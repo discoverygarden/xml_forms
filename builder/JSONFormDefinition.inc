@@ -11,8 +11,16 @@ module_load_include('inc', 'php_lib', 'Misc');
 
 /**
  * Given some JSON, it retrieves the form properties and a Drupal form.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormBuilder.info" instead of just "XMLFormBuilder"... ideally, this
+ * should move somewhere under the Drupal\xml_form_builder namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class JSONFormDefinition {
+// @codingStandardsIgnoreEnd
 
   /**
    * Instantiates the JSONForm definition.
@@ -61,8 +69,7 @@ class JSONFormDefinition {
    */
   public function getForm() {
     $root = $this->json->elements[0];
-    list($key, $value) = $this->getElement($root);
-    return $value;
+    return $this->getElement($root)[1];
   }
 
   /**
@@ -91,7 +98,7 @@ class JSONFormDefinition {
    *   A Drupal representation of form element's properties.
    */
   protected function getElementProperties(stdClass $element) {
-    $ignore = array(
+    $ignore = [
       'key',
       'text',
       'root',
@@ -117,7 +124,7 @@ class JSONFormDefinition {
       'allowDrag',
       'loaded',
       'loading',
-    );
+    ];
     $controls = [];
     foreach ($element as $key => $value) {
       // Is it a control, or should the element be ignored?
@@ -166,7 +173,7 @@ class JSONFormDefinition {
    *   TRUE if the property name and its value are valid.
    */
   protected function validateProperty($name, $value) {
-    $controls = array(
+    $controls = [
       'type' => 'is_non_empty_string',
       'access' => 'is_bool',
       'after_build' => 'is_non_empty_array',
@@ -210,7 +217,7 @@ class JSONFormDefinition {
       'weight' => 'is_numeric',
       'user_data' => 'is_non_empty_array',
       'actions' => 'is_non_empty_array',
-    );
+    ];
     $value = is_object($value) ? object_as_array($value) : $value;
     if (isset($controls[$name])) {
       return call_user_func($controls[$name], $value);

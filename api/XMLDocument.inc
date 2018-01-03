@@ -12,8 +12,16 @@ module_load_include('inc', 'php_lib', 'String');
 
 /**
  * Class XMLDocument.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLDocument {
+// @codingStandardsIgnoreEnd
 
   /**
    * The state of the document when this object is put to sleep.
@@ -90,14 +98,14 @@ class XMLDocument {
    */
   public function __sleep() {
     $this->xml = $this->document->saveXML();
-    return array('namespaces', 'schema', 'registry', 'xml');
+    return ['namespaces', 'schema', 'registry', 'xml'];
   }
 
   /**
    * Reinitialize this object after it has be un-serialized.
    */
   public function __wakeup() {
-    $this->document = $this->createDOMDocument();
+    $this->document = $this->createDomDocument();
     $this->document->loadXML($this->xml);
     $this->xpath = new DOMXPath($this->document);
     $this->registry->restore($this->document);
@@ -138,7 +146,7 @@ class XMLDocument {
    *   A DOMDocument created using the parameters passed in.
    */
   protected function createDocument($root_name, Namespaces $namespaces, $xml) {
-    $document = $this->createDOMDocument();
+    $document = $this->createDomDocument();
     // Load from XML or create the root node.
     isset($xml) ?
         $document->loadXML($xml) :
@@ -169,7 +177,7 @@ class XMLDocument {
    * @return string
    *   The URI associated with the prefix.
    */
-  public function getNamespaceURI($prefix = NULL) {
+  public function getNamespaceUri($prefix = NULL) {
     if (isset($prefix)) {
       isset($this->namespaces[$prefix]) ? $this->namespaces[$prefix] : NULL;
     }
@@ -182,7 +190,7 @@ class XMLDocument {
    * @return string
    *   the XMLDocument as a string.
    */
-  public function saveXML() {
+  public function saveXml() {
     return $this->document->saveXML();
   }
 
@@ -229,7 +237,7 @@ class XMLDocument {
    * @return \DOMDocument
    *   The newly created DOMDocument
    */
-  private function createDOMDocument() {
+  private function createDomDocument() {
     $document = new DOMDocument();
     $document->preserveWhiteSpace = FALSE;
     $document->formatOutput = TRUE;

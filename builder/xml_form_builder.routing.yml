@@ -2,14 +2,14 @@ xml_form_builder.main:
   path: '/admin/config/islandora/xmlform/forms'
   defaults:
     _title: 'Form Builder Forms'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_main'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::main'
   requirements:
     _permission: 'List XML Forms'
 xml_form_builder.list_associations:
   path: '/admin/config/islandora/xmlform/associations'
   defaults:
     _title: 'Enabled Associations'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_list_associations'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::listAssociations'
   requirements:
     _permission: 'List XML Forms'
 xml_form_builder.settings_form:
@@ -67,7 +67,7 @@ xml_form_builder.export:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/export'
   defaults:
     _title: 'Export Form'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_export'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::export'
   requirements:
     _permission: 'List XML Forms'
 xml_form_builder.copy:
@@ -81,14 +81,14 @@ xml_form_builder.edit:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/edit'
   defaults:
     _title: 'Edit Form'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_edit'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::edit'
   requirements:
     _permission: 'Edit XML Forms'
 xml_form_builder.edit_save:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/edit/save'
   defaults:
     _title: 'Edit Form'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_edit_save'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::editSave'
   requirements:
     _permission: 'Edit XML Forms'
 xml_form_builder.delete:
@@ -109,14 +109,14 @@ xml_form_builder.disable_association:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/disassociate/{id}'
   defaults:
     _title: 'Disable Form Association'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_disable_association'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::disableAssociation'
   requirements:
     _permission: 'Associate XML Forms'
 xml_form_builder.enable_association:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/associate/{id}'
   defaults:
     _title: 'Enable Form Association'
-    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_enable_association'
+    _controller: '\Drupal\xml_form_builder\Controller\DefaultController::enableAssociation'
   requirements:
     _permission: 'Associate XML Forms'
 xml_form_builder.datastream_form:

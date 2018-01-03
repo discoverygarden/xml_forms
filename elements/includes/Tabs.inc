@@ -5,10 +5,13 @@
  * Class for form tabs.
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 module_load_include('inc', 'xml_form_elements', 'includes/TabPanel');
-
+/**
+ *
+ */
 class Tabs {
 
   /**
@@ -59,7 +62,7 @@ function template_preprocess_tabs(&$vars) {
   $vars['collapsible'] = $tabs['#collapsible'] == TRUE;
   $vars['collapsed'] = $tabs['#collapsed'] == TRUE;
   // Get Tabpanels.
-  $keys = \Drupal\Core\Render\Element::children($tabs);
+  $keys = Element::children($tabs);
   $children = [];
 
   foreach ($keys as $key) {

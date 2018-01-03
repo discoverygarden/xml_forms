@@ -1,9 +1,9 @@
 name: 'Islandora XML Forms'
 description: 'Build, store and render Drupal forms that allow for manipulation of XML files.'
 dependencies:
-  - xml_form_api
-  - xml_form_builder
-  - xml_form_elements
+  - :xml_form_api
+  - :xml_form_builder
+  - :xml_form_elements
 package: 'Islandora Tools'
 core: 8.x
 php: '5.5.9'

@@ -1,3 +1,4 @@
+// @codingStandardsIgnoreFile
 Ext.formbuilder.propertiesStore = Ext.create('Ext.data.Store', {
   storeId: 'PropertiesStore',
   model: 'Properties',

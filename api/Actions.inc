@@ -5,16 +5,25 @@
  * Action class.
  */
 
-module_load_include('inc', 'objective_forms', 'FormPropertyInterface');
 module_load_include('inc', 'xml_form_api', 'Create');
 module_load_include('inc', 'xml_form_api', 'Read');
 module_load_include('inc', 'xml_form_api', 'Update');
 module_load_include('inc', 'xml_form_api', 'Delete');
 
+use Drupal\objective_forms\FormPropertyInterface;
+
 /**
  * Container Class for all actions.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Actions implements FormPropertyInterface {
+// @codingStandardsIgnoreEnd
 
   /**
    * Create one or more DOMNodes in the Document.
@@ -47,10 +56,13 @@ class Actions implements FormPropertyInterface {
   /**
    * Creates and Actions instance.
    *
-   * @param array $value
+   * @param mixed $value
    *   Array of property values that can be set.
    */
   public function __construct($value) {
+    if (!is_array($value)) {
+      throw new InvalidArgumentException(\Drupal::t('The "$value" parameter to Actions must be an array.'));
+    }
     if (isset($value['create']) && is_array($value['create'])) {
       $this->create = new Create($value['create']);
     }
@@ -96,16 +108,16 @@ class Actions implements FormPropertyInterface {
    */
   public function getAppropriateAction(XMLDocument $document, FormElement $element, $value = NULL) {
     if ($this->shouldDelete($document, $element, $value)) {
-      return array(ActionInterface::DELETE, $this->delete);
+      return [ActionInterface::DELETE, $this->delete];
     }
     elseif ($this->shouldUpdate($document, $element, $value)) {
-      return array(ActionInterface::UPDATE, $this->update);
+      return [ActionInterface::UPDATE, $this->update];
     }
     // If node is not registered.
     elseif ($this->shouldCreate($document, $element, $value)) {
-      return array(ActionInterface::CREATE, $this->create);
+      return [ActionInterface::CREATE, $this->create];
     }
-    return array(ActionInterface::UNDEFINED, NULL);
+    return [ActionInterface::UNDEFINED, NULL];
   }
 
   /**
@@ -182,12 +194,12 @@ class Actions implements FormPropertyInterface {
    *   a Drupal Form.
    */
   public function toDrupalForm() {
-    return array(
+    return [
       'create' => isset($this->create) ? $this->create->toDrupalForm() : NULL,
       'read' => isset($this->read) ? $this->read->toDrupalForm() : NULL,
       'update' => isset($this->update) ? $this->update->toDrupalForm() : NULL,
       'delete' => isset($this->delete) ? $this->delete->toDrupalForm() : NULL,
-    );
+    ];
   }
 
 }

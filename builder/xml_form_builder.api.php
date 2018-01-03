@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @file
- * This file lists and documents all available hook functions to manipulate
- * data.
+ * Hook documentation.
  */
+
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * This hook allows modules to add default forms to form builder.
@@ -15,11 +17,11 @@
  *     to the webserver's document root (such that I might be opened
  */
 function hook_xml_form_builder_forms() {
-  return array(
-    'Unique Form Name' => array(
+  return [
+    'Unique Form Name' => [
       'form_file' => 'full/path/to/form/definition/file.xml',
-    ),
-  );
+    ],
+  ];
 }
 
 /**
@@ -30,9 +32,9 @@ function hook_xml_form_builder_forms() {
  *   transformation.
  */
 function hook_xml_form_builder_get_transforms() {
-  return array(
+  return [
     'awesome.xslt' => 'sites/all/modules/my_cool_module/transforms/awesome.xslt',
-  );
+  ];
 }
 
 /**
@@ -43,9 +45,9 @@ function hook_xml_form_builder_get_transforms() {
  *   transformation.
  */
 function hook_xml_form_builder_get_self_transforms() {
-  return array(
+  return [
     'cleanup.xslt' => 'sites/all/modules/my_cool_module/transforms/cleanup.xslt',
-  );
+  ];
 }
 
 /**
@@ -69,17 +71,17 @@ function hook_xml_form_builder_get_self_transforms() {
  *     form.  Can be empty or FALSE.
  */
 function hook_xml_form_builder_form_associations() {
-  return array(
+  return [
     // By convention, the unique name should start with your modules name.
-    'unique_assoication_name' => array(
+    'unique_assoication_name' => [
       'content_model' => 'islandora:sp_basic_image',
       'form_name' => 'Image DC Form',
       'dsid' => 'DC',
-      'title_field' => array('titleInfo', 'title'),
+      'title_field' => ['titleInfo', 'title'],
       'transform' => 'No Transform',
       'template' => FALSE,
-    ),
-  );
+    ],
+  ];
 }
 
 /**
@@ -92,13 +94,12 @@ function hook_xml_form_builder_form_associations() {
  *
  * @param array $form
  *   Modifications can be made to the form array allowing access to modify
- * values/attributes of the form elements after the form builder xml is loaded
- * into the form array.
- *
- * @param array $form_state
+ *   values/attributes of the form elements after the form builder xml is loaded
+ *   into the form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form State array.
  */
-function hook_xml_form_builder_get_form_modify_definition_alter(&$form,
-                                                                &$form_state) {
+function hook_xml_form_builder_get_form_modify_definition_alter(array &$form,
+                                                                FormStateInterface &$form_state) {
 
 }

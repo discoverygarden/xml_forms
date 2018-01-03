@@ -9,170 +9,170 @@
  * Implements hook_schema().
  */
 function xml_form_builder_schema() {
-  $schema['xml_forms'] = array(
+  $schema['xml_forms'] = [
     'description' => 'This table is used to store form definitions in XML Form API style.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'type' => 'serial',
         'not null' => TRUE,
-      ),
-      'name' => array(
+      ],
+      'name' => [
         'description' => 'The name of the stored form.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'form' => array(
+      ],
+      'form' => [
         'description' => 'The XML-based form definition.',
         'type' => 'text',
         'size' => 'medium',
         'not null' => TRUE,
-      ),
-    ),
-    'unique keys' => array('name' => array('name')),
-    'primary key' => array('id'),
-  );
+      ],
+    ],
+    'unique keys' => ['name' => ['name']],
+    'primary key' => ['id'],
+  ];
 
-  $schema['xml_form_builder_form_associations'] = array(
+  $schema['xml_form_builder_form_associations'] = [
     'description' => 'This table is used to store associations between XML Form API style form definitions and the content models that use them.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'type' => 'serial',
         'not null' => TRUE,
-      ),
-      'content_model' => array(
+      ],
+      'content_model' => [
         'description' => 'The name of the content model.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'form_name' => array(
+      ],
+      'form_name' => [
         'description' => 'The name of the stored form.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'dsid' => array(
+      ],
+      'dsid' => [
         'description' => 'The datastream ID of the metadata to be edited.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'title_field' => array(
+      ],
+      'title_field' => [
         'description' => 'The form field for the object\'s label.',
         'type' => 'varchar',
         'length' => 256,
         'not null' => FALSE,
         'binary' => TRUE,
         'serialize' => TRUE,
-      ),
-      'transform' => array(
+      ],
+      'transform' => [
         'description' => 'An XSL transform for setting the Fedora object\'s Dublin Core metadata datastream.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'self_transform' => array(
+      ],
+      'self_transform' => [
         'description' => 'A xsl transform for setting the Fedora Object\'s Dublin Core metadata datastream.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => FALSE,
-      ),
-      'template' => array(
+      ],
+      'template' => [
         'description' => 'A sample metadata file used to prepopulate the form on ingest.',
         'type' => 'text',
         'size' => 'medium',
         'not null' => TRUE,
-      ),
-    ),
-    'primary key' => array('id'),
-  );
-  $schema['xml_form_builder_association_hooks'] = array(
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  $schema['xml_form_builder_association_hooks'] = [
     'description' => 'This table is used to store the status of associations defined by hooks.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'description' => 'The name of the hook.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'enabled' => array(
+      ],
+      'enabled' => [
         'description' => 'The hook\'s status (enabled or not).',
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
-      ),
-    ),
-    'primary key' => array('id'),
-  );
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
 
-  $schema['xml_form_builder_xslts'] = array(
+  $schema['xml_form_builder_xslts'] = [
     'description' => 'This table stores XSLTs.',
-    'fields' => array(
-      'xslt_id' => array(
+    'fields' => [
+      'xslt_id' => [
         'type' => 'serial',
         'not null' => TRUE,
-      ),
-      'name' => array(
+      ],
+      'name' => [
         'description' => 'The name of the XSLT.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-      ),
-      'xslt' => array(
+      ],
+      'xslt' => [
         'description' => 'An XSLT.',
         'type' => 'text',
         'size' => 'big',
         'not null' => TRUE,
-      ),
-    ),
-    'unique keys' => array('name' => array(array('name', 191))),
-    'primary key' => array('xslt_id'),
-  );
+      ],
+    ],
+    'unique keys' => ['name' => [['name', 191]]],
+    'primary key' => ['xslt_id'],
+  ];
 
-  $schema['xml_form_builder_default_xslts'] = array(
+  $schema['xml_form_builder_default_xslts'] = [
     'description' => 'This table stores XSLTs.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'type' => 'serial',
         'not null' => TRUE,
-      ),
-      'content_model' => array(
+      ],
+      'content_model' => [
         'description' => 'The name of the content model.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-      'name' => array(
+      ],
+      'name' => [
         'description' => 'The name of the mapping.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-      ),
-      'xslt_id' => array(
+      ],
+      'xslt_id' => [
         'description' => 'An XSLT id.',
         'type' => 'int',
         'not null' => TRUE,
-      ),
-      'dsid' => array(
+      ],
+      'dsid' => [
         'description' => 'The datastream ID of the metadata to be edited.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-      ),
-    ),
-    'foreign keys' => array(
-      'xslt' => array(
+      ],
+    ],
+    'foreign keys' => [
+      'xslt' => [
         'table' => 'xml_form_builder_xslts',
-        'columns' => array('xslt_id' => 'xslt_id'),
-      ),
-    ),
-    'unique keys' => array(
-      'name' => array(array('name', 191)),
-      'content_model_dsid' => array('content_model', 'dsid'),
-    ),
-    'primary key' => array('id'),
-  );
+        'columns' => ['xslt_id' => 'xslt_id'],
+      ],
+    ],
+    'unique keys' => [
+      'name' => [['name', 191]],
+      'content_model_dsid' => ['content_model', 'dsid'],
+    ],
+    'primary key' => ['id'],
+  ];
 
   return $schema;
 }
@@ -182,87 +182,87 @@ function xml_form_builder_schema() {
  */
 function xml_form_builder_update_7100() {
 
-  $schema = array();
-  $schema['xml_form_builder_form_associations'] = array(
+  $schema = [];
+  $schema['xml_form_builder_form_associations'] = [
     'description' => 'This table is used to store associations between XML Form API style form definitions and the content models that use them.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'type' => 'serial',
         'not NULL' => TRUE,
-      ),
-      'content_model' => array(
+      ],
+      'content_model' => [
         'description' => 'The name of the content model.',
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-      'form_name' => array(
+      ],
+      'form_name' => [
         'description' => 'The name of the stored form.',
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-      'dsid' => array(
+      ],
+      'dsid' => [
         'description' => 'The datastream ID of the metadata to be edited.',
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-      'title_field' => array(
+      ],
+      'title_field' => [
         'description' => "The form field for the object's label.",
         'type' => 'varchar',
         'length' => 256,
         'not NULL' => TRUE,
         'binary' => TRUE,
         'serialize' => TRUE,
-      ),
-      'transform' => array(
+      ],
+      'transform' => [
         'description' => "An XSL transform for setting the Fedora object's Dublin Core metadata datastream.",
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-      'template' => array(
+      ],
+      'template' => [
         'description' => 'A sample metadata file used to prepopulate the form on ingest.',
         'type' => 'text',
         'size' => 'medium',
         'not NULL' => TRUE,
-      ),
-    ),
-    'primary key' => array('id'),
-  );
-  $schema['xml_form_builder_association_hooks'] = array(
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  $schema['xml_form_builder_association_hooks'] = [
     'description' => 'This table is used to store the status of associations defined by hooks.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'description' => 'The name of the hook.',
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-      'enabled' => array(
+      ],
+      'enabled' => [
         'description' => 'The hook\'s status (enabled or not).',
         'type' => 'int',
         'size' => 'tiny',
         'not NULL' => TRUE,
-      ),
-    ),
-    'primary key' => array('id'),
-  );
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
 
-  $old_name = array(
+  $old_name = [
     'xml_form_builder_association_hooks' => 'islandora_content_model_forms_association_hooks',
     'xml_form_builder_form_associations' => 'islandora_content_model_forms',
-  );
+  ];
 
-  $output = array();
+  $output = [];
   $t = 't';
   foreach ($schema as $name => $schema_info) {
     try {
       db_create_table($name, $schema_info);
     }
     catch (DatabaseSchemaObjectExistsException $e) {
-      $output[] = $t('Table "@name" already exists.', array('@name' => $name));
+      $output[] = $t('Table "@name" already exists.', ['@name' => $name]);
     }
 
     $old = $old_name[$name];
@@ -281,7 +281,7 @@ function xml_form_builder_update_7100() {
           ->execute();
       }
 
-      $output[] = $t('Copied info from old table "@old".', array('@old' => $old));
+      $output[] = $t('Copied info from old table "@old".', ['@old' => $old]);
     }
   }
 
@@ -293,18 +293,18 @@ function xml_form_builder_update_7100() {
  */
 function xml_form_builder_update_7101() {
   $results = db_select('xml_form_builder_form_associations', 'fa')
-    ->fields('fa', array('id', 'title_field'))
+    ->fields('fa', ['id', 'title_field'])
     ->execute()
     ->fetchAll();
 
-  db_change_field('xml_form_builder_form_associations', 'title_field', 'title_field', array(
+  db_change_field('xml_form_builder_form_associations', 'title_field', 'title_field', [
     'description' => 'The form field for the object\'s label.',
     'type' => 'varchar',
     'length' => 256,
     'not NULL' => TRUE,
     'binary' => TRUE,
     'serialize' => TRUE,
-  ));
+  ]);
 
   foreach ($results as $association) {
     $title_field = $association->title_field;
@@ -314,9 +314,9 @@ function xml_form_builder_update_7101() {
       $title_field = substr($title_field, 2, -2);
       $title_field = explode("']['", $title_field);
       db_update('xml_form_builder_form_associations')
-        ->fields(array(
+        ->fields([
           'title_field' => serialize($title_field),
-        ))
+        ])
         ->condition('id', $association->id)
         ->execute();
     }
@@ -327,19 +327,22 @@ function xml_form_builder_update_7101() {
  * Add self_transform field to table definition.
  */
 function xml_form_builder_update_7102() {
+  $output = [];
   $t = 't';
-  $self_transform = array(
+  $self_transform = [
     'description' => 'A xsl transform for setting the Fedora Object\'s Dublin Core metadata datastream.',
     'type' => 'varchar',
     'length' => 128,
     'not NULL' => FALSE,
-  );
+  ];
   try {
     db_add_field('xml_form_builder_form_associations', 'self_transform', $self_transform);
   }
   catch (DatabaseSchemaObjectExistsException $e) {
     $output[] = $t('Field "self_transform" already exists.');
   }
+
+  return implode(' ', $output);
 }
 
 /**
@@ -347,75 +350,75 @@ function xml_form_builder_update_7102() {
  */
 function xml_form_builder_update_7103() {
 
-  $schema = array();
+  $schema = [];
 
-  $schema['xml_form_builder_xslts'] = array(
+  $schema['xml_form_builder_xslts'] = [
     'description' => 'This table stores XSLTs.',
-    'fields' => array(
-      'xslt_id' => array(
+    'fields' => [
+      'xslt_id' => [
         'type' => 'serial',
         'not null' => TRUE,
-      ),
-      'name' => array(
+      ],
+      'name' => [
         'description' => 'The name of the XSLT.',
         'type' => 'varchar',
         'length' => 255,
         'not NULL' => TRUE,
-      ),
-      'xslt' => array(
+      ],
+      'xslt' => [
         'description' => 'An XSLT.',
         'type' => 'text',
         'size' => 'big',
         'not NULL' => TRUE,
-      ),
-    ),
-    'unique keys' => array('name' => array('name')),
-    'primary key' => array('xslt_id'),
-  );
+      ],
+    ],
+    'unique keys' => ['name' => ['name']],
+    'primary key' => ['xslt_id'],
+  ];
 
-  $schema['xml_form_builder_default_xslts'] = array(
+  $schema['xml_form_builder_default_xslts'] = [
     'description' => 'This table stores XSLTs.',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'type' => 'serial',
         'not null' => TRUE,
-      ),
-      'content_model' => array(
+      ],
+      'content_model' => [
         'description' => 'The name of the content model.',
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-      'name' => array(
+      ],
+      'name' => [
         'description' => 'The name of the mapping.',
         'type' => 'varchar',
         'length' => 255,
         'not NULL' => TRUE,
-      ),
-      'xslt_id' => array(
+      ],
+      'xslt_id' => [
         'description' => 'An XSLT id.',
         'type' => 'int',
         'not NULL' => TRUE,
-      ),
-      'dsid' => array(
+      ],
+      'dsid' => [
         'description' => 'The datastream ID of the metadata to be edited.',
         'type' => 'varchar',
         'length' => 128,
         'not NULL' => TRUE,
-      ),
-    ),
-    'foreign keys' => array(
-      'xslt' => array(
+      ],
+    ],
+    'foreign keys' => [
+      'xslt' => [
         'table' => 'xml_form_builder_xslts',
-        'columns' => array('xslt_id' => 'xslt_id'),
-      ),
-    ),
-    'unique keys' => array(
-      'name' => array('name'),
-      'content_model_dsid' => array('content_model', 'dsid'),
-    ),
-    'primary key' => array('id'),
-  );
+        'columns' => ['xslt_id' => 'xslt_id'],
+      ],
+    ],
+    'unique keys' => [
+      'name' => ['name'],
+      'content_model_dsid' => ['content_model', 'dsid'],
+    ],
+    'primary key' => ['id'],
+  ];
 
   foreach ($schema as $name => $schema_info) {
     db_create_table($name, $schema_info);
@@ -428,14 +431,14 @@ function xml_form_builder_update_7103() {
  * Make title_field not required.
  */
 function xml_form_builder_update_7104() {
-  db_change_field('xml_form_builder_form_associations', 'title_field', 'title_field', array(
+  db_change_field('xml_form_builder_form_associations', 'title_field', 'title_field', [
     'description' => 'The form field for the object\'s label.',
     'type' => 'varchar',
     'length' => 256,
     'not NULL' => FALSE,
     'binary' => TRUE,
     'serialize' => TRUE,
-  ));
+  ]);
 }
 
 /**
@@ -444,14 +447,14 @@ function xml_form_builder_update_7104() {
  * Repeating because hook_schema wasn't updated.
  */
 function xml_form_builder_update_7105() {
-  db_change_field('xml_form_builder_form_associations', 'title_field', 'title_field', array(
+  db_change_field('xml_form_builder_form_associations', 'title_field', 'title_field', [
     'description' => 'The form field for the object\'s label.',
     'type' => 'varchar',
     'length' => 256,
     'not NULL' => FALSE,
     'binary' => TRUE,
     'serialize' => TRUE,
-  ));
+  ]);
 
   // Need to do a check to make sure there's no garbaged double serialized data.
   $results = db_select('xml_form_builder_form_associations', 'x')
@@ -466,9 +469,9 @@ function xml_form_builder_update_7105() {
       if (is_array($unserialized_unserialized_title)) {
         // This needs to be updated because it was double serialized.
         db_update('xml_form_builder_form_associations')
-          ->fields(array(
+          ->fields([
             'title_field' => $unserialized_title,
-          ))
+          ])
           ->condition('id', $key)
           ->execute();
       }
@@ -483,130 +486,130 @@ function xml_form_builder_update_7105() {
  */
 function xml_form_builder_update_7106() {
   db_change_field('xml_form_builder_form_associations', 'id', 'id',
-    array(
+    [
       'type' => 'serial',
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_form_associations', 'content_model', 'content_model',
-    array(
+    [
       'description' => 'The name of the content model.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_form_associations', 'form_name', 'form_name',
-    array(
+    [
       'description' => 'The name of the stored form.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_form_associations', 'dsid', 'dsid',
-    array(
+    [
       'description' => 'The datastream ID of the metadata to be edited.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_form_associations', 'transform', 'transform',
-    array(
+    [
       'description' => 'An XSL transform for setting the Fedora object\'s Dublin Core metadata datastream.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_form_associations', 'template', 'template',
-    array(
+    [
       'description' => 'A sample metadata file used to prepopulate the form on ingest.',
       'type' => 'text',
       'size' => 'medium',
       'not null' => TRUE,
-    )
+    ]
   );
 
   db_change_field('xml_form_builder_association_hooks', 'id', 'id',
-    array(
+    [
       'description' => 'The name of the hook.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_association_hooks', 'enabled', 'enabled',
-    array(
+    [
       'description' => 'The hook\'s status (enabled or not).',
       'type' => 'int',
       'size' => 'tiny',
       'not null' => TRUE,
-    )
+    ]
   );
 
   db_change_field('xml_form_builder_xslts', 'name', 'name',
-    array(
+    [
       'description' => 'The name of the XSLT.',
       'type' => 'varchar',
       'length' => 255,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_xslts', 'xslt', 'xslt',
-    array(
+    [
       'description' => 'An XSLT.',
       'type' => 'text',
       'size' => 'big',
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_xslts', 'xslt_id', 'xslt_id',
-    array(
+    [
       'type' => 'serial',
       'not null' => TRUE,
-    )
+    ]
   );
 
   db_change_field('xml_form_builder_default_xslts', 'content_model', 'content_model',
-    array(
+    [
       'description' => 'The name of the content model.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_default_xslts', 'name', 'name',
-    array(
+    [
       'description' => 'The name of the mapping.',
       'type' => 'varchar',
       'length' => 255,
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_default_xslts', 'xslt_id', 'xslt_id',
-    array(
+    [
       'description' => 'An XSLT id.',
       'type' => 'int',
       'not null' => TRUE,
-    )
+    ]
   );
   db_change_field('xml_form_builder_default_xslts', 'dsid', 'dsid',
-    array(
+    [
       'description' => 'The datastream ID of the metadata to be edited.',
       'type' => 'varchar',
       'length' => 128,
       'not null' => TRUE,
-    )
+    ]
   );
 
   $db_type = db_driver();
 
   if ($db_type == 'pgsql') {
     // XXX: https://www.drupal.org/node/190027.
-    db_add_primary_key('xml_form_builder_form_associations', array('id'));
-    db_add_primary_key('xml_form_builder_association_hooks', array('id'));
-    db_add_primary_key('xml_form_builder_xslts', array('xslt_id'));
+    db_add_primary_key('xml_form_builder_form_associations', ['id']);
+    db_add_primary_key('xml_form_builder_association_hooks', ['id']);
+    db_add_primary_key('xml_form_builder_xslts', ['xslt_id']);
   }
 }

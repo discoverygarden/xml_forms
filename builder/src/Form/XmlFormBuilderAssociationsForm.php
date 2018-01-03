@@ -6,7 +6,6 @@ use DOMDocument;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Link;
 
 /**
@@ -25,12 +24,15 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     return 'xml_form_builder_associations_form';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations.form');
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations');
 
     $associations = xml_form_builder_get_associations([$form_name], [], [], FALSE);
-    $create_table_rows = function($association) {
+    $create_table_rows = function ($association) {
       if (is_array($association['title_field'])) {
         $association['title_field'] = "['" . implode("']['", $association['title_field']) . "']";
       }
@@ -42,7 +44,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     };
 
     $associations = array_map($create_table_rows, $associations);
-    $use_default_transforms = \Drupal::config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
+    $use_default_transforms = $this->config('xml_form_builder.settings')->get('xml_form_builder_use_default_dc_xslts');
 
     $header = [
       $this->t('Content model'),
@@ -68,7 +70,7 @@ class XmlFormBuilderAssociationsForm extends FormBase {
 
       if (!$use_default_transforms) {
         $row[] = $association['transform'];
-        $row[] =  (isset($association['self_transform'])) ? $association['self_transform'] : $this->t("No Self Transform");
+        $row[] = (isset($association['self_transform'])) ? $association['self_transform'] : $this->t("No Self Transform");
       }
 
       $row[] = ($association['template']) ? $this->t('Yes') : $this->t('No');
@@ -89,47 +91,47 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     }
 
     $form += [
-        'list' => [
-          '#type' => 'table',
-          '#caption' => $this->t('Current Associations:'),
-          '#header' => $header,
-          '#rows' => $rows,
+      'list' => [
+        '#type' => 'table',
+        '#caption' => $this->t('Current Associations:'),
+        '#header' => $header,
+        '#rows' => $rows,
+      ],
+      'fieldset' => [
+        '#type' => 'details',
+        '#open' => TRUE,
+        '#title' => $this->t('Add Association'),
+        '#collapsible' => TRUE,
+        'content_model' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Content Model'),
+          '#required' => TRUE,
+          '#autocomplete_route_name' => 'islandora.content_model_autocomplete',
+          '#description' => $this->t('The content model to associate with a form. If the content model has no decendents it will not show up in autocomplete.'),
+          '#default_value' => $form_state->getValue('content_model') ? $form_state->getValue('content_model') : NULL,
         ],
-        'fieldset' => [
-          '#type' => 'details',
-          '#open' => TRUE,
-          '#title' => $this->t('Add Association'),
-          '#collapsible' => TRUE,
-          'content_model' => [
-            '#type' => 'textfield',
-            '#title' => $this->t('Content Model'),
-            '#required' => TRUE,
-            '#autocomplete_route_name' => 'islandora.content_model_autocomplete',
-            '#description' => $this->t('The content model to associate with a form. If the content model has no decendents it will not show up in autocomplete.'),
-            '#default_value' => $form_state->getValue('content_model') ? $form_state->getValue('content_model') : NULL,
-          ],
-          'dsid' => [
-            '#type' => 'textfield',
-            '#description' => $this->t("The datastream ID where the object's metadata is stored."),
-            '#title' => $this->t('Metadata Datastream ID'),
-            '#required' => TRUE,
-            '#default_value' => $form_state->getValues('dsid') ? $form_state->getValues('dsid') : NULL,
-          ],
-          'form_name' => [
-            '#type' => 'value',
-            '#title' => $this->t('Form Name'),
-            '#value' => $form_name,
-          ],
-          'title_field' => [
-            '#type' => 'select',
-            '#title' => $this->t('Title Field'),
-            '#description' => $this->t("The form field for the object's label."),
-            '#prefix' => '<div id="ahah-wrapper">',
-            '#suffix' => '</div>',
-            '#options' => xml_form_builder_get_title_options($form_name),
-          ],
+        'dsid' => [
+          '#type' => 'textfield',
+          '#description' => $this->t("The datastream ID where the object's metadata is stored."),
+          '#title' => $this->t('Metadata Datastream ID'),
+          '#required' => TRUE,
+          '#default_value' => $form_state->getValues('dsid') ? $form_state->getValues('dsid') : NULL,
         ],
-      ];
+        'form_name' => [
+          '#type' => 'value',
+          '#title' => $this->t('Form Name'),
+          '#value' => $form_name,
+        ],
+        'title_field' => [
+          '#type' => 'select',
+          '#title' => $this->t('Title Field'),
+          '#description' => $this->t("The form field for the object's label."),
+          '#prefix' => '<div id="ahah-wrapper">',
+          '#suffix' => '</div>',
+          '#options' => xml_form_builder_get_title_options($form_name),
+        ],
+      ],
+    ];
 
     if (!$use_default_transforms) {
       $form['fieldset']['transform'] = [
@@ -160,6 +162,9 @@ class XmlFormBuilderAssociationsForm extends FormBase {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $object_keys = [
       'content_model',

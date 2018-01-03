@@ -14,12 +14,12 @@ module_load_include('inc', 'xml_form_api', 'XMLForm');
  *   Array of properties.
  */
 function xml_form_api_objectify_properties() {
-  $properties['#actions'] = array(
+  $properties['#actions'] = [
     'type' => 'inc',
     'module' => 'xml_form_api',
     'name' => 'Actions',
     'class' => 'Actions',
-  );
+  ];
   return $properties;
 }
 

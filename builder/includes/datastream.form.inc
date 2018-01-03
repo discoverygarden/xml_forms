@@ -5,6 +5,7 @@
  * Allows for adding / editing XML datastreams.
  */
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 
 use Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm;
@@ -22,7 +23,7 @@ use Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm;
  * @return array
  *   An array of found associations.
  */
-function xml_form_builder_datastream_form_get_associations(FormStateInterface $form_state, $models, $dsid) {
+function xml_form_builder_datastream_form_get_associations(FormStateInterface $form_state, array $models, $dsid) {
   module_load_include('inc', 'xml_form_builder', 'includes/associations');
   if ($form_state->get('associations')) {
     return $form_state->get('associations');
@@ -40,7 +41,7 @@ function xml_form_builder_datastream_form_get_associations(FormStateInterface $f
  * @param array $associations
  *   A passed in array of associations.
  *
- * @return array|NULL
+ * @return array|null
  *   The selected association, or NULL if no association is selected.
  */
 function xml_form_builder_datastream_form_get_association(FormStateInterface $form_state, array $associations) {
@@ -87,7 +88,7 @@ function xml_form_builder_datastream_form_select_association_form(array $form, F
 function xml_form_builder_datastream_form_select_association_form_submit(array $form, FormStateInterface $form_state) {
   $model = $form_state->getValue('models');
   $form_name = $form_state->getValue('available_forms');
-  $association_matches = function($o) use($model, $form_name) {
+  $association_matches = function ($o) use ($model, $form_name) {
     return $o['content_model'] == $model && $o['form_name'] == $form_name;
   };
   $matching_associations = array_filter($form_state->get('associations'), $association_matches);
@@ -124,7 +125,7 @@ function xml_form_builder_datastream_form_metadata_form(array $form, FormStateIn
   if ($association['title_field']) {
     $title_field_parents = $association['title_field'];
     $title_field_parents[] = '#required';
-    \Drupal\Component\Utility\NestedArray::setValue($form, $title_field_parents, TRUE);
+    NestedArray::setValue($form, $title_field_parents, TRUE);
   }
   $form['update'] = [
     '#type' => 'submit',
@@ -150,7 +151,7 @@ function xml_form_builder_datastream_form_metadata_form_submit(array $form, Form
   $association = $form_state->get('association');
   $label = NULL;
   if ($association['title_field']) {
-    $title_field = \Drupal\Component\Utility\NestedArray::getValue($form, $association['title_field']);
+    $title_field = NestedArray::getValue($form, $association['title_field']);
     $label = $title_field['#value'];
   }
   $xml_form = new XMLForm($form_state);
@@ -171,7 +172,7 @@ function xml_form_builder_empty_metadata_datastreams($object) {
     }
   }
   $filtered_datastreams = [];
-  foreach (xml_form_builder_get_associations([], $object->models, $datastreams) as $key => $value) {
+  foreach (xml_form_builder_get_associations([], $object->models, $datastreams) as $value) {
     $filtered_datastreams[] = $value['dsid'];
   }
   return $filtered_datastreams;

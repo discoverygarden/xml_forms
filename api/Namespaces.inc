@@ -7,31 +7,34 @@
 
 /**
  * Exceptions that may occur when building.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormsNamespaceException extends Exception {
-
-  /**
-   * Constructor function for the XMLFormsNamespaceException class.
-   *
-   * @param string $message
-   *   A message to pass through from the exception.
-   * @param int $code
-   *   The exception code number.
-   * @param null $previous
-   *   The previous exception in the exception chain.
-   */
-  public function __construct($message = "", $code = 0, $previous = NULL) {
-    parent::__construct($message, $code, $previous);
-  }
+// @codingStandardsIgnoreEnd
 
 }
 
 /**
  * This class is meant to encapsulate namespaces.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Namespaces implements IteratorAggregate {
+// @codingStandardsIgnoreEnd
+
   /**
-   * Constants
+   * Constants.
    */
   const XMLNS = 'http://www.w3.org/2000/xmlns/';
 
@@ -64,7 +67,7 @@ class Namespaces implements IteratorAggregate {
    */
   public function __construct(array &$namespaces = NULL, $default = NULL) {
     $this->default = $default;
-    $this->namespaces = isset($namespaces) ? $namespaces : array();
+    $this->namespaces = isset($namespaces) ? $namespaces : [];
   }
 
   /**
@@ -76,7 +79,7 @@ class Namespaces implements IteratorAggregate {
    * @throws XMLFormsNamespaceException
    *   When the prefix being searched for isn't defined.
    */
-  public function getURI($prefix) {
+  public function getUri($prefix) {
     if (isset($this->namespaces[$prefix])) {
       return $this->namespaces[$prefix];
     }
@@ -109,7 +112,7 @@ class Namespaces implements IteratorAggregate {
    * @return string
    *   The default URI being asked for.
    */
-  public function getDefaultURI() {
+  public function getDefaultUri() {
     return $this->default;
   }
 

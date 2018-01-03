@@ -20,7 +20,7 @@
 function xml_form_builder_get_title_options($form_name) {
   module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
   if (isset($form_name)) {
-    $doc = XMLFormRepository::Get($form_name);
+    $doc = XMLFormRepository::get($form_name);
     if ($doc) {
       $xpath = new DOMXPath($doc);
       $result = $xpath->query('//element[@name]');

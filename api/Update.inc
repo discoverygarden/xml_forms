@@ -13,8 +13,16 @@ use Drupal\objective_forms\FormElement;
 
 /**
  * Update implementation class for the Action Interface.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Update implements ActionInterface {
+// @codingStandardsIgnoreEnd
 
   /**
    * Path to the element to update.
@@ -52,10 +60,10 @@ class Update implements ActionInterface {
    *   The array of return values.
    */
   public function toDrupalForm() {
-    return array(
+    return [
       'path' => $this->path->path,
       'context' => (string) $this->path->context,
-    );
+    ];
   }
 
   /**
@@ -63,7 +71,7 @@ class Update implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.
@@ -80,7 +88,7 @@ class Update implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.

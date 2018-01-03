@@ -13,8 +13,16 @@ module_load_include('inc', 'xml_schema_api', 'InsertOrderMap');
 
 /**
  * Create action class for XMLDocuments.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class Create implements ActionInterface {
+// @codingStandardsIgnoreEnd
 
   /**
    * Create types.
@@ -44,37 +52,43 @@ class Create implements ActionInterface {
   protected $schemaPath;
 
   /**
-   * Either Create::ELEMENT, Create::ATTRIBUTE, Create::XML
-   * @var integer
+   * Either Create::ELEMENT, Create::ATTRIBUTE, Create::XML.
+   *
+   * @var int
    */
   protected $type;
 
   /**
    * The full name for the Element or Attribute we are creating.
+   *
    * @var string
    */
   protected $name;
 
   /**
    * The namespace prefix for the Element or Attribute we are creating.
+   *
    * @var string
    */
   protected $prefix;
 
   /**
    * The local name for the Element or Attribute we are creating.
+   *
    * @var string
    */
   protected $localName;
 
   /**
    * The XML snippet we are creating.
+   *
    * @var string
    */
   protected $xml;
 
   /**
    * The value used to create the Element, Attribute or XML Snippit.
+   *
    * @var string
    */
   protected $value;
@@ -117,14 +131,14 @@ class Create implements ActionInterface {
    *   The array of return values.
    */
   public function toDrupalForm() {
-    return array(
+    return [
       'path' => $this->path->path,
       'context' => (string) $this->path->context,
       'schema' => $this->schemaPath,
       'type' => $this->type,
       'prefix' => $this->prefix,
       'value' => $this->value,
-    );
+    ];
   }
 
   /**
@@ -132,7 +146,7 @@ class Create implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.
@@ -150,7 +164,7 @@ class Create implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document we want to check.
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The form element inside the document we want to check.
    * @param mixed $value
    *   The value of the element we want to check.
@@ -186,11 +200,11 @@ class Create implements ActionInterface {
    *   A DOMNode to use for action execution.
    */
   protected function doCreate(XMLDocument $document, $value) {
-    $action = array(
+    $action = [
       self::ELEMENT => 'createElement',
       self::ATTRIBUTE => 'createAttribute',
-      self::XML => 'createXML',
-    );
+      self::XML => 'createXml',
+    ];
     try {
       return $this->{$action[$this->type]}($document, $value);
     }
@@ -216,7 +230,7 @@ class Create implements ActionInterface {
    */
   protected function createElement(XMLDocument $document, $value) {
     if (isset($this->prefix)) {
-      $uri = $document->namespaces->getURI($this->prefix);
+      $uri = $document->namespaces->getUri($this->prefix);
       return $document->document->createElementNS($uri, $this->name, $value);
     }
     else {
@@ -240,7 +254,7 @@ class Create implements ActionInterface {
    */
   protected function createAttribute(XMLDocument $document, $value) {
     if (isset($this->prefix)) {
-      $uri = $document->namespaces->getURI($this->prefix);
+      $uri = $document->namespaces->getUri($this->prefix);
       $attribute = $document->document->createAttributeNS($uri, $this->name);
       $attribute->value = $value;
       return $attribute;
@@ -257,8 +271,8 @@ class Create implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document to create a DOMNode for.
-   * @param DOMElement $value
-   *   The value of the DOMNode.
+   * @param string $value
+   *   The value to be contained in the XML fragment.
    *
    * @throws Exception
    *   Throws errors if there are any additional ones for Drupal to catch.
@@ -266,7 +280,7 @@ class Create implements ActionInterface {
    * @return DOMNode
    *   The DOMNode that is created.
    */
-  protected function createXML(XMLDocument $document, $value) {
+  protected function createXml(XMLDocument $document, $value) {
     // Sigh... Oh DOM-API, you're so backwards and useless.
     // We have to do this for namespaces to work correctly; there is no clean
     // workaround for this. User will have to put both the prefix and namespace
@@ -278,7 +292,7 @@ class Create implements ActionInterface {
           "xmlns";
       $root_attributes .= "$attribute = '$uri' ";
     }
-    $xml = strtr($this->value, array('%value%' => $value));
+    $xml = strtr($this->value, ['%value%' => $value]);
     $xml = "<root {$root_attributes}>$xml</root>";
     $this->fragment = $document->document->createDocumentFragment();
     // Prevent Drupal from catching the error.

@@ -9,8 +9,16 @@ module_load_include('inc', 'xml_schema_api', 'Node');
 
 /**
  * Models an <xs:union> DOMElement.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLSchemaUnion extends XMLSchemaNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constants.
@@ -21,18 +29,6 @@ class XMLSchemaUnion extends XMLSchemaNode {
   // @codingStandardsIgnoreStart
   const LocalName = self::LOCAL_NAME;
   // @codingStandardsIgnoreEnd
-
-  /**
-   * Constructor function for the XMLSchemaUnion class.
-   *
-   * @param XMLSchema $schema
-   *   The schema to use for the DOMElement.
-   * @param DOMElement $node
-   *   The node to use for this instance.
-   */
-  public function __construct(XMLSchema $schema, DOMElement $node) {
-    parent::__construct($schema, $node);
-  }
 
   /**
    * Returns the local name of this object.
@@ -50,7 +46,7 @@ class XMLSchemaUnion extends XMLSchemaNode {
    * @param InsertOrderNode $parent
    *   Mainly there because it's in the abstraction. Won't do a thing.
    *
-   * @return NULL
+   * @return null
    *   Always null.
    */
   public function asInsertOrderNode(InsertOrderNode $parent = NULL) {

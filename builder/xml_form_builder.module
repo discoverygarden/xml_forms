@@ -5,11 +5,13 @@
  * Defines all the hooks this module implements.
  */
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Url;
 
 // Constants.
+// @codingStandardsIgnoreStart
 define('XML_FORM_BUILDER_LIST_FORMS_PERMS', 'List XML Forms');
 define('XML_FORM_BUILDER_CREATE_FORMS_PERMS', 'Create XML Forms');
 define('XML_FORM_BUILDER_EDIT_FORMS_PERMS', 'Edit XML Forms');
@@ -39,7 +41,6 @@ define('XML_FORM_BUILDER_EDIT_DATASTREAM_MENU', 'islandora/edit_form/%islandora_
 // Hooks.
 define('XML_FORM_BUILDER_GET_FORM_MODIFY_DEFINITION_HOOK', 'xml_form_builder_get_form_modify_definition');
 
-// @codingStandardsIgnoreStart
 define('PERM_XML_FORM_BUILDER_LIST_FORMS', XML_FORM_BUILDER_LIST_FORMS_PERMS);
 define('PERM_XML_FORM_BUILDER_CREATE_FORMS', XML_FORM_BUILDER_CREATE_FORMS_PERMS);
 define('PERM_XML_FORM_BUILDER_EDIT_FORMS', XML_FORM_BUILDER_EDIT_FORMS_PERMS);
@@ -89,24 +90,24 @@ function xml_form_builder_datastream_access($perm, $object, $dsid) {
  */
 function xml_form_builder_forms($form_id, $args) {
   module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
-  if (XMLFormRepository::Exists($form_id) && XMLFormRepository::Valid($form_id)) {
-    return array(
-      $form_id => array(
+  if (XMLFormRepository::exists($form_id) && XMLFormRepository::valid($form_id)) {
+    return [
+      $form_id => [
         'callback' => 'xml_form_builder_get_form',
-        'callback arguments' => array($form_id),
-      ),
-    );
+        'callback arguments' => [$form_id],
+      ],
+    ];
   }
-  return array(
-    $form_id => array(),
-  );
+  return [
+    $form_id => [],
+  ];
 }
 
 /**
  * Gets the path to the copy page for the given form name.
  *
  * @param string $form_name
- *   The form to load the copy page with,
+ *   The form to load the copy page with,.
  *
  * @return string
  *   The path to the copy page.
@@ -119,7 +120,7 @@ function xml_form_builder_get_copy_form_path($form_name) {
  * Gets the path to the edit page for the given form name.
  *
  * @param string $form_name
- *   The form to load the edit page with,
+ *   The form to load the edit page with,.
  *
  * @return string
  *   The path to the edit page.
@@ -132,7 +133,7 @@ function xml_form_builder_get_edit_form_path($form_name) {
  * Gets the path to the view page for the given form name.
  *
  * @param string $form_name
- *   The form to load the view page with,
+ *   The form to load the view page with,.
  *
  * @return string
  *   The path to the view page.
@@ -145,7 +146,7 @@ function xml_form_builder_get_view_form_path($form_name) {
  * Gets the path to the delete page for the given form name.
  *
  * @param string $form_name
- *   The form to load the delete page with,
+ *   The form to load the delete page with,.
  *
  * @return string
  *   The path to the delete page.
@@ -158,7 +159,7 @@ function xml_form_builder_get_export_form_path($form_name) {
  * Gets the path to the delete page for the given form name.
  *
  * @param string $form_name
- *   The form to load the delete page with,
+ *   The form to load the delete page with,.
  *
  * @return string
  *   The path to the delete page.
@@ -171,7 +172,7 @@ function xml_form_builder_get_delete_form_path($form_name) {
  * Gets the path to the associations page for the given form name.
  *
  * @param string $form_name
- *   The form to load the associations page with,
+ *   The form to load the associations page with,.
  *
  * @return string
  *   The path to the associations page.
@@ -192,27 +193,27 @@ function xml_form_builder_get_associate_form_path($form_name) {
  *
  * @param array $form
  *   An array containing any "wrapping" elements.
- * @param \Drupal\Core\Form\FormStateInterface  $form_state
- *   The Drupal Form State
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The Drupal Form State.
  * @param string $form_name
  *   The Form to render.
  * @param string $xml
- *   The metadata to prepopulate the form with,
+ *   The metadata to prepopulate the form with,.
  * @param array $parents
  *   An array containing the offset of the parents.
  *
  * @return array
  *   The Drupal Form, if it exists FALSE otherwise.
  */
-function xml_form_builder_get_form(array $form, FormStateInterface $form_state, $form_name, $xml = NULL, $parents = []) {
+function xml_form_builder_get_form(array $form, FormStateInterface $form_state, $form_name, $xml = NULL, array $parents = []) {
   $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLForm');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
-  if (!XMLFormRepository::Exists($form_name)) {
+  if (!XMLFormRepository::exists($form_name)) {
     drupal_set_message(t('The form "%name" does not exist.', ['%name' => $form_name]));
     return FALSE;
   }
-  elseif (!XMLFormRepository::Valid($form_name)) {
+  elseif (!XMLFormRepository::valid($form_name)) {
     drupal_set_message(t('The Drupal form "%name" exists but is not valid. Please notify the administrator.', ['%name' => $form_name]));
     return FALSE;
   }
@@ -220,8 +221,8 @@ function xml_form_builder_get_form(array $form, FormStateInterface $form_state, 
     $xml_form = new XMLForm($form_state, $parents, $form_name);
     // Was not initialized from storage.
     if (!$xml_form->isInitialized()) {
-      $definition = new XMLFormDefinition(XMLFormRepository::Get($form_name));
-      $document = $definition->createXMLDocument($xml);
+      $definition = new XMLFormDefinition(XMLFormRepository::get($form_name));
+      $document = $definition->createXmlDocument($xml);
       $form = $definition->getForm();
       \Drupal::moduleHandler()->alter(XML_FORM_BUILDER_GET_FORM_MODIFY_DEFINITION_HOOK, $form,
         $form_state);
@@ -233,7 +234,7 @@ function xml_form_builder_get_form(array $form, FormStateInterface $form_state, 
     // Catch any errors that occured and display them to the user so that they
     // may correct their form definition.
     $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
-    drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
+    drupal_set_message(Xss::filter($msg), 'error');
     return FALSE;
   }
   return $form;
@@ -339,9 +340,9 @@ function xml_form_builder_update_object(AbstractObject $object, array $associati
  * Applies xslt to incoming datastream.
  *
  * @param DOMDocument $source_document
- *   Document to be transformed
- * @param xslt $transform
- *   Name of xslt to be applied
+ *   Document to be transformed.
+ * @param string $transform
+ *   Name of xslt to be applied.
  *
  * @return DOMDocument
  *   Transformed document on success, original on failure.
@@ -372,7 +373,7 @@ function xml_form_builder_transform_metadata_datastream(DOMDocument $source_docu
  *
  * @param AbstractObject $object
  *   The object to update.
- * @param array $datastream_id
+ * @param string $datastream_id
  *   The datastream to update.
  * @param DOMDocument $document
  *   The document to transform.
@@ -469,7 +470,7 @@ function xml_form_builder_transform_mods_collection_hack(DOMDocument $document) 
  */
 function xml_form_builder_help($path) {
   if ($path == XML_FORM_BUILDER_SETTINGS_MENU) {
-    $output_array = array(
+    $output_array = [
       '#type' => 'item',
       '#markup' => t('The "Use Default DC XSLTs" checkbox overrides the ability
         to have a custom DC XSLT and self transform with each form association.
@@ -477,7 +478,7 @@ function xml_form_builder_help($path) {
         source datastream is updated.  It is recomended that this only be set
         at install time so as to maintain consistent DC metadata.'
       ),
-    );
+    ];
     return \Drupal::service("renderer")->render($output_array);
   }
 }
@@ -493,15 +494,15 @@ function xml_form_builder_islandora_derivative(AbstractObject $object = NULL) {
   }
   module_load_include('inc', 'xml_form_builder', 'includes/db');
   $mappings = xml_form_builder_get_default_dc_xslt_mappings();
-  $derivatives = array();
+  $derivatives = [];
   foreach ($mappings as $mapping) {
     if (in_array($mapping['content_model'], $object->models)) {
-      $derivatives[] = array(
+      $derivatives[] = [
         'source_dsid' => $mapping['dsid'],
         'destination_dsid' => 'DC',
-        'function' => array('xml_form_builder_derive_dc'),
+        'function' => ['xml_form_builder_derive_dc'],
         'file' => drupal_get_path('module', 'xml_form_builder') . '/includes/derivatives.inc',
-      );
+      ];
     }
   }
   return $derivatives;

@@ -2,9 +2,12 @@
 
 namespace Drupal\xml_form_builder\Controller;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
+use Drupal\Core\Render\RendererInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use XMLFormRepository;
 use AbstractObject;
@@ -14,6 +17,28 @@ use AbstractObject;
  */
 class DefaultController extends ControllerBase {
 
+  /**
+   * Rendering service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * Constructor for dependency injection.
+   */
+  public function __construct(RendererInterface $renderer) {
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * Dependency Injection.
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('renderer')
+    );
+  }
 
   /**
    * Show the Main page.
@@ -23,9 +48,9 @@ class DefaultController extends ControllerBase {
    * @return array
    *   The table to display.
    */
-  public function xml_form_builder_main() {
+  public function main() {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
-    $names = XMLFormRepository::GetNames();
+    $names = XMLFormRepository::getNames();
 
     // No forms exist can only create.
     if (count($names) == 0) {
@@ -35,10 +60,10 @@ class DefaultController extends ControllerBase {
     $table = [
       '#type' => 'table',
       '#header' => [
-        ['data' => t('Title')],
-        ['data' => t('Type')],
+        ['data' => $this->t('Title')],
+        ['data' => $this->t('Type')],
         [
-          'data' => t('Operations'),
+          'data' => $this->t('Operations'),
           'colspan' => 6,
         ],
       ],
@@ -48,40 +73,40 @@ class DefaultController extends ControllerBase {
     foreach ($names as $form_info) {
       $name = $form_info['name'];
       if ($form_info['indb']) {
-        $type = t('Custom');
+        $type = $this->t('Custom');
         $edit = Link::createFromRoute(
-          t('Edit'),
+          $this->t('Edit'),
           'xml_form_builder.edit',
           ['form_name' => $name]
         );
         $delete = Link::createFromRoute(
-          t('Delete'),
+          $this->t('Delete'),
           'xml_form_builder.delete',
           ['form_name' => $name]
         );
       }
       else {
-        $type = t('Built-in');
+        $type = $this->t('Built-in');
         $edit = '';
         $delete = '';
       }
       $copy = Link::createFromRoute(
-        t('Copy'),
+        $this->t('Copy'),
         'xml_form_builder.copy',
         ['form_name' => $name]
       );
       $view = Link::createFromRoute(
-        t('View'),
+        $this->t('View'),
         'xml_form_builder.preview',
         ['form_name' => $name]
       );
       $export = Link::createFromRoute(
-        t('Export'),
+        $this->t('Export'),
         'xml_form_builder.export',
         ['form_name' => $name]
       );
       $associate = Link::createFromRoute(
-        t('Associate'),
+        $this->t('Associate'),
         'xml_form_builder.associations_form',
         ['form_name' => $name]
       );
@@ -108,7 +133,7 @@ class DefaultController extends ControllerBase {
    * @return array
    *   The table to display.
    */
-  public function xml_form_builder_list_associations() {
+  public function listAssociations() {
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
 
     $associations_list = [
@@ -131,7 +156,11 @@ class DefaultController extends ControllerBase {
 
     // Returns a link to the edit associations form for form $form_name.
     $create_form_association_link = function ($form_name) {
-      return [Link::createFromRoute($form_name, 'xml_form_builder.associations_form', ['form_name' => $form_name])];
+      return [
+        Link::createFromRoute($form_name, 'xml_form_builder.associations_form', [
+          'form_name' => $form_name,
+        ]),
+      ];
     };
 
     foreach ($map as $cmodel => $forms) {
@@ -146,7 +175,7 @@ class DefaultController extends ControllerBase {
       else {
         $label = $cmodel;
       }
-      $associations_list['#items'][] = ['#markup' => $label . \Drupal::service("renderer")->render($form_table)];
+      $associations_list['#items'][] = ['#markup' => $label . $this->renderer->render($form_table)];
     }
 
     return [$associations_list];
@@ -158,18 +187,18 @@ class DefaultController extends ControllerBase {
    * @param string $form_name
    *   The name of the form to download.
    */
-  public function xml_form_builder_export($form_name) {
+  public function export($form_name) {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     header('Content-Type: text/xml', TRUE);
     header('Content-Disposition: attachment; filename="' . $form_name . '.xml"');
-    $definition = XMLFormRepository::Get($form_name);
+    $definition = XMLFormRepository::get($form_name);
     $definition->formatOutput = TRUE;
     echo $definition->saveXML();
     exit();
   }
 
   /**
-   * Includes all the required CSS/JS files needed to render the Form Builder GUI.
+   * Includes all the required CSS/JS files needed to render the Form Builder.
    *
    * @param string $form_name
    *   The name of the form to edit.
@@ -177,14 +206,14 @@ class DefaultController extends ControllerBase {
    * @return array
    *   The render array for the Form Builder.
    */
-  public function xml_form_builder_edit($form_name) {
+  public function edit($form_name) {
     module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
     module_load_include('inc', 'xml_form_builder', 'Edit');
 
-    if (!\XMLFormDatabase::Exists($form_name)) {
-      drupal_set_message(t('Form "%name" does not exist.', [
-        '%name' => $form_name
-        ]), 'error');
+    if (!\XMLFormDatabase::exists($form_name)) {
+      drupal_set_message($this->t('Form "%name" does not exist.', [
+        '%name' => $form_name,
+      ]), 'error');
       throw new NotFoundHttpException();
     }
     $builder = [
@@ -210,22 +239,22 @@ class DefaultController extends ControllerBase {
    *   The name of the form to update.
    *
    * @throws Exception
-   *   If unable to instantiate the JSON form definition, or generate the XML form
-   *   definition.
+   *   If unable to instantiate the JSON form definition, or generate the XML
+   *   form definition.
    */
-  public function xml_form_builder_edit_save($form_name) {
+  public function editSave($form_name) {
     module_load_include('inc', 'xml_form_builder', 'JSONFormDefinition');
     module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
     module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
     try {
       $definition = new \JSONFormDefinition($_POST['data']);
       list($properties, $form) = $definition->getPropertiesAndForm();
-      $definition = \XMLFormDefinitionGenerator::Create($properties, $form);
-      \XMLFormDatabase::Update($form_name, $definition);
+      $definition = \XMLFormDefinitionGenerator::create($properties, $form);
+      \XMLFormDatabase::update($form_name, $definition);
     }
     catch (Exception $e) {
       $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";
-      drupal_set_message(\Drupal\Component\Utility\Xss::filter($msg), 'error');
+      drupal_set_message(Xss::filter($msg), 'error');
     }
     return [];
   }
@@ -244,11 +273,11 @@ class DefaultController extends ControllerBase {
    *   (added in via associations), and an integer for associations added via
    *   the form.
    */
-  public function xml_form_builder_disable_association($form_name, $id) {
+  public function disableAssociation($form_name, $id) {
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
     $association = xml_form_builder_get_association($id);
     if (!isset($association)) {
-      drupal_set_message(t('Specified association does not exist.'), 'error');
+      drupal_set_message($this->t('Specified association does not exist.'), 'error');
       return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
     }
     // Database defined association.
@@ -256,7 +285,7 @@ class DefaultController extends ControllerBase {
       db_delete('xml_form_builder_form_associations')
         ->condition('id', intval($id))
         ->execute();
-      drupal_set_message(t('Deleted the association ID:%id from %form_name.', [
+      drupal_set_message($this->t('Deleted the association ID:%id from %form_name.', [
         '%id' => $id,
         '%form_name' => $form_name,
       ]));
@@ -278,12 +307,12 @@ class DefaultController extends ControllerBase {
       else {
         db_insert('xml_form_builder_association_hooks')
           ->fields([
-          'id' => $id,
-          'enabled' => (int) FALSE,
-        ])
+            'id' => $id,
+            'enabled' => (int) FALSE,
+          ])
           ->execute();
       }
-      drupal_set_message(t('Successfully disabled association.'));
+      drupal_set_message($this->t('Successfully disabled association.'));
     }
     return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
   }
@@ -299,11 +328,11 @@ class DefaultController extends ControllerBase {
    *   associations added via hook_xml_form_builder_form_associations() can be
    *   enabled.
    */
-  public function xml_form_builder_enable_association($form_name, $id) {
+  public function enableAssociation($form_name, $id) {
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
     $association = xml_form_builder_get_association($id);
     if (!isset($association)) {
-      drupal_set_message(t('Specified association does not exist.'), 'error');
+      drupal_set_message($this->t('Specified association does not exist.'), 'error');
       return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
     }
     // Hook defined association, can't enable non hook associations.
@@ -323,20 +352,20 @@ class DefaultController extends ControllerBase {
       else {
         db_insert('xml_form_builder_association_hooks')
           ->fields([
-          'id' => $id,
-          'enabled' => (int) TRUE,
-        ])
+            'id' => $id,
+            'enabled' => (int) TRUE,
+          ])
           ->execute();
       }
     }
-    drupal_set_message(t('Successfully enabled association.'));
+    drupal_set_message($this->t('Successfully enabled association.'));
     return $this->redirect('xml_form_builder.associations_form', ['form_name' => $form_name]);
   }
 
   /**
    * A form for adding datastreams to an object.
    */
-  public function xml_form_builder_add_datastream_page(AbstractObject $object) {
+  public function addDatastreamPage(AbstractObject $object) {
     module_load_include('inc', 'xml_form_builder', 'includes/datastream.form');
     return [
       'core_form' => $this->formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
@@ -344,7 +373,7 @@ class DefaultController extends ControllerBase {
         [
           '#type' => 'details',
           '#open' => TRUE,
-          '#title' => t('Add A Metadata Datastream'),
+          '#title' => $this->t('Add A Metadata Datastream'),
           'xml_form' => $this->formBuilder()->getForm('\Drupal\xml_form_builder\Form\XmlFormBuilderCreateMetadataForm', $object),
         ] :
         []

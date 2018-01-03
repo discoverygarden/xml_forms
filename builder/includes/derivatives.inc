@@ -12,19 +12,19 @@ use Drupal\Core\Logger\RfcLogLevel;
  *
  * Since DC is always created we are effectively always forced.
  */
-function xml_form_builder_derive_dc($object, $force = FALSE, $hook = array()) {
+function xml_form_builder_derive_dc($object, $force = FALSE, $hook = []) {
   module_load_include('inc', 'xml_form_builder', 'includes/db');
   if (!isset($object[$hook['source_dsid']])) {
-    return array(
+    return [
       'success' => FALSE,
-      'messages' => array(
-        array(
+      'messages' => [
+        [
           'message' => t('DC creation failed: source DSID missing.'),
           'type' => 'watchdog',
           'severity' => RfcLogLevel::ERROR,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
   try {
     $model = array_diff($object->models, ['fedora-system:FedoraObject-3.0']);
@@ -38,28 +38,28 @@ function xml_form_builder_derive_dc($object, $force = FALSE, $hook = array()) {
     xml_form_builder_update_dc_datastream($object, $xslt_dom, $source_dom);
   }
   catch (Exception $e) {
-    return array(
+    return [
       'success' => FALSE,
-      'messages' => array(
-        array(
+      'messages' => [
+        [
           'message' => t('DC creation failed.<br/> With stack: @trace'),
-          'message_sub' => array('@trace' => $e->getTraceAsString()),
+          'message_sub' => ['@trace' => $e->getTraceAsString()],
           'type' => 'watchdog',
           'severity' => RfcLogLevel::ERROR,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
-  return array(
+  return [
     'success' => TRUE,
-    'messages' => array(
-      array(
+    'messages' => [
+      [
         'message' => t('Created DC derivative for (@pid).'),
-        'message_sub' => array('@pid' => $object->id),
+        'message_sub' => ['@pid' => $object->id],
         'type' => 'dsm',
         'severity' => 'status',
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }

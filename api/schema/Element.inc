@@ -12,8 +12,16 @@ module_load_include('inc', 'xml_schema_api', 'SimpleType');
 
 /**
  * Models an <xs:element> DOMElement.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLSchemaApi.info" instead of just "XMLSchemaApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLSchemaElement extends XMLSchemaNode {
+// @codingStandardsIgnoreEnd
 
   /**
    * Constants.
@@ -46,7 +54,7 @@ class XMLSchemaElement extends XMLSchemaNode {
    */
   public function __construct(XMLSchema $schema, DOMElement $node) {
     parent::__construct($schema, $node);
-    $type = new LazyMember(array($this, 'createType'));
+    $type = new LazyMember([$this, 'createType']);
     $this->protected->addMember('type', $type);
     if ($this->getType()->localName == 'complexType') {
       $this->protected->addMember('complexType', $type);

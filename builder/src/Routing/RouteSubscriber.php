@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\xml_form_builder\Routing\RouteSubscriber.
- */
-
 namespace Drupal\xml_form_builder\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
@@ -20,8 +15,10 @@ class RouteSubscriber extends RouteSubscriberBase {
    */
   public function alterRoutes(RouteCollection $collection) {
     $add_datastream_route = $collection->get('islandora.add_datastream_form');
-    $add_datastream_route->setDefault('_form', NULL);
-    $add_datastream_route->setDefault('_controller', '\Drupal\xml_form_builder\Controller\DefaultController::xml_form_builder_add_datastream_page');
+    if ($add_datastream_route) {
+      $add_datastream_route->setDefault('_form', NULL);
+      $add_datastream_route->setDefault('_controller', '\Drupal\xml_form_builder\Controller\DefaultController::addDatastreamPage');
+    }
   }
 
 }

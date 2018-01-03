@@ -14,8 +14,16 @@ module_load_include('inc', 'php_lib', 'DOMHelpers.inc');
  *
  * Also generates additional FormElements for FormElements that represent
  * several DOMNodes.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_schema_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
 class XMLFormGenerator {
+// @codingStandardsIgnoreEnd
 
   /**
    * The form we're generating.
@@ -55,18 +63,18 @@ class XMLFormGenerator {
   /**
    * Generate additional elements based on the provided document.
    *
-   * @param FormElement $root
+   * @param \Drupal\objective_forms\FormElement $root
    *   The root FormElement to work from.
    */
   public function generate(FormElement $root) {
     $this->processElement($root);
-    $root->eachDecendant(array($this, 'processElement'));
+    $root->eachDecendant([$this, 'processElement']);
   }
 
   /**
    * Registers and generates data for the given element.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to generate.
    *
    * @return bool
@@ -81,7 +89,7 @@ class XMLFormGenerator {
         $duplicates = $this->createDuplicates($element, count($nodes));
         $this->registerDuplicates($duplicates, $nodes);
         foreach ($duplicates as $duplicate) {
-          $duplicate->eachDecendant(array($this, 'processElement'));
+          $duplicate->eachDecendant([$this, 'processElement']);
         }
       }
       return TRUE;
@@ -92,7 +100,7 @@ class XMLFormGenerator {
   /**
    * Finds nodes for the given element.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to grab nodes from.
    *
    * @return array
@@ -107,13 +115,13 @@ class XMLFormGenerator {
         return dom_node_list_to_array($results);
       }
     }
-    return array();
+    return [];
   }
 
   /**
    * Creates a given number of duplicates of a FormElement.
    *
-   * @param FormElement $element
+   * @param \Drupal\objective_forms\FormElement $element
    *   The element to duplicate.
    * @param int $count
    *   The number of times to duplicate the element.
@@ -122,7 +130,7 @@ class XMLFormGenerator {
    *   An array of duplicated FormElements.
    */
   protected function createDuplicates(FormElement $element, $count) {
-    $output = array();
+    $output = [];
     for ($i = 0; $i < $count; $i++) {
       $clone = $this->form->duplicateOriginal($element->hash);
       $element->parent[] = $clone;
@@ -134,12 +142,12 @@ class XMLFormGenerator {
   /**
    * Registers an array of duplicated elements to an array of nodes.
    *
-   * @see XMLFormGenerator::createDuplicates()
-   *
    * @param array $elements
    *   The array of elements to register.
    * @param array $nodes
    *   The array of nodes to register the elements to.
+   *
+   * @see XMLFormGenerator::createDuplicates()
    */
   protected function registerDuplicates(array $elements, array $nodes) {
     $count = count($elements);

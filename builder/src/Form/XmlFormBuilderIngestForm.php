@@ -2,6 +2,7 @@
 
 namespace Drupal\xml_form_builder\Form;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -46,7 +47,7 @@ class XmlFormBuilderIngestForm extends FormBase {
       // Make the Object label field required.
       $title_element = $association['title_field'];
       $title_element[] = '#required';
-      \Drupal\Component\Utility\NestedArray::setValue($form, $title_element, TRUE);
+      NestedArray::setValue($form, $title_element, TRUE);
     }
     return $form;
   }
@@ -63,7 +64,7 @@ class XmlFormBuilderIngestForm extends FormBase {
     $document = $xml_form->submit($form, $form_state);
     $label = NULL;
     if ($association['title_field']) {
-      $title_field = \Drupal\Component\Utility\NestedArray::getValue($form, $association['title_field']);
+      $title_field = NestedArray::getValue($form, $association['title_field']);
       $label = $title_field['#value'];
     }
     $step_storage['created'] = xml_form_builder_update_object($object, $association, $document, $label);
@@ -72,7 +73,7 @@ class XmlFormBuilderIngestForm extends FormBase {
   /**
    * Undoes the submit, purging any datastreams created by this step.
    */
-  function undoSubmit(array $form, FormStateInterface $form_state) {
+  public function undoSubmit(array $form, FormStateInterface $form_state) {
     $step_storage = &islandora_ingest_form_get_step_storage($form_state, 'xml_form_builder_metadata_step');
     $object = islandora_ingest_form_get_object($form_state);
     foreach ($step_storage['created'] as $dsid => $created) {

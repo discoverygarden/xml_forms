@@ -12,6 +12,9 @@ use Drupal\Core\Render\Element\FormElement;
  */
 class Tags extends FormElement {
 
+  /**
+   *
+   */
   public function getInfo() {
     $info = [
       '#input' => TRUE,
@@ -22,6 +25,10 @@ class Tags extends FormElement {
     return $info;
   }
 
+  /**
+   *
+   */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
   }
+
 }

@@ -5,8 +5,9 @@
  * Implementation of the objective_forms Form class.
  */
 
-use Drupal\objective_forms;
-
+use Drupal\Core\Render\Element;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\objective_forms\Form;
 use Drupal\Core\Form\FormStateInterface;
 
 use Drupal\objective_forms\FormElement;
@@ -17,8 +18,16 @@ module_load_include('inc', 'xml_form_api', 'Actions');
 
 /**
  * The XML Form class.
+ *
+ * @codingStandardsIgnoreStart
+ * XXX: Poorly implemented sniff indicates class should begin with
+ * "XMLFormApi.info" instead of just "XMLFormApi"... ideally, this
+ * should move somewhere under the Drupal\xml_form_api namespace at
+ * somepoint... because of this, we've left it with only the original
+ * prefix, to avoid having to carry through the change.
  */
-class XMLForm extends Drupal\objective_forms\Form {
+class XMLForm extends Form {
+// @codingStandardsIgnoreEnd
 
   /**
    * The document the form manipulates.
@@ -46,11 +55,12 @@ class XMLForm extends Drupal\objective_forms\Form {
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
-   *
    * @param array $parents
    *   An array containing an offset of parents.
+   * @param string $name
+   *   The name of the form from which we were constructed.
    */
-  public function __construct(FormStateInterface $form_state, $parents = [], $name = NULL) {
+  public function __construct(FormStateInterface $form_state, array $parents = [], $name = NULL) {
     parent::__construct([], $form_state, $parents);
     if ($this->storage->initialized) {
       $this->initializeFromStorage();
@@ -89,13 +99,13 @@ class XMLForm extends Drupal\objective_forms\Form {
    * particular form; on subsequent submit/validation/etc callbacks,
    * Form::initializeFromStorage() will be called.
    *
-   * @throws Exception
-   *   If an attempt is made to initialize a form a second time.
-   *
    * @param array $form
    *   The form to initialize.
    * @param XMLDocument $document
    *   The XML document to initialize.
+   *
+   * @throws Exception
+   *   If an attempt is made to initialize a form a second time.
    */
   public function initialize(array &$form, XMLDocument $document) {
     if (!$this->initialized) {
@@ -125,9 +135,6 @@ class XMLForm extends Drupal\objective_forms\Form {
    * Generates additional elements based on the XMLDocument's nodes.
    *
    * Called the first time this form is created.
-   *
-   * @return array
-   *   Array of elements generated.
    */
   protected function generate() {
     module_load_include('inc', 'xml_form_api', 'XMLFormGenerator');
@@ -163,7 +170,7 @@ class XMLForm extends Drupal\objective_forms\Form {
     // Have parent offset so let's grab only the portion of the form to
     // submit!
     if (!empty($this->parents)) {
-      $form =& \Drupal\Component\Utility\NestedArray::getValue($form_in, $this->parents);
+      $form =& NestedArray::getValue($form_in, $this->parents);
     }
     else {
       $form =& $form_in;
@@ -191,9 +198,9 @@ class XMLForm extends Drupal\objective_forms\Form {
    *   An array where the keys are the hash of the FormElement and the value is
    *   the corresponding FormElement.
    */
-  public function flattenDrupalForm($form) {
+  public function flattenDrupalForm(array $form) {
     $flattened = [];
-    foreach (\Drupal\Core\Render\Element::children($form) as $key) {
+    foreach (Element::children($form) as $key) {
       $child_element = $form[$key];
       if (isset($child_element['#hash'])) {
         $flattened[$child_element['#hash']] = $child_element;
@@ -206,11 +213,12 @@ class XMLForm extends Drupal\objective_forms\Form {
   /**
    * Getter for the form name.
    *
-   * @return string|NULL
+   * @return string|null
    *   The name of the form if it was given during instantiation; otherwise,
    *   NULL.
    */
   public function getFormName() {
     return $this->name;
   }
+
 }

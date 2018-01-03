@@ -4,7 +4,6 @@ namespace Drupal\xml_form_builder\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -19,12 +18,15 @@ class XmlFormBuilderDelete extends FormBase {
     return 'xml_form_builder_delete';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormDatabase');
-    if (!\XMLFormDatabase::Exists($form_name)) {
+    if (!\XMLFormDatabase::exists($form_name)) {
       drupal_set_message($this->t('Form "%name" does not exist.', [
-        '%name' => $form_name
-        ]), 'error');
+        '%name' => $form_name,
+      ]), 'error');
       throw new NotFoundHttpException();
     }
     return [
@@ -35,8 +37,8 @@ class XmlFormBuilderDelete extends FormBase {
       'description' => [
         '#prefix' => '<div>',
         '#markup' => $this->t('Are you sure you want to delete the form <strong>%name</strong> and all related form associations? This action is irreversible.', [
-          '%name' => $form_name
-          ]),
+          '%name' => $form_name,
+        ]),
         '#suffix' => '</div>',
       ],
       'delete' => [
@@ -52,12 +54,15 @@ class XmlFormBuilderDelete extends FormBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormDatabase');
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations');
     if ($form_state->getTriggeringElement()['#name'] == 'delete') {
       $form_name = $form_state->getValue('form_name');
-      if (\XMLFormDatabase::Delete($form_name)) {
+      if (\XMLFormDatabase::delete($form_name)) {
         foreach (xml_form_builder_get_associations([$form_name]) as $assoc) {
           db_delete('xml_form_builder_form_associations')
             ->condition('id', intval($assoc['id']))
@@ -68,13 +73,13 @@ class XmlFormBuilderDelete extends FormBase {
           ]));
         }
         drupal_set_message($this->t('Successfully deleted form "%name".', [
-          '%name' => $form_name
-          ]));
+          '%name' => $form_name,
+        ]));
       }
       else {
         drupal_set_message($this->t('Failed to delete form "%name".', [
-          '%name' => $form_name
-          ]), 'error');
+          '%name' => $form_name,
+        ]), 'error');
       }
     }
     $form_state->setRedirect('xml_form_builder.main');
