@@ -271,8 +271,8 @@ class Create implements ActionInterface {
    *
    * @param XMLDocument $document
    *   The document to create a DOMNode for.
-   * @param DOMElement $value
-   *   The value of the DOMNode.
+   * @param string $value
+   *   The value to be contained in the XML fragment.
    *
    * @throws Exception
    *   Throws errors if there are any additional ones for Drupal to catch.
@@ -280,7 +280,7 @@ class Create implements ActionInterface {
    * @return DOMNode
    *   The DOMNode that is created.
    */
-  protected function createXml(XMLDocument $document, DOMElement $value) {
+  protected function createXml(XMLDocument $document, $value) {
     // Sigh... Oh DOM-API, you're so backwards and useless.
     // We have to do this for namespaces to work correctly; there is no clean
     // workaround for this. User will have to put both the prefix and namespace
