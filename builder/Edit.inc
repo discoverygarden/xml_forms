@@ -68,8 +68,8 @@ function xml_form_builder_create_properties_store($form_name) {
   module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
   module_load_include('inc', 'xml_form_builder', 'JSONFormDefinitionGenerator');
   module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
-  $definition = new XMLFormDefinition(XMLFormDatabase::Get($form_name));
-  $data = JSONFormDefinitionGenerator::GetPropertiesArray($definition->getProperties());
+  $definition = new XMLFormDefinition(XMLFormDatabase::get($form_name));
+  $data = JSONFormDefinitionGenerator::getPropertiesArray($definition->getProperties());
   return [
     '#attached' => [
       'library' => ['xml_form_builder/xml-form-builder-properties-js'],
@@ -92,8 +92,8 @@ function xml_form_builder_create_element_store($form_name) {
   module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
   module_load_include('inc', 'xml_form_builder', 'JSONFormDefinitionGenerator');
   module_load_include('inc', 'xml_form_api', 'XMLFormDefinition');
-  $definition = new XMLFormDefinition(XMLFormDatabase::Get($form_name));
-  $data = JSONFormDefinitionGenerator::GetFormArray($definition->getForm());
+  $definition = new XMLFormDefinition(XMLFormDatabase::get($form_name));
+  $data = JSONFormDefinitionGenerator::getFormArray($definition->getForm());
   return [
     '#attached' => [
       'library' => ['xml_form_builder/xml-form-builder-elements-js'],

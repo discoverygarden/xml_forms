@@ -28,7 +28,7 @@ class XmlFormBuilderCopy extends FormBase {
     if (isset($_POST['cancel'])) {
       return $this->redirect('xml_form_builder.main');
     }
-    if (!\XMLFormRepository::Exists($form_name)) {
+    if (!\XMLFormRepository::exists($form_name)) {
       drupal_set_message($this->t('Form "%name" does not exist.', [
         '%name' => $form_name,
       ]), 'error');
@@ -69,7 +69,7 @@ class XmlFormBuilderCopy extends FormBase {
     if ($form_state->getTriggeringElement()['#name'] == 'copy') {
       $original = $form_state->getValue(['original']);
       $form_name = $form_state->getValue(['form_name']);
-      if (\XMLFormRepository::Copy($original, $form_name)) {
+      if (\XMLFormRepository::copy($original, $form_name)) {
         drupal_set_message($this->t('Successfully copied form "%name".', [
           '%name' => $form_name,
         ]));

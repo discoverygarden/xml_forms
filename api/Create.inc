@@ -203,7 +203,7 @@ class Create implements ActionInterface {
     $action = [
       self::ELEMENT => 'createElement',
       self::ATTRIBUTE => 'createAttribute',
-      self::XML => 'createXML',
+      self::XML => 'createXml',
     ];
     try {
       return $this->{$action[$this->type]}($document, $value);
@@ -230,7 +230,7 @@ class Create implements ActionInterface {
    */
   protected function createElement(XMLDocument $document, $value) {
     if (isset($this->prefix)) {
-      $uri = $document->namespaces->getURI($this->prefix);
+      $uri = $document->namespaces->getUri($this->prefix);
       return $document->document->createElementNS($uri, $this->name, $value);
     }
     else {
@@ -254,7 +254,7 @@ class Create implements ActionInterface {
    */
   protected function createAttribute(XMLDocument $document, $value) {
     if (isset($this->prefix)) {
-      $uri = $document->namespaces->getURI($this->prefix);
+      $uri = $document->namespaces->getUri($this->prefix);
       $attribute = $document->document->createAttributeNS($uri, $this->name);
       $attribute->value = $value;
       return $attribute;

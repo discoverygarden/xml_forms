@@ -88,7 +88,7 @@ class XMLFormRepository extends XMLFormDatabase {
    *   The XML Form Definition if found, FALSE otherwise.
    */
   public static function get($form_name) {
-    $in_database = parent::Exists($form_name);
+    $in_database = parent::exists($form_name);
     if ($in_database) {
       return parent::get($form_name);
     }
@@ -126,10 +126,10 @@ class XMLFormRepository extends XMLFormDatabase {
     foreach ($hook as $key => $array) {
       $hook_names[] = ['name' => $key, 'indb' => FALSE];
     }
-    usort($hook_names, ['XMLFormRepository', 'ComparisonFunction']);
+    usort($hook_names, ['XMLFormRepository', 'comparisonFunction']);
 
     $db_names = parent::getNames();
-    usort($hook_names, ['XMLFormRepository', 'ComparisonFunction']);
+    usort($hook_names, ['XMLFormRepository', 'comparisonFunction']);
 
     $names = array_merge($hook_names, $db_names);
 

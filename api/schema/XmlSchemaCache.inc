@@ -52,9 +52,9 @@ class XmlSchemaCache {
    *   TRUE if the cache was created or already exists; FALSE otherwise.
    */
   public static function create() {
-    if (!static::Exists()) {
+    if (!static::exists()) {
       // Clear will initialize the table and files location.
-      return static::Clear();
+      return static::clear();
     }
     return TRUE;
   }
@@ -162,7 +162,7 @@ class XmlSchemaCache {
     if (static::create()) {
       $cache = \Drupal::cache(static::TYPE)->get(static::ID)->data;
       if (isset($filename) && isset($cache[$filename])) {
-        if (static::LocationExists($cache[$filename])) {
+        if (static::locationExists($cache[$filename])) {
           return $cache[$filename];
         }
         // Failed to find the file clear instance from the cache.

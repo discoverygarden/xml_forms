@@ -50,7 +50,7 @@ class DefaultController extends ControllerBase {
    */
   public function main() {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
-    $names = XMLFormRepository::GetNames();
+    $names = XMLFormRepository::getNames();
 
     // No forms exist can only create.
     if (count($names) == 0) {
@@ -191,7 +191,7 @@ class DefaultController extends ControllerBase {
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
     header('Content-Type: text/xml', TRUE);
     header('Content-Disposition: attachment; filename="' . $form_name . '.xml"');
-    $definition = XMLFormRepository::Get($form_name);
+    $definition = XMLFormRepository::get($form_name);
     $definition->formatOutput = TRUE;
     echo $definition->saveXML();
     exit();
@@ -210,7 +210,7 @@ class DefaultController extends ControllerBase {
     module_load_include('inc', 'xml_form_builder', 'XMLFormDatabase');
     module_load_include('inc', 'xml_form_builder', 'Edit');
 
-    if (!\XMLFormDatabase::Exists($form_name)) {
+    if (!\XMLFormDatabase::exists($form_name)) {
       drupal_set_message($this->t('Form "%name" does not exist.', [
         '%name' => $form_name,
       ]), 'error');
@@ -249,8 +249,8 @@ class DefaultController extends ControllerBase {
     try {
       $definition = new \JSONFormDefinition($_POST['data']);
       list($properties, $form) = $definition->getPropertiesAndForm();
-      $definition = \XMLFormDefinitionGenerator::Create($properties, $form);
-      \XMLFormDatabase::Update($form_name, $definition);
+      $definition = \XMLFormDefinitionGenerator::create($properties, $form);
+      \XMLFormDatabase::update($form_name, $definition);
     }
     catch (Exception $e) {
       $msg = "File: {$e->getFile()}<br/>Line: {$e->getLine()}<br/>Error: {$e->getMessage()}";

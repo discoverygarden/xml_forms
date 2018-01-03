@@ -23,7 +23,7 @@ class XmlFormBuilderDelete extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormDatabase');
-    if (!\XMLFormDatabase::Exists($form_name)) {
+    if (!\XMLFormDatabase::exists($form_name)) {
       drupal_set_message($this->t('Form "%name" does not exist.', [
         '%name' => $form_name,
       ]), 'error');
@@ -62,7 +62,7 @@ class XmlFormBuilderDelete extends FormBase {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations');
     if ($form_state->getTriggeringElement()['#name'] == 'delete') {
       $form_name = $form_state->getValue('form_name');
-      if (\XMLFormDatabase::Delete($form_name)) {
+      if (\XMLFormDatabase::delete($form_name)) {
         foreach (xml_form_builder_get_associations([$form_name]) as $assoc) {
           db_delete('xml_form_builder_form_associations')
             ->condition('id', intval($assoc['id']))

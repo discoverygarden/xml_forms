@@ -90,7 +90,7 @@ function xml_form_builder_datastream_access($perm, $object, $dsid) {
  */
 function xml_form_builder_forms($form_id, $args) {
   module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
-  if (XMLFormRepository::Exists($form_id) && XMLFormRepository::Valid($form_id)) {
+  if (XMLFormRepository::exists($form_id) && XMLFormRepository::valid($form_id)) {
     return [
       $form_id => [
         'callback' => 'xml_form_builder_get_form',
@@ -209,11 +209,11 @@ function xml_form_builder_get_form(array $form, FormStateInterface $form_state, 
   $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLForm');
   $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
-  if (!XMLFormRepository::Exists($form_name)) {
+  if (!XMLFormRepository::exists($form_name)) {
     drupal_set_message(t('The form "%name" does not exist.', ['%name' => $form_name]));
     return FALSE;
   }
-  elseif (!XMLFormRepository::Valid($form_name)) {
+  elseif (!XMLFormRepository::valid($form_name)) {
     drupal_set_message(t('The Drupal form "%name" exists but is not valid. Please notify the administrator.', ['%name' => $form_name]));
     return FALSE;
   }
@@ -221,8 +221,8 @@ function xml_form_builder_get_form(array $form, FormStateInterface $form_state, 
     $xml_form = new XMLForm($form_state, $parents, $form_name);
     // Was not initialized from storage.
     if (!$xml_form->isInitialized()) {
-      $definition = new XMLFormDefinition(XMLFormRepository::Get($form_name));
-      $document = $definition->createXMLDocument($xml);
+      $definition = new XMLFormDefinition(XMLFormRepository::get($form_name));
+      $document = $definition->createXmlDocument($xml);
       $form = $definition->getForm();
       \Drupal::moduleHandler()->alter(XML_FORM_BUILDER_GET_FORM_MODIFY_DEFINITION_HOOK, $form,
         $form_state);
