@@ -223,7 +223,7 @@ class XMLSchema {
    *   The loaded DOMDocument.
    */
   protected function loadDocument($filename) {
-    if (($doc = XmlSchemaCache::Get($filename)) != FALSE) {
+    if (($doc = XmlSchemaCache::get($filename)) != FALSE) {
       return $doc;
     }
     else {
@@ -231,7 +231,7 @@ class XMLSchema {
       if (!@$doc->load($filename)) {
         throw new Exception(t('Failed to find document %filename', ['%filename' => $filename]));
       }
-      XmlSchemaCache::Set($filename, $doc);
+      XmlSchemaCache::set($filename, $doc);
       return $doc;
     }
   }
@@ -341,7 +341,7 @@ class XMLSchema {
    *   otherwise.
    */
   public function validate(DOMDocument $doc) {
-    $filename = XmlSchemaCache::GetCachedFilename($this->filename);
+    $filename = XmlSchemaCache::getCachedFilename($this->filename);
     if ($filename != FALSE) {
       return $doc->schemaValidate($filename);
     }

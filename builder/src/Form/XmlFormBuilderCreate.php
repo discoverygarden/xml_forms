@@ -116,7 +116,7 @@ class XmlFormBuilderCreate extends FormBase {
     if ($form_state->getTriggeringElement()['#name'] == 'create') {
       $definition = xml_form_builder_create_get_uploaded_file();
       $definition = $definition ? $definition : xml_form_api_get_empty_form_definition();
-      if (\XMLFormRepository::Create($form_name, $definition)) {
+      if (\XMLFormRepository::create($form_name, $definition)) {
         drupal_set_message($this->t('Successfully created form "%name".', [
           '%name' => $form_name,
         ]));
