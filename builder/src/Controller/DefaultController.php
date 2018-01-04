@@ -368,7 +368,7 @@ class DefaultController extends ControllerBase {
   public function addDatastreamPage(AbstractObject $object) {
     module_load_include('inc', 'xml_form_builder', 'includes/datastream.form');
     return [
-      'core_form' => $this->formBuilder()->getForm('\Drupal\islandora\Form\IslandoraAddDatastreamForm', $object),
+      'core_form' => $this->formBuilder()->getForm('\Drupal\islandora\Form\AddDatastreamForm', $object),
       'xml_form_fieldset' => (xml_form_builder_empty_metadata_datastreams($object) ?
         [
           '#type' => 'details',
