@@ -374,7 +374,7 @@ class DefaultController extends ControllerBase {
           '#type' => 'details',
           '#open' => TRUE,
           '#title' => $this->t('Add A Metadata Datastream'),
-          'xml_form' => $this->formBuilder()->getForm('\Drupal\xml_form_builder\Form\XmlFormBuilderCreateMetadataForm', $object),
+          'xml_form' => $this->formBuilder()->getForm('\Drupal\xml_form_builder\Form\CreateMetadataForm', $object),
         ] :
         []
       ),

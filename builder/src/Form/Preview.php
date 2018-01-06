@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  * This shows the user what their form will look like. When it is submitted it
  * will show the user what the generated XML looks like.
  */
-class XmlFormBuilderPreview extends FormBase {
+class Preview extends FormBase {
 
   /**
    * {@inheritdoc}

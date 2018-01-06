@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Get the Delete Page Form.
  */
-class XmlFormBuilderDelete extends FormBase {
+class Delete extends FormBase {
 
   /**
    * {@inheritdoc}

@@ -16,28 +16,28 @@ xml_form_builder.settings_form:
   path: '/admin/config/islandora/xmlform/settings'
   defaults:
     _title: Settings
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderSettingsForm
+    _form: \Drupal\xml_form_builder\Form\SettingsForm
   requirements:
     _permission: 'Associate XML Forms'
 xml_form_builder.xslts_form:
   path: '/admin/config/islandora/xmlform/xslts'
   defaults:
     _title: XSLTs
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderXsltsForm
+    _form: \Drupal\xml_form_builder\Form\XsltsForm
   requirements:
     _custom_access: 'xml_form_builder_xslts_access'
 xml_form_builder.add_xslt_form:
   path: '/admin/config/islandora/xmlform/xslts/add_xslt'
   defaults:
     _title: 'Add XSLT'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderAddXsltForm
+    _form: \Drupal\xml_form_builder\Form\AddXsltForm
   requirements:
     _custom_access: 'xml_form_builder_xslts_access'
 xml_form_builder.add_default_dc_transform_mapping_form:
   path: '/admin/config/islandora/xmlform/xslts/add_default_dc_mapping'
   defaults:
     _title: 'Add Mapping'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderAddDefaultDcTransformMappingForm
+    _form: \Drupal\xml_form_builder\Form\AddDefaultDcTransformMappingForm
   requirements:
     _custom_access: 'xml_form_builder_xslts_access'
 xml_form_builder.create_create:
@@ -45,7 +45,7 @@ xml_form_builder.create_create:
   defaults:
     type: create
     _title: 'Create Form'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderCreate
+    _form: \Drupal\xml_form_builder\Form\Create
   requirements:
     _permission: 'Create XML Forms'
 xml_form_builder.create_import:
@@ -53,14 +53,14 @@ xml_form_builder.create_import:
   defaults:
     type: import
     _title: 'Import Form'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderCreate
+    _form: \Drupal\xml_form_builder\Form\Create
   requirements:
     _permission: 'Create XML Forms'
 xml_form_builder.preview:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/view'
   defaults:
     _title: 'Preview Form'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderPreview
+    _form: \Drupal\xml_form_builder\Form\Preview
   requirements:
     _permission: 'List XML Forms'
 xml_form_builder.export:
@@ -74,7 +74,7 @@ xml_form_builder.copy:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/copy'
   defaults:
     _title: 'Copy Form'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderCopy
+    _form: \Drupal\xml_form_builder\Form\Copy
   requirements:
     _permission: 'Create XML Forms'
 xml_form_builder.edit:
@@ -95,14 +95,14 @@ xml_form_builder.delete:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/delete'
   defaults:
     _title: 'Delete Form'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderDelete
+    _form: \Drupal\xml_form_builder\Form\Delete
   requirements:
     _permission: 'Delete XML Forms'
 xml_form_builder.associations_form:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/associations'
   defaults:
     _title: 'Associate Form "@form"'
-    _form: \Drupal\xml_form_builder\Form\XmlFormBuilderAssociationsForm
+    _form: \Drupal\xml_form_builder\Form\AssociationsForm
   requirements:
     _permission: 'Associate XML Forms'
 xml_form_builder.disable_association:
@@ -124,7 +124,7 @@ xml_form_builder.datastream_form:
   defaults:
     perm: 'edit fedora metadata'
     _title: 'Edit datastream'
-    _form: '\Drupal\xml_form_builder\Form\XmlFormBuilderDatastreamForm'
+    _form: '\Drupal\xml_form_builder\Form\DatastreamForm'
   requirements:
     _custom_access: 'xml_form_builder_datastream_access'
   options:

@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Default DC transforms form.
  */
-class XmlFormBuilderXsltsForm extends FormBase {
+class XsltsForm extends FormBase {
 
   /**
    * {@inheritdoc}

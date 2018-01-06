@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Form for copying XML forms.
  */
-class XmlFormBuilderCopy extends FormBase {
+class Copy extends FormBase {
 
   /**
    * {@inheritdoc}
