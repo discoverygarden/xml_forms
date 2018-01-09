@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @package \Drupal\xml_form_builder\Form
  */
-class XmlFormBuilderIngestForm extends FormBase {
+class IngestForm extends FormBase {
 
   /**
    * {@inheritdoc}

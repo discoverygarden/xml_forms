@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Form for creating an XML form.
  */
-class XmlFormBuilderCreate extends FormBase {
+class Create extends FormBase {
 
   /**
    * {@inheritdoc}

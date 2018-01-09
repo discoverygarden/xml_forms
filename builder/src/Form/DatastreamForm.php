@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Datastream form.
  */
-class XmlFormBuilderDatastreamForm extends FormBase {
+class DatastreamForm extends FormBase {
 
   /**
    * {@inheritdoc}

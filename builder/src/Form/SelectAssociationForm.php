@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * This is used as part of the ingest process.
  */
-class XmlFormBuilderSelectAssociationForm extends FormBase {
+class SelectAssociationForm extends FormBase {
 
   /**
    * {@inheritdoc}

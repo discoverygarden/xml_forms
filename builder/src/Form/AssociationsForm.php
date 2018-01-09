@@ -15,7 +15,7 @@ use Drupal\Core\Link;
  * user to delete/disable those associations, as well as adding new
  * associations to the given XML form.
  */
-class XmlFormBuilderAssociationsForm extends FormBase {
+class AssociationsForm extends FormBase {
 
   /**
    * {@inheritdoc}

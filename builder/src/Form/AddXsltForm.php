@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Add an XSLT form.
  */
-class XmlFormBuilderAddXsltForm extends FormBase {
+class AddXsltForm extends FormBase {
 
   protected $fileEntityStorage;
 

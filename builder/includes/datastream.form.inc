@@ -8,7 +8,7 @@
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 
-use Drupal\xml_form_builder\Form\XmlFormBuilderSelectAssociationForm;
+use Drupal\xml_form_builder\Form\SelectAssociationForm;
 
 /**
  * Gets the form associations for the given content models and datastream.
@@ -66,7 +66,7 @@ function xml_form_builder_datastream_form_get_association(FormStateInterface $fo
  */
 function xml_form_builder_datastream_form_select_association_form(array $form, FormStateInterface $form_state, array $associations) {
   $form_state->set('associations', $associations);
-  $select_form = new XmlFormBuilderSelectAssociationForm();
+  $select_form = new SelectAssociationForm();
   $form = $select_form->buildForm($form, $form_state, $associations);
   $form['next'] = [
     '#type' => 'submit',

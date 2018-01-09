@@ -9,7 +9,7 @@ use Drupal\Core\Render\Element;
 /**
  * Settings/configuration form.
  */
-class XmlFormBuilderSettingsForm extends ConfigFormBase {
+class SettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}

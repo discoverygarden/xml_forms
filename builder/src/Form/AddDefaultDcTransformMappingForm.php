@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Add a default DC transform form.
  */
-class XmlFormBuilderAddDefaultDcTransformMappingForm extends FormBase {
+class AddDefaultDcTransformMappingForm extends FormBase {
 
   /**
    * {@inheritdoc}
