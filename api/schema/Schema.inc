@@ -6,8 +6,8 @@
  */
 
 use Drupal\Component\Utility\Unicode;
+use Drupal\php_lib\ReadOnlyProtectedMembers;
 
-module_load_include('inc', 'php_lib', 'ReadOnlyProtectedMembers');
 module_load_include('inc', 'php_lib', 'DOMHelpers');
 module_load_include('inc', 'php_lib', 'String');
 module_load_include('inc', 'xml_form_api', 'SchemaTag');
