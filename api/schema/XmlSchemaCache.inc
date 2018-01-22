@@ -26,7 +26,7 @@ class XmlSchemaCache {
    * The Drupal cache ID where the mappings of urls to actual files are stored.
    */
   const ID = 'xml-schema-table';
-  const TYPE = 'cache';
+  const TYPE = 'data';
 
   const LOCATION = 'public://schemas';
 
