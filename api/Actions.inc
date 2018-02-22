@@ -61,7 +61,7 @@ class Actions implements FormPropertyInterface {
    */
   public function __construct($value) {
     if (!is_array($value)) {
-      throw new InvalidArgumentException(\Drupal::t('The "$value" parameter to Actions must be an array.'));
+      throw new InvalidArgumentException(t('The value parameter to Actions must be an array.'));
     }
     if (isset($value['create']) && is_array($value['create'])) {
       $this->create = new Create($value['create']);
