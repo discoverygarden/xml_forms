@@ -9,7 +9,7 @@ Drupal.behaviors.xmlFormElementTabs = {
     tabs: null, // Collection of all tabpanels.
     collapsibleTabs: null,
     nonCollapsibleTabs: null,
-    loadPanels: function(collapse, context) {
+    loadPanels: function (collapse, context) {
       var load = '.xml-form-elements-tabs:not(.processed)';
       var collapsible = '.xml-form-elements-tabs-collapsible';
       var collapsed = '.xml-form-elements-tabs-collapsed';
@@ -36,13 +36,13 @@ Drupal.behaviors.xmlFormElementTabs = {
       if (this.nonCollapsibleTabs.length > 0) {
         this.nonCollapsibleTabs.tabs({});
       }
-      this.tabs.each(function() {
+      this.tabs.each(function () {
         jQuery(this).tabs({
           selected: jQuery(this).find('li').length - 1
         });
       });
     },
-    setCollapsibleIconOnSelect: function(event, ui) {
+    setCollapsibleIconOnSelect: function (event, ui) {
       var icon = jQuery('span.expand-tabpanel-icon:first', this);
       if (jQuery(ui.panel).hasClass('ui-tabs-hide')) {
         icon.removeClass('ui-icon-circle-triangle-e');
@@ -53,7 +53,7 @@ Drupal.behaviors.xmlFormElementTabs = {
         icon.addClass('ui-icon-circle-triangle-e');
       }
     },
-    setCollapsibleIconOnCreate: function(event, ui) {
+    setCollapsibleIconOnCreate: function (event, ui) {
       var icon = jQuery('span.expand-tabpanel-icon:first', this);
       if (jQuery('div.ui-tabs-panel:not(.ui-tabs-hide)', this).length > 0) {
         icon.removeClass('ui-icon-circle-triangle-e');
@@ -64,20 +64,20 @@ Drupal.behaviors.xmlFormElementTabs = {
         icon.addClass('ui-icon-circle-triangle-e');
       }
     },
-    attachToolTips: function() {
-      jQuery('.tool_tip_trigger').once('tool_tip_trig').each(function() {
-        jQuery(this).hover(function(e) {
-          var html = '';// + i + '<br/>';
+    attachToolTips: function () {
+      jQuery('.tool_tip_trigger').once('tool_tip_trig').each(function () {
+        jQuery(this).hover(function (e) {
+          var html = '';
           var id = jQuery(this).children('a[href]').attr('href');
-          jQuery(id + ' div.form-item').each(function() {
+          jQuery(id + ' div.form-item').each(function () {
             var item = jQuery(this);
-            jQuery('> input[type~="text"]', item).each(function(i, text) {
+            jQuery('> input[type~="text"]', item).each(function (i, text) {
               var id = jQuery(text).attr('id');
               var label = jQuery('label[for="' + id + '"]', item);
               if (label.length > 0) {
                 label = label.text().trim();
                 var textOut = jQuery(text).val();
-                jQuery('input[class~="form-tag"]', jQuery(text).parent()).each(function() {
+                jQuery('input[class~="form-tag"]', jQuery(text).parent()).each(function () {
                   var tag = jQuery(this);
                   textOut += ' ' + tag.val();
                 });
@@ -88,14 +88,14 @@ Drupal.behaviors.xmlFormElementTabs = {
               }
             });
 
-            jQuery('> select', item).each(function(index, select) {
+            jQuery('> select', item).each(function (index, select) {
               var id = jQuery(select).attr('id');
               var label = jQuery('label[for=' + id + ']');
               if (label.length > 0) {
                 label = label.text().trim();
                 html += label + ': ';
               }
-              jQuery('option:selected', select).each(function(idx, selected) {
+              jQuery('option:selected', select).each(function (idx, selected) {
                 html += jQuery(selected).text().trim() + '<br/>';
               });
             });
@@ -120,10 +120,12 @@ Drupal.behaviors.xmlFormElementTabs = {
               h = Drupal.behaviors.xmlFormElementTabs.tabs.tool_tip.height(),
               dx = jQuery(window).width() - (x + w),
               dy = jQuery(window).height() - (y + h);
-          if (dx < 20)
+          if (dx < 20) {
             x = e.pageX - w - 20;
-          if (dy < 20)
+          }
+          if (dy < 20) {
             y = e.pageY - h - 20;
+          }
           Drupal.behaviors.xmlFormElementTabs.tabs.tool_tip.css({
             'left': x,
             'top': y
@@ -131,22 +133,22 @@ Drupal.behaviors.xmlFormElementTabs = {
 
           Drupal.behaviors.xmlFormElementTabs.tabs.tool_tip.appendTo('body');
         },
-            function() {
+            function () {
               if (Drupal.behaviors.xmlFormElementTabs.tabs.tool_tip != null) {
                 Drupal.behaviors.xmlFormElementTabs.tabs.tool_tip.remove();
               }
             });
       });
     },
-    enableActions: function() {
+    enableActions: function () {
       var icons = jQuery(".ui-icon-close:not(.processed)");
-      icons.click(function() {
+      icons.click(function () {
         jQuery("#" + jQuery(this).text()).trigger("mousedown");
       });
       icons.addClass('processed');
     }
   },
-  attach: function(context, settings) {
+  attach: function (context, settings) {
     this.tabs.loadPanels(true, context);
     this.tabs.attachToolTips();
     this.tabs.enableActions();

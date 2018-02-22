@@ -9,7 +9,6 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Url;
 use Drupal\Component\Utility\Html;
 
-
 /**
  * Creates a creative_commons form element.
  *
@@ -222,9 +221,9 @@ function xml_form_elements_creative_commons_ajax(&$form, &$form_state) {
  * Left as a function for use by community modules.
  *
  * @param string $commercial
- *   'y' to allow 'n' to disallow.
+ *   String toggle 'y' to allow 'n' to disallow.
  * @param string $derivatives
- *   'y' to allow 'n' to disallow.
+ *   String toggle 'y' to allow 'n' to disallow.
  * @param string $jurisdiction
  *   Legal jurisdiction code.
  *
@@ -261,9 +260,9 @@ function xml_form_elements_get_creative_commons($commercial, $derivatives, $juri
  * Gets the value for the element.
  *
  * @param string $commercial
- *   'y' to allow 'n' to disallow.
+ *   String toggle 'y' to allow 'n' to disallow.
  * @param string $derivatives
- *   'y' to allow 'n' to disallow.
+ *   String toggle 'y' to allow 'n' to disallow.
  * @param string $jurisdiction
  *   Legal jurisdiction code.
  *

@@ -9,8 +9,9 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 module_load_include('inc', 'xml_form_elements', 'includes/TabPanel');
+
 /**
- *
+ * Class for form tabs.
  */
 class Tabs {
 
@@ -56,7 +57,7 @@ class Tabs {
  * @param array $vars
  *   Theme variables.
  */
-function template_preprocess_tabs(&$vars) {
+function template_preprocess_tabs(array &$vars) {
   $tabs = $vars['element'];
   // Header Info.
   $vars['collapsible'] = $tabs['#collapsible'] == TRUE;

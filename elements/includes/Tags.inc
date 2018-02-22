@@ -9,8 +9,9 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 module_load_include('inc', 'xml_form_elements', 'includes/Tag');
+
 /**
- *
+ * Class for form tags.
  */
 class Tags {
 
@@ -187,7 +188,7 @@ class Tags {
  * @param array $vars
  *   Theme variables.
  */
-function template_preprocess_tags(&$vars) {
+function template_preprocess_tags(array &$vars) {
   global $base_url;
   $tags = &$vars['element'];
   // Location of images.

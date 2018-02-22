@@ -8,7 +8,7 @@
 use Drupal\Component\Utility\Html;
 
 /**
- *
+ * Datepicker element helper class.
  */
 class Datepicker {
 
@@ -61,7 +61,7 @@ class Datepicker {
  * @param array $variables
  *   An array of theming variables.
  */
-function theme_datepicker_xml_form_elements($variables) {
+function theme_datepicker_xml_form_elements(array $variables) {
   $element = $variables['element'];
   $array_switch = is_array($element['#value']) && isset($element['#value']['value']);
   $element_val = $array_switch ? $element['#value']['value'] : $element['#value'];

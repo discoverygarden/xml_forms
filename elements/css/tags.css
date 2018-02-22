@@ -1,13 +1,11 @@
-span.tag-list
-{
+span.tag-list {
   margin: 4px 0;
   padding: 0;
   list-style-image: url('../images/minus_small.png');
   /* list-style-type: none; */
 }
 
-span.tag-list > span
-{
+span.tag-list > span {
   background-image: none;
   background-color: #efe;
   background-position: right center;
@@ -19,8 +17,7 @@ span.tag-list > span
   -webkit-border-radius: 5px;
 }
 
-span.tag-list > span > span.remove-tag
-{
+span.tag-list > span > span.remove-tag {
   display: inline-block;
   height: 12px;
   width: 12px;
@@ -36,18 +33,16 @@ span.tag-list > span > span.remove-tag
   -webkit-border-radius: 5px;*/
 }
 
-.xml-form-elements-tags input.progress-disabled
-{
+.xml-form-elements-tags input.progress-disabled {
   float: none;
 }
 
-.xml-form-elements-tags div.add-tag > input
-{
+.xml-form-elements-tags div.add-tag > input {
   display: inline;
   float: none;
 }
 
-span.tag-list > span:hover, span.tag-list > span:hover span
-{
+span.tag-list > span:hover,
+span.tag-list > span:hover span {
   background-color: #eee;
 }
