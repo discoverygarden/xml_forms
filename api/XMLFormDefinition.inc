@@ -9,6 +9,7 @@
  */
 
 use Drupal\objective_forms\FormElement;
+use Drupal\objective_forms\FormPropertyInterface;
 
 module_load_include('inc', 'php_lib', 'String');
 module_load_include('inc', 'php_lib', 'Array');
