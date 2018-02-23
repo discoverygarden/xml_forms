@@ -13,7 +13,7 @@ use Drupal\Core\Render\Element\FormElement;
 class DatePickerXmlFormElements extends FormElement {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getInfo() {
     $info = [

@@ -13,7 +13,7 @@ use Drupal\Core\Render\Element\FormElement;
 class DefaultableItem extends FormElement {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getInfo() {
     $info = [
