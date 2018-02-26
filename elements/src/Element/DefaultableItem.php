@@ -20,7 +20,6 @@ class DefaultableItem extends FormElement {
       '#markup' => '',
       '#pre_render' => [
         'xml_form_elements_default_value_to_markup',
-        'drupal_pre_render_markup',
         'xml_form_elements_remove_empty_markup',
       ],
       '#theme_wrappers' => ['xml_form_element'],
