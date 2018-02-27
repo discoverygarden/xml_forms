@@ -22,7 +22,7 @@ class DefaultableItem extends FormElement {
         'xml_form_elements_default_value_to_markup',
         'xml_form_elements_remove_empty_markup',
       ],
-      '#theme_wrappers' => ['xml_form_element'],
+      '#theme_wrappers' => ['form_element'],
     ];
 
     return $info;

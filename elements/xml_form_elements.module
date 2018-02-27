@@ -74,9 +74,6 @@ function xml_form_elements_theme($existing, $type, $theme, $path) {
       'render element' => 'element',
       'file' => 'includes/Datepicker.inc',
     ],
-    'xml_form_element' => [
-      'render element' => 'element',
-    ],
   ];
 }
 
@@ -480,16 +477,6 @@ function xml_form_elements_remove_empty_markup(array $elements) {
   }
   else {
     return [];
-  }
-}
-
-/**
- * Implements theme_hook().
- */
-function theme_xml_form_element(&$elements) {
-  if (!empty($elements['element']['#children'])) {
-    $elements['element']['#theme'] = 'form_element';
-    return $elements['element'];
   }
 }
 
