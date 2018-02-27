@@ -73,6 +73,7 @@ function xml_form_elements_theme($existing, $type, $theme, $path) {
     XML_FORM_ELEMENTS_DATEPICKER_THEME => [
       'render element' => 'element',
       'file' => 'includes/Datepicker.inc',
+      'function' => 'theme_datepicker_xml_form_elements',
     ],
   ];
 }
