@@ -134,9 +134,18 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     $jurisdiction = empty($default_value_array[1]) ? 'international' : $default_value_array[1];
   }
   else {
-    $derivatives = $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_modifications']) ? $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_modifications']) : 'y';
-    $commercial = $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_commercial']) ? $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_commercial']) : 'y';
-    $jurisdiction = $form_state->getValue([$element['#name'], 'license_fieldset', 'license_jurisdiction']) ? $form_state->getValue([$element['#name'], 'license_fieldset', 'license_jurisdiction']) : 'ca';
+    $derivatives_value = $form_state->getValue(
+      [$element['#name'], 'license_fieldset', 'allow_modifications']
+    );
+    $commercial_value = $form_state->getValue(
+      [$element['#name'], 'license_fieldset', 'allow_commercial']
+    );
+    $jurisdiction_value = $form_state->getValue(
+      [$element['#name'], 'license_fieldset', 'license_jurisdiction']
+    );
+    $derivatives = $derivatives_value ? $derivatives_value : 'y';
+    $commercial = $commercial_value ? $commercial_value : 'y';
+    $jurisdiction = $jurisdiction_value ? $jurisdiction_value : 'ca';
   }
 
   // Form elements.

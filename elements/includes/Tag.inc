@@ -12,6 +12,7 @@ module_load_include('inc', 'xml_form_elements', 'includes/Element');
 /**
  * Static functions that allow for theming and processing tabpanels.
  */
+// @codingStandardsIgnoreLine
 class Tag {
 
   /**
@@ -41,6 +42,7 @@ class Tag {
    * @return array
    *   The processed element.
    */
+// @codingStandardsIgnoreLine
   public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     $tags = &get_form_element_parent($element, $complete_form);
     $element['#id'] = $element['#hash'];

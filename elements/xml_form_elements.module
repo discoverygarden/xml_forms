@@ -5,7 +5,6 @@
  * Hooks and constants for xml_form_elements.
  */
 
-use Drupal\Core\Url;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\objective_forms\FormElement;

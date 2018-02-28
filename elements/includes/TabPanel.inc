@@ -12,6 +12,7 @@ module_load_include('inc', 'php_lib', 'DrupalFormHelpers');
 /**
  * Static functions that allow for theming and processing tabpanels.
  */
+// @codingStandardsIgnoreLine
 class TabPanel {
 
   /**
@@ -41,6 +42,7 @@ class TabPanel {
    * @return array
    *   The processed element.
    */
+// @codingStandardsIgnoreLine
   public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     // Defaults to TRUE.
     $add = isset($element['#user_data']['add']) ? $element['#user_data']['add'] : TRUE;

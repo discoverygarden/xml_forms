@@ -13,6 +13,7 @@ module_load_include('inc', 'xml_form_elements', 'includes/TabPanel');
 /**
  * Class for form tabs.
  */
+// @codingStandardsIgnoreLine
 class Tabs {
 
   /**
@@ -44,6 +45,7 @@ class Tabs {
    * @return bool
    *   TRUE if it is a tabpanel, FALSE otherwise.
    */
+// @codingStandardsIgnoreLine
   public static function FilterChildren(array $child) {
     $ret = ($child['#type'] == 'tabpanel') ? TRUE : FALSE;
     return $ret;

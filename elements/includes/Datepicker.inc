@@ -12,6 +12,7 @@ use Drupal\Core\Template\Attribute;
 /**
  * Datepicker element helper class.
  */
+// @codingStandardsIgnoreLine
 class Datepicker {
 
   /**
