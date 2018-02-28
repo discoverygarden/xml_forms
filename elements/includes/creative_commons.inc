@@ -180,7 +180,7 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     ],
   ];
   // Value gets populated if default value is populated.
-  if (Url::fromRoute("<current>")->toString() == 'system/ajax' || !$element['#value'] ||
+  if (\Drupal::request()->isXmlHttpRequest() || !$element['#value'] ||
     (isset($element['#default_value']) && $element['#value'] == $element['#default_value'])) {
     $element['#tree'] = TRUE;
   }
@@ -210,8 +210,8 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
 /**
  * Ajax callback to render the CC license.
  */
-function xml_form_elements_creative_commons_ajax(&$form, &$form_state) {
-  $parents = $form_state['triggering_element']['#parents'];
+function xml_form_elements_creative_commons_ajax(array $form, FormStateInterface $form_state) {
+  $parents = $form_state->getTriggeringElement()['#parents'];
   array_pop($parents);
   $creative_commons_element = NestedArray::getValue($form, $parents);
 
