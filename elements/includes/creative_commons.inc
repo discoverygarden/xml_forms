@@ -104,7 +104,7 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
   }
 
   // Figure out license state.
-  if (!isset($form_state->values[$element['#name']]) && isset($element['#default_value'])) {
+  if (!$form_state->getValue($element['#name']) && isset($element['#default_value'])) {
     // Reversing this array facilitates value_callback mangling by community.
     $default_value_array = array_reverse(explode('/', $element['#default_value']));
     $properties = explode('-', array_pop($default_value_array));
@@ -134,9 +134,9 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     $jurisdiction = empty($default_value_array[1]) ? 'international' : $default_value_array[1];
   }
   else {
-    $derivatives = isset($form_state->values[$element['#name']]['license_fieldset']['allow_modifications']) ? $form_state->values[$element['#name']]['license_fieldset']['allow_modifications'] : 'y';
-    $commercial = isset($form_state->values[$element['#name']]['license_fieldset']['allow_commercial']) ? $form_state->values[$element['#name']]['license_fieldset']['allow_commercial'] : 'y';
-    $jurisdiction = isset($form_state->values[$element['#name']]['license_fieldset']['license_jurisdiction']) ? $form_state->values[$element['#name']]['license_fieldset']['license_jurisdiction'] : 'ca';
+    $derivatives = $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_modifications']) ? $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_modifications']) : 'y';
+    $commercial = $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_commercial']) ? $form_state->getValue([$element['#name'], 'license_fieldset', 'allow_commercial']) : 'y';
+    $jurisdiction = $form_state->getValue([$element['#name'], 'license_fieldset', 'license_jurisdiction']) ? $form_state->getValue([$element['#name'], 'license_fieldset', 'license_jurisdiction']) : 'ca';
   }
 
   // Form elements.
