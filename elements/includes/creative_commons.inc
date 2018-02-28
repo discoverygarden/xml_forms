@@ -104,9 +104,10 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
   }
 
   // Figure out license state.
-  if (!$form_state->getValue($element['#name']) && isset($element['#default_value'])) {
+  $element_value = $form_state->getValue($element['#name']);
+  if ($element_value && is_string($element_value)) {
     // Reversing this array facilitates value_callback mangling by community.
-    $default_value_array = array_reverse(explode('/', $element['#default_value']));
+    $default_value_array = array_reverse(explode('/', $element_value));
     $properties = explode('-', array_pop($default_value_array));
 
     $commercial = 'y';
