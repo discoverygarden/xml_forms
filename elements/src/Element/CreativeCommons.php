@@ -2,7 +2,6 @@
 
 namespace Drupal\xml_form_elements\Element;
 
-use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 
@@ -30,22 +29,12 @@ class CreativeCommons extends FormElement {
    * Value callback for creative commons element.
    *
    * Input isn't set in form builder edits. Data from the process function can't
-   * be relied on to be available in value callbacks because Drupal caches before
+   * be relied on to be present in value callbacks because Drupal caches before
    * the element is processed.
-   *
-   * @param array $element
-   *   The element.
-   * @param array $input
-   *   The input of the element.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state.
-   *
-   * @return string
-   *   The license URI.
    */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/creative_commons');
-    if (isset($input) && $input && Url::fromRoute("<current>")->toString() != 'system/ajax') {
+    if (isset($input) && $input) {
       $storage = $form_state->getStorage();
       if (isset($storage['xml_form_elements'][$element['#name']]['license_uri'])) {
         return $storage['xml_form_elements'][$element['#name']]['license_uri'];
