@@ -101,7 +101,7 @@ xml_form_builder.delete:
 xml_form_builder.associations_form:
   path: '/admin/config/islandora/xmlform/forms/{form_name}/associations'
   defaults:
-    _title: 'Associate Form "@form"'
+    _title: 'Associate Form'
     _form: \Drupal\xml_form_builder\Form\AssociationsForm
   requirements:
     _permission: 'Associate XML Forms'
