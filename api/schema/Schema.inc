@@ -45,7 +45,7 @@ class XMLSchema {
   /**
    * A protected members object generated during this object's instantiation.
    *
-   * @var ReadOnlyProtectedMembers
+   * @var Drupal\php_lib\ReadOnlyProtectedMembers
    */
   protected $protected;
 

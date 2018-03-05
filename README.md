@@ -62,10 +62,10 @@ This module defines custom Drupal Form Elements along with AHAH callbacks.
 
 This module requires the following modules/libraries:
 
-* [Islandora](https://github.com/islandora/islandora)
+* [Islandora](https://github.com/discoverygarden/islandora)
 * [Tuque](https://github.com/islandora/tuque)
-* [phplib](https://github.com/islandora/php_lib)
-* [Objective forms](https://github.com/islandora/objective_forms)
+* [phplib](https://github.com/discoverygarden/php_lib)
+* [Objective forms](https://github.com/discoverygarden/objective_forms)
 * [libxml2](http://xmlsoft.org/) version 2.7+
 
 ## Installation

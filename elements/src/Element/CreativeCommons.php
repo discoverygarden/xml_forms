@@ -13,23 +13,40 @@ use Drupal\Core\Render\Element\FormElement;
 class CreativeCommons extends FormElement {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getInfo() {
     $info = [
       '#input' => TRUE,
       '#tree' => FALSE,
       '#process' => ['xml_form_elements_creative_commons_process'],
-      '#value_callback' => 'xml_form_elements_creative_commons_value_callback',
     ];
 
     return $info;
   }
 
   /**
+   * Value callback for creative commons element.
    *
+   * Input isn't set in form builder edits. Data from the process function can't
+   * be relied on to be present in value callbacks because Drupal caches before
+   * the element is processed.
    */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
+    $form_state->loadInclude('xml_form_elements', 'inc', 'includes/creative_commons');
+    if (isset($input) && $input) {
+      $storage = $form_state->getStorage();
+      if (isset($storage['xml_form_elements'][$element['#name']]['license_uri'])) {
+        return $storage['xml_form_elements'][$element['#name']]['license_uri'];
+      }
+      else {
+        $license_fieldset = $input['license_fieldset'];
+        $allow_commercial = $license_fieldset['allow_commercial'];
+        $allow_modifications = $license_fieldset['allow_modifications'];
+        $license_jurisdiction = $license_fieldset['license_jurisdiction'];
+        return xml_form_elements_creative_commons_value($allow_commercial, $allow_modifications, $license_jurisdiction);
+      }
+    }
   }
 
 }

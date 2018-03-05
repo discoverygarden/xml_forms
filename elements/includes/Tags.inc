@@ -9,9 +9,11 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 module_load_include('inc', 'xml_form_elements', 'includes/Tag');
+
 /**
- *
+ * Class for form tags.
  */
+// @codingStandardsIgnoreLine
 class Tags {
 
   /**
@@ -37,6 +39,7 @@ class Tags {
    * @return array
    *   The processed element.
    */
+// @codingStandardsIgnoreLine
   public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Element');
     $form_state->loadInclude('xml_form_elements', 'inc', 'includes/Tag');
@@ -68,6 +71,7 @@ class Tags {
    * @return array
    *   The modified $form_element.
    */
+// @codingStandardsIgnoreLine
   public static function AfterBuild(array $form_element, FormStateInterface $form_state) {
     if ($form_element['#required']) {
       // 2 to include the controls element.
@@ -187,7 +191,7 @@ class Tags {
  * @param array $vars
  *   Theme variables.
  */
-function template_preprocess_tags(&$vars) {
+function template_preprocess_tags(array &$vars) {
   global $base_url;
   $tags = &$vars['element'];
   // Location of images.

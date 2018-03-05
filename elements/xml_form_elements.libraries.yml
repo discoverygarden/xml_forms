@@ -34,3 +34,18 @@ tags:
   dependencies:
     - core/jquery
     - core/drupal
+datepicker:
+  version: 1.x
+  css:
+    layout:
+      theme/ui.core.css: {}
+      theme/ui.datepicker.css: {}
+      theme/ui.theme.css: {}
+  js:
+    js/datepicker.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupalSettings
+    - core/jquery.ui.datepicker
+    - core/drupal
