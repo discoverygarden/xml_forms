@@ -9,6 +9,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Url;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\xml_form_elements\Element\CreativeCommons;
 
 /**
  * Creates a creative_commons form element.
@@ -103,11 +104,19 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     $storage['xml_form_elements'][$element['#name']]['license_output_id'] = $license_output_id;
   }
 
+  // Disable Creative commons by default.
+  $disabled = TRUE;
   // Figure out license state.
   $element_value = $form_state->getValue($element['#name']);
   if ($element_value && is_string($element_value)) {
     // Reversing this array facilitates value_callback mangling by community.
-    $default_value_array = array_reverse(explode('/', $element_value));
+    if (!empty($element['#default_value'])) {
+      // There is a value defined so it wasn't disabled.
+      $disabled = FALSE;
+    }
+    $default_value_array = array_reverse(explode('/',
+      str_replace(CreativeCommons::BASE_LICENSE_URL, '', $element['#default_value'])
+    ));
     $properties = explode('-', array_pop($default_value_array));
 
     $commercial = 'y';
@@ -135,18 +144,30 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     $jurisdiction = empty($default_value_array[1]) ? 'international' : $default_value_array[1];
   }
   else {
-    $derivatives_value = $form_state->getValue(
-      [$element['#name'], 'license_fieldset', 'allow_modifications']
+    $derivatives = $form_state->getValue(
+      [$element['#name'], 'license_fieldset', 'allow_modifications'],
+      'y'
     );
-    $commercial_value = $form_state->getValue(
-      [$element['#name'], 'license_fieldset', 'allow_commercial']
+    $commercial = $form_state->getValue(
+      [$element['#name'], 'license_fieldset', 'allow_commercial'],
+      'y'
     );
-    $jurisdiction_value = $form_state->getValue(
-      [$element['#name'], 'license_fieldset', 'license_jurisdiction']
+    $jurisdiction = $form_state->getValue(
+      [$element['#name'], 'license_fieldset', 'license_jurisdiction'],
+      'ca'
     );
-    $derivatives = $derivatives_value ? $derivatives_value : 'y';
-    $commercial = $commercial_value ? $commercial_value : 'y';
-    $jurisdiction = $jurisdiction_value ? $jurisdiction_value : 'ca';
+
+    if (
+      !$form_state->hasValue([
+        $element['#name'],
+        'license_fieldset',
+        'disabled',
+      ]) &&
+      $form_state->hasValue([$element['#name'], 'license_fieldset'])) {
+
+      // If the disabled element is missing but the license fieldset exists.
+      $disabled = FALSE;
+    }
   }
 
   // Form elements.
@@ -155,6 +176,13 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     '#collapsed' => FALSE,
     '#collapsible' => TRUE,
     '#title' => t('License'),
+  ];
+
+  $element['license_fieldset']['disabled'] = [
+    '#type' => 'checkbox',
+    '#title' => t("Don't output Creative Commons license."),
+    '#description' => t('Check this box to avoid outputting a creative commons license. This will still output a blank element, so make sure to use a cleanup template to remove it.'),
+    '#default_value' => $disabled,
   ];
 
   $element['license_fieldset']['allow_modifications'] = [
@@ -189,6 +217,7 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
       'callback' => 'xml_form_elements_creative_commons_ajax',
     ],
   ];
+
   // Value gets populated if default value is populated.
   if (\Drupal::request()->isXmlHttpRequest() || !$element['#value'] ||
     (isset($element['#default_value']) && $element['#value'] == $element['#default_value'])) {
@@ -199,7 +228,7 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     $element['#tree'] = FALSE;
   }
 
-  $response = xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction);
+  $response = xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction, $disabled);
   if ($response) {
     $storage['xml_form_elements'][$element['#name']]['license_uri'] = (string) $response->{'license-uri'};
     $element['license_fieldset']['license_output'] = [
@@ -209,7 +238,7 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     ];
   }
   else {
-    $storage['xml_form_elements'][$element['#name']]['license_uri'] = xml_form_elements_creative_commons_value($commercial, $derivatives, $jurisdiction);
+    $storage['xml_form_elements'][$element['#name']]['license_uri'] = xml_form_elements_creative_commons_value($commercial, $derivatives, $jurisdiction, $disabled);
     $element['license_fieldset']['license_output'] = [];
   }
 
@@ -242,9 +271,13 @@ function xml_form_elements_creative_commons_ajax(array $form, FormStateInterface
  *
  * @return mixed
  *   SimpleXMLElement the return from the REST API.
- *   FALSE if failed request.
+ *   FALSE a URL is not desired, or the request failed.
  */
-function xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction) {
+function xml_form_elements_get_creative_commons($commercial, $derivatives, $jurisdiction, $disabled = FALSE) {
+  if ($disabled) {
+    return FALSE;
+  }
+
   $url = Url::fromUri(
     'http://api.creativecommons.org/rest/1.5/license/standard/get',
     [
@@ -276,7 +309,11 @@ function xml_form_elements_get_creative_commons($commercial, $derivatives, $juri
  * @return string
  *   The value of the element.
  */
-function xml_form_elements_creative_commons_value($commercial, $derivatives, $jurisdiction) {
+function xml_form_elements_creative_commons_value($commercial, $derivatives, $jurisdiction, $disabled = FALSE) {
+  if ($disabled) {
+    return '';
+  }
+
   $arguments = '';
   if ($commercial == 'n') {
     $arguments = "$arguments-nc";
@@ -287,5 +324,5 @@ function xml_form_elements_creative_commons_value($commercial, $derivatives, $ju
   elseif ($derivatives == 'sa') {
     $arguments = "$arguments-sa";
   }
-  return "http://creativecommons.org/licenses/by$arguments/2.5/$jurisdiction/";
+  return CreativeCommons::BASE_LICENSE_URL . "by$arguments/2.5/$jurisdiction/";
 }
