@@ -219,7 +219,7 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
   ];
 
   // Value gets populated if default value is populated.
-  if (\Drupal::request()->isXmlHttpRequest() || !$element['#value'] ||
+  if (\Drupal::request()->isXmlHttpRequest() || (!$element['#value'] && !$disabled) ||
     (isset($element['#default_value']) && $element['#value'] == $element['#default_value'])) {
     $element['#tree'] = TRUE;
   }
