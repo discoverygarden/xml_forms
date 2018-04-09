@@ -194,6 +194,11 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
       'wrapper' => $license_output_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
     ],
+    '#states' => [
+      'visible' => [
+        ':input[name="accessCondition[license_fieldset][disabled]"]' => ['checked' => FALSE],
+      ],
+    ],
   ];
 
   $element['license_fieldset']['allow_commercial'] = [
@@ -204,6 +209,11 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     '#ajax' => [
       'wrapper' => $license_output_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
+    ),
+    '#states' => [
+      'visible' => [
+        ':input[name="accessCondition[license_fieldset][disabled]"]' => ['checked' => FALSE],
+      ],
     ],
   ];
 
@@ -215,6 +225,11 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
     '#ajax' => [
       'wrapper' => $license_output_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
+    ],
+    '#states' => [
+      'visible' => [
+        ':input[name="accessCondition[license_fieldset][disabled]"]' => ['checked' => FALSE],
+      ],
     ],
   ];
 
@@ -235,6 +250,11 @@ function xml_form_elements_creative_commons($element, FormStateInterface $form_s
       '#type' => 'item',
       '#id' => $license_output_id,
       '#markup' => '<strong>' . t('Selected license:') . '</strong><div>' . $response->html->asXml() . '</div>',
+      '#states' => [
+        'visible' => [
+          ':input[name="accessCondition[license_fieldset][disabled]"]' => ['checked' => FALSE],
+        ],
+      ],
     ];
   }
   else {
