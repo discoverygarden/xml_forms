@@ -11,6 +11,7 @@ use Drupal\Core\Render\Element\FormElement;
  * @FormElement("creative_commons")
  */
 class CreativeCommons extends FormElement {
+  const BASE_LICENSE_URL = 'http://creativecommons.org/licenses/';
 
   /**
    * {@inheritdoc}
@@ -41,10 +42,11 @@ class CreativeCommons extends FormElement {
       }
       else {
         $license_fieldset = $input['license_fieldset'];
+        $disabled = isset($license_fieldset['disabled']) ? $license_fieldset['disabled'] : FALSE;
         $allow_commercial = $license_fieldset['allow_commercial'];
         $allow_modifications = $license_fieldset['allow_modifications'];
         $license_jurisdiction = $license_fieldset['license_jurisdiction'];
-        return xml_form_elements_creative_commons_value($allow_commercial, $allow_modifications, $license_jurisdiction);
+        return xml_form_elements_creative_commons_value($allow_commercial, $allow_modifications, $license_jurisdiction, $disabled);
       }
     }
   }
