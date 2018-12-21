@@ -164,6 +164,7 @@ class XMLFormDatabase {
       $definition = XMLFormDefinition::upgradeToLatestVersion($definition);
       $fields = [];
       $fields['name'] = $form_name;
+      $fields['machine_name'] = static::getMachineName($form_name);
       $fields['form'] = $definition->saveXML();
       return \Drupal::database()->insert(static::TABLE)->fields($fields)->execute() !== FALSE;
     }
@@ -245,6 +246,36 @@ class XMLFormDatabase {
       }
     }
     return FALSE;
+  }
+
+  /**
+   * Returns a machine name that can by used in URLs.
+   *
+   * @param string
+   *   A form name that might have URL-breaking characters.
+   *
+   * @return string
+   *   The form name that doesn't have characters that will break URLs.
+   */
+  public static function getMachineName($form_name) {
+    $machine_name = str_replace('/', 'slash', $form_name);
+    return $machine_name;
+  }
+
+  /**
+   * Returns the form name corresponding to the given machine name.
+   *
+   * @param string
+   *   The machine name for the desired form.
+   *
+   * @return string
+   *   The form name for the desired form.
+   */
+  public static function getFormName($machine_name) {
+    $query = db_query('SELECT name FROM {xml_forms} WHERE machine_name = :machine_name', [':machine_name' => $machine_name]);
+    $row = $query->fetchAssoc();
+    $form_name = $row['name'];
+    return $form_name;
   }
 
 }

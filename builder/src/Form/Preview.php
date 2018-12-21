@@ -24,7 +24,9 @@ class Preview extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $form_machine_name = NULL) {
+    $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
+    $form_name = \XMLFormRepository::getFormName($form_machine_name);
     $form = xml_form_builder_get_form($form, $form_state, $form_name);
     $form['submit'] = [
       '#type' => 'submit',
