@@ -326,7 +326,8 @@ class XMLFormDatabase {
     $connection = \Drupal::service('database');
     $connection->update('xml_forms')
       ->fields(['machine_name' => $machine_name])
-      ->condition('name', $form_name, '==');
+      ->condition('name', $form_name)
+      ->execute();
   }
 
 }
