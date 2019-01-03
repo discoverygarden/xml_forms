@@ -32,7 +32,6 @@ function xml_form_builder_schema() {
         'description' => 'The form name that will not break the URL.',
         'type' => 'varchar',
         'length' => 128,
-        'not null' => TRUE,
       ],
     ],
     'unique keys' => ['name' => ['name']],
