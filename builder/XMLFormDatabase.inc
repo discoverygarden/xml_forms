@@ -289,6 +289,11 @@ class XMLFormDatabase {
    *   True if there is a machine name for the given form name.
    */
   public static function machineNameExists($machine_name) {
+    // XXX: This would be unnecessary if there was an update hook.
+    $connection = \Drupal::service('database');
+    if (!$connection->schema()->fieldExists(self::TABLE, 'machine_name')) {
+      return FALSE;
+    }
     $query = db_query('SELECT name FROM {xml_forms} WHERE machine_name = :machine_name', [':machine_name' => $machine_name]);
     $row = $query->fetchAssoc();
     if ($row === FALSE) {
@@ -300,13 +305,24 @@ class XMLFormDatabase {
   }
 
   /**
-   * Creates and adds a machine name to the database.
+   * Creates and adds a machine name to the database after making sure the
+   * field exists.
    *
    * @param string
    *   Form name.
    */
   public static function updateMachineName($form_name) {
-    $machine_name = getMachineName($form_name);
+    // XXX: This is essentially what should be in an update hook.
+    $connection = \Drupal::service('database');
+    if (!$connection->schema()->fieldExists(self::TABLE, 'machine_name')) {
+      $machine_name_col = [
+        'description' => 'The form name that will not break the URL.',
+        'type' => 'varchar',
+        'length' => 128,
+      ];
+      $connection->schema()->addField(self::TABLE, 'machine_name', $machine_name_col);
+    }
+    $machine_name = static::getMachineName($form_name);
     $connection = \Drupal::service('database');
     $connection->update('xml_forms')
       ->fields(['machine_name' => $machine_name])

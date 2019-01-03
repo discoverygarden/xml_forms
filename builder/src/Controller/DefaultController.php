@@ -75,7 +75,7 @@ class DefaultController extends ControllerBase {
       // XXX: For backwards compatability that should be handled in an update
       // hook at some point.
       if ($form_info['indb'] && !(\XMLFormDatabase::machineNameExists($machine_name))) {
-        updateMachineName($name);
+        \XMLFormDatabase::updateMachineName($name);
       }
       if ($form_info['indb']) {
         $type = $this->t('Custom');
