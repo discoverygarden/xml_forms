@@ -72,6 +72,11 @@ class DefaultController extends ControllerBase {
     foreach ($names as $form_info) {
       $name = $form_info['name'];
       $machine_name = $form_info['machine_name'];
+      // XXX: For backwards compatability that should be handled in an update
+      // hook at some point.
+      if ($form_info['indb'] && !(\XMLFormDatabase::machineNameExists($machine_name))) {
+        updateMachineName($name);
+      }
       if ($form_info['indb']) {
         $type = $this->t('Custom');
         $edit = Link::createFromRoute(
@@ -157,9 +162,15 @@ class DefaultController extends ControllerBase {
 
     // Returns a link to the edit associations form for form $form_name.
     $create_form_association_link = function ($form_name) {
+      // XXX: For backward compatibility that should be handled by an update
+      // hook at some point.
+      $machine_name = \XMLFormDatabase::getMachineName($form_name);
+      if (\XMLFormDatabase::exists($form_name) && !\XMLFormDatabase::machineNameExists($machine_name)) {
+        \XMLFormDatabase::updateMachineName($form_name);
+      }
       return [
         Link::createFromRoute($form_name, 'xml_form_builder.associations_form', [
-          'form_machine_name' => \XMLFormDatabase::getMachineName($form_name),
+          'form_machine_name' => $machine_name,
         ]),
       ];
     };

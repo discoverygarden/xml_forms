@@ -278,4 +278,39 @@ class XMLFormDatabase {
     return $form_name;
   }
 
+  /**
+   * Returns true if there is a machine name for the given form form name.
+   * Helps with backward compatibility before an update hook is written.
+   *
+   * @param string
+   *   The machine name.
+   *
+   * @return bool
+   *   True if there is a machine name for the given form name.
+   */
+  public static function machineNameExists($machine_name) {
+    $query = db_query('SELECT name FROM {xml_forms} WHERE machine_name = :machine_name', [':machine_name' => $machine_name]);
+    $row = $query->fetchAssoc();
+    if ($row === FALSE) {
+      return FALSE;
+    }
+    else {
+      return TRUE;
+    }
+  }
+
+  /**
+   * Creates and adds a machine name to the database.
+   *
+   * @param string
+   *   Form name.
+   */
+  public static function updateMachineName($form_name) {
+    $machine_name = getMachineName($form_name);
+    $connection = \Drupal::service('database');
+    $connection->update('xml_forms')
+      ->fields(['machine_name' => $machine_name])
+      ->condition('name', $form_name, '==');
+  }
+
 }
