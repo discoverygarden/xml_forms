@@ -196,7 +196,7 @@ class DefaultController extends ControllerBase {
   /**
    * Downloads the XML Form Definition to the clients computer..
    *
-   * @param string $form_name
+   * @param string $form_machine_name
    *   The name of the form to download.
    */
   public function export($form_machine_name) {
@@ -251,7 +251,7 @@ class DefaultController extends ControllerBase {
    * Transforms the submited JSON into a Form Definition which is then stored in
    * the database as an XML Form Definition.
    *
-   * @param string $form_name
+   * @param string $form_machine_name
    *   The name of the form to update.
    *
    * @throws Exception
@@ -283,7 +283,7 @@ class DefaultController extends ControllerBase {
    * Either by deleting it from the database, or marking it disabled if its
    * provided by a hook.
    *
-   * @param string $form_name
+   * @param string $form_machine_name
    *   The name of the form for which the associations are being adjusted.
    *   (used to redirect).
    * @param string|int $id
@@ -341,7 +341,7 @@ class DefaultController extends ControllerBase {
   /**
    * Enable a default association identified by $id.
    *
-   * @param string $form_name
+   * @param string $form_machine_name
    *   The name of the form for which the associations are being adjusted.
    *   (used to redirect).
    * @param string $id

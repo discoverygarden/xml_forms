@@ -311,15 +311,7 @@ class XMLFormDatabase {
   public static function updateMachineName($form_name) {
     // XXX: This is essentially what should be in an update hook.
     $connection = \Drupal::service('database');
-    if (!$connection->schema()->fieldExists(self::TABLE, 'machine_name')) {
-      $machine_name_col = [
-        'description' => 'The form name that will not break the URL.',
-        'type' => 'varchar',
-        'length' => 128,
-      ];
-    }
     $machine_name = static::getMachineName($form_name);
-    $connection = \Drupal::service('database');
     $connection->update('xml_forms')
       ->fields(['machine_name' => $machine_name])
       ->condition('name', $form_name)

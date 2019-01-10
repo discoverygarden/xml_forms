@@ -35,7 +35,7 @@ class XMLFormRepository extends XMLFormDatabase {
 
     // Get machine names for URLs.
     foreach ($hooks as $form_name => $info) {
-      $hooks[$form_name] += ['machine_name' => parent::getMachineName($form_name)];
+      $hooks[$form_name] += ['machine_name' => static::getMachineName($form_name)];
     }
 
     return $hooks;
@@ -140,7 +140,7 @@ class XMLFormRepository extends XMLFormDatabase {
 
     $db_names = parent::getNames();
     foreach ($db_names as $key => $array) {
-      $db_names[$key] += ['machine_name' => parent::getMachineName($array['name'])];
+      $db_names[$key] += ['machine_name' => static::getMachineName($array['name'])];
     }
     usort($hook_names, ['XMLFormRepository', 'comparisonFunction']);
 
