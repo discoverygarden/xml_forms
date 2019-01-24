@@ -28,6 +28,11 @@ function xml_form_builder_schema() {
         'size' => 'medium',
         'not null' => TRUE,
       ],
+      'machine_name' => [
+        'description' => 'The form name that will not break the URL.',
+        'type' => 'varchar',
+        'length' => 128,
+      ],
     ],
     'unique keys' => ['name' => ['name']],
     'primary key' => ['id'],

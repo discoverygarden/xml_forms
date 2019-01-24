@@ -112,6 +112,7 @@ class Create extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->loadInclude('xml_form_api', 'inc', 'XMLFormDefinition');
     $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
+    $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormDatabase');
     $form_name = $form_state->getValue(['form_name']);
     if ($form_state->getTriggeringElement()['#name'] == 'create') {
       $definition = xml_form_builder_create_get_uploaded_file();
@@ -120,7 +121,7 @@ class Create extends FormBase {
         drupal_set_message($this->t('Successfully created form "%name".', [
           '%name' => $form_name,
         ]));
-        $form_state->setRedirect('xml_form_builder.edit', ['form_name' => $form_name]);
+        $form_state->setRedirect('xml_form_builder.edit', ['form_machine_name' => \XMLFormDatabase::getMachineName($form_name)]);
         return;
       }
       else {

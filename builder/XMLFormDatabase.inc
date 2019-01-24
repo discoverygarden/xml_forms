@@ -164,6 +164,7 @@ class XMLFormDatabase {
       $definition = XMLFormDefinition::upgradeToLatestVersion($definition);
       $fields = [];
       $fields['name'] = $form_name;
+      $fields['machine_name'] = static::getMachineName($form_name);
       $fields['form'] = $definition->saveXML();
       return \Drupal::database()->insert(static::TABLE)->fields($fields)->execute() !== FALSE;
     }
@@ -245,6 +246,75 @@ class XMLFormDatabase {
       }
     }
     return FALSE;
+  }
+
+  /**
+   * Returns a machine name that can by used in URLs.
+   *
+   * @param string $form_name
+   *   A form name that might have URL-breaking characters.
+   *
+   * @return string
+   *   The form name that doesn't have characters that will break URLs.
+   */
+  public static function getMachineName($form_name) {
+    $machine_name = str_replace('/', 'slash', $form_name);
+    return $machine_name;
+  }
+
+  /**
+   * Returns the form name corresponding to the given machine name.
+   *
+   * @param string $machine_name
+   *   The machine name for the desired form.
+   *
+   * @return string
+   *   The form name for the desired form.
+   */
+  public static function getFormName($machine_name) {
+    $query = db_query('SELECT name FROM {xml_forms} WHERE machine_name = :machine_name', [':machine_name' => $machine_name]);
+    $row = $query->fetchAssoc();
+    $form_name = $row['name'];
+    return $form_name;
+  }
+
+  /**
+   * Returns true if there is a machine name for the given form form name.
+   *
+   * Helps with backward compatibility before an update hook is written.
+   *
+   * @param string $machine_name
+   *   The machine name.
+   *
+   * @return bool
+   *   True if there is a machine name for the given form name.
+   */
+  public static function machineNameExists($machine_name) {
+    // XXX: This would be unnecessary if there was an update hook.
+    $query = db_query('SELECT name FROM {xml_forms} WHERE machine_name = :machine_name', [':machine_name' => $machine_name]);
+    $row = $query->fetchAssoc();
+    if ($row === FALSE) {
+      return FALSE;
+    }
+    else {
+      return TRUE;
+    }
+  }
+
+  /**
+   * Creates and adds a machine name to the database.
+   *
+   * @param string $form_name
+   *   The form name entered by the user when the form was created.
+   */
+  public static function updateMachineName($form_name) {
+    // XXX: This is essentially what should be in an update hook.
+    $connection = \Drupal::service('database');
+    $machine_name = static::getMachineName($form_name);
+    $connection->update('xml_forms')
+      ->fields(['machine_name' => $machine_name])
+      ->condition('name', $form_name)
+      ->execute();
   }
 
 }

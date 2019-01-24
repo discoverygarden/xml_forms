@@ -21,8 +21,10 @@ class Delete extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $form_machine_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormDatabase');
+    $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
+    $form_name = \XMLFormRepository::getFormName($form_machine_name);
     if (!\XMLFormDatabase::exists($form_name)) {
       drupal_set_message($this->t('Form "%name" does not exist.', [
         '%name' => $form_name,

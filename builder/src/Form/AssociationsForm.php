@@ -27,9 +27,12 @@ class AssociationsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $form_name = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $form_machine_name = NULL) {
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations.form');
     $form_state->loadInclude('xml_form_builder', 'inc', 'includes/associations');
+    $form_state->loadInclude('xml_form_builder', 'inc', 'XMLFormRepository');
+
+    $form_name = \XMLFormRepository::getFormName($form_machine_name);
 
     $associations = xml_form_builder_get_associations([$form_name], [], [], FALSE);
     $create_table_rows = function ($association) {
@@ -77,14 +80,14 @@ class AssociationsForm extends FormBase {
       $operations = NULL;
       if ($association['type'] == 'hook') {
         if ($association['enabled']) {
-          $operations = Link::createFromRoute($this->t("Disable"), 'xml_form_builder.disable_association', ['form_name' => $association['form_name'], 'id' => $association['id']]);
+          $operations = Link::createFromRoute($this->t("Disable"), 'xml_form_builder.disable_association', ['form_machine_name' => $form_machine_name, 'id' => $association['id']]);
         }
         else {
-          $operations = Link::createFromRoute($this->t("Enable"), 'xml_form_builder.enable_association', ['form_name' => $association['form_name'], 'id' => $association['id']]);
+          $operations = Link::createFromRoute($this->t("Enable"), 'xml_form_builder.enable_association', ['form_machine_name' => $form_machine_name, 'id' => $association['id']]);
         }
       }
       else {
-        $operations = Link::createFromRoute($this->t("Delete"), 'xml_form_builder.disable_association', ['form_name' => $association['form_name'], 'id' => $association['id']]);
+        $operations = Link::createFromRoute($this->t("Delete"), 'xml_form_builder.disable_association', ['form_machine_name' => $form_machine_name, 'id' => $association['id']]);
       }
       $row[] = $operations;
       $rows[] = $row;

@@ -32,6 +32,12 @@ class XMLFormRepository extends XMLFormDatabase {
     // @todo Remove (deprecated) invokation if
     // "islandora_xml_form_builder_forms".
     $hooks += \Drupal::moduleHandler()->invokeAll('islandora_xml_form_builder_forms');
+
+    // Get machine names for URLs.
+    foreach ($hooks as $form_name => $info) {
+      $hooks[$form_name] += ['machine_name' => static::getMachineName($form_name)];
+    }
+
     return $hooks;
   }
 
@@ -124,11 +130,18 @@ class XMLFormRepository extends XMLFormDatabase {
     $hook = static::getFormsFromHook();
     $hook_names = [];
     foreach ($hook as $key => $array) {
-      $hook_names[] = ['name' => $key, 'indb' => FALSE];
+      $hook_names[] = [
+        'name' => $key,
+        'indb' => FALSE,
+        'machine_name' => $array['machine_name'],
+      ];
     }
     usort($hook_names, ['XMLFormRepository', 'comparisonFunction']);
 
     $db_names = parent::getNames();
+    foreach ($db_names as $key => $array) {
+      $db_names[$key] += ['machine_name' => static::getMachineName($array['name'])];
+    }
     usort($hook_names, ['XMLFormRepository', 'comparisonFunction']);
 
     $names = array_merge($hook_names, $db_names);
@@ -206,6 +219,28 @@ class XMLFormRepository extends XMLFormDatabase {
       return static::create($form_name_dest, $definition);
     }
     return FALSE;
+  }
+
+  /**
+   * Returns the form name for the given machine name.
+   *
+   * @param string $machine_name
+   *   The machine name of the desired form.
+   *
+   * @return string
+   *   The form name of the desired form.
+   */
+  public static function getFormName($machine_name) {
+    $form_name = parent::getFormName($machine_name);
+    if (empty($form_name)) {
+      $hooks = static::getFormsFromHook();
+      foreach ($hooks as $name => $form_info) {
+        if ($form_info['machine_name'] == $machine_name) {
+          return $name;
+        }
+      }
+    }
+    return $form_name;
   }
 
 }
