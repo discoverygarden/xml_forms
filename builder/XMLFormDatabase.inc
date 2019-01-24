@@ -251,7 +251,7 @@ class XMLFormDatabase {
   /**
    * Returns a machine name that can by used in URLs.
    *
-   * @param string
+   * @param string $form_name
    *   A form name that might have URL-breaking characters.
    *
    * @return string
@@ -265,7 +265,7 @@ class XMLFormDatabase {
   /**
    * Returns the form name corresponding to the given machine name.
    *
-   * @param string
+   * @param string $machine_name
    *   The machine name for the desired form.
    *
    * @return string
@@ -280,9 +280,10 @@ class XMLFormDatabase {
 
   /**
    * Returns true if there is a machine name for the given form form name.
+   *
    * Helps with backward compatibility before an update hook is written.
    *
-   * @param string
+   * @param string $machine_name
    *   The machine name.
    *
    * @return bool
@@ -290,7 +291,6 @@ class XMLFormDatabase {
    */
   public static function machineNameExists($machine_name) {
     // XXX: This would be unnecessary if there was an update hook.
-    $connection = \Drupal::service('database');
     $query = db_query('SELECT name FROM {xml_forms} WHERE machine_name = :machine_name', [':machine_name' => $machine_name]);
     $row = $query->fetchAssoc();
     if ($row === FALSE) {
@@ -302,11 +302,10 @@ class XMLFormDatabase {
   }
 
   /**
-   * Creates and adds a machine name to the database after making sure the
-   * field exists.
+   * Creates and adds a machine name to the database.
    *
-   * @param string
-   *   Form name.
+   * @param string $form_name
+   *   The form name entered by the user when the form was created.
    */
   public static function updateMachineName($form_name) {
     // XXX: This is essentially what should be in an update hook.

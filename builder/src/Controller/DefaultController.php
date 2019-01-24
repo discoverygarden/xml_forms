@@ -353,8 +353,6 @@ class DefaultController extends ControllerBase {
     module_load_include('inc', 'xml_form_builder', 'includes/associations');
     module_load_include('inc', 'xml_form_builder', 'XMLFormRepository');
 
-    $form_name = \XMLFormRepository::getFormName($form_machine_name);
-
     $association = xml_form_builder_get_association($id);
     if (!isset($association)) {
       drupal_set_message($this->t('Specified association does not exist.'), 'error');

@@ -224,7 +224,7 @@ class XMLFormRepository extends XMLFormDatabase {
   /**
    * Returns the form name for the given machine name.
    *
-   * @param string
+   * @param string $machine_name
    *   The machine name of the desired form.
    *
    * @return string
