@@ -5,6 +5,8 @@
  * Interface for supporting actions.
  */
 
+use Drupal\objective_forms\FormElement;
+
 /**
  * Interface that all actions support.
  *
