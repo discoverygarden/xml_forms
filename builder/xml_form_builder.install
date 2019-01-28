@@ -5,10 +5,15 @@
  * Defines functions used for the installation of the xml_form_builder module.
  */
 
+use Drupal\Core\Database\Database;
+
 /**
  * Implements hook_schema().
  */
 function xml_form_builder_schema() {
+  // @see https://www.drupal.org/project/drupal/issues/1148856
+  $pgsql = Database::getConnection()->driver() == 'pgsql';
+
   $schema['xml_forms'] = [
     'description' => 'This table is used to store form definitions in XML Form API style.',
     'fields' => [
@@ -131,7 +136,7 @@ function xml_form_builder_schema() {
         'not null' => TRUE,
       ],
     ],
-    'unique keys' => ['name' => [['name', 191]]],
+    'unique keys' => $pgsql ? ['name' => ['name']] : ['name' => [['name', 191]]],
     'primary key' => ['xslt_id'],
   ];
 
@@ -173,7 +178,7 @@ function xml_form_builder_schema() {
       ],
     ],
     'unique keys' => [
-      'name' => [['name', 191]],
+      'name' => $pgsql ? ['name'] : [['name', 191]],
       'content_model_dsid' => ['content_model', 'dsid'],
     ],
     'primary key' => ['id'],
