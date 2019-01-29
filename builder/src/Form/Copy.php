@@ -57,6 +57,7 @@ class Copy extends FormBase {
         '#type' => 'submit',
         '#value' => $this->t('Cancel'),
         '#name' => 'cancel',
+        '#limit_validation_errors' => [],
       ],
     ];
   }
