@@ -934,7 +934,7 @@ function xml_form_elements_creative_commons_get_processed_values(array &$element
         if ((float) $new_version < (float) $version) {
           // The specified version is too high.
           $error = TRUE;
-          $form_state->setError($error_element, t("CC license version not (yet) available."));
+          $form_state->setErrorByName($error_element, t("CC license version not (yet) available."));
         }
       }
       else {
@@ -999,7 +999,7 @@ function xml_form_elements_creative_commons_get_processed_values(array &$element
           }
         }
         else {
-          $form_state->setError($error_element, t("CC license version does not seem to exist."));
+          $form_state->setErrorByName($error_element, t("CC license version does not seem to exist."));
         }
       }
     }
