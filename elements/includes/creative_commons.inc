@@ -311,18 +311,16 @@ function xml_form_elements_creative_commons(array $element, FormStateInterface $
   ];
 
   // Update button for graceful degradation w/out JS.
-  $license_update = [
-    '#type' => 'button',
-    '#value' => t('Update license'),
-    '#limit_validation_errors' => [[$element['#name']]],
-    '#submit' => ['xml_form_elements_creative_commons_license_update_submit'],
-    '#return_value' => 'update-license',
-  ];
-  $rendered_license_update = \Drupal::service('renderer')->render($license_update);
-  $element['license_fieldset']['license_update'] = [
+  $element['license_fieldset']['license_update_wrapper'] = [
     '#type' => 'html_tag',
     '#tag' => 'noscript',
-    '#value' => $rendered_license_update,
+    'license_update' => [
+      '#type' => 'button',
+      '#value' => t('Update license'),
+      '#limit_validation_errors' => [[$element['#name']]],
+      '#submit' => ['xml_form_elements_creative_commons_license_update_submit'],
+      '#return_value' => 'update-license',
+    ],
   ];
 
   // Add validator.
