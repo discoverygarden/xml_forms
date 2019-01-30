@@ -460,11 +460,11 @@ function xml_form_elements_creative_commons_validate(array &$element, FormStateI
   _xml_form_elements_creative_commons_populate_element($element, $form_state);
   // If a license is required, error if none was chosen.
   if (($element['license_fieldset']['license_type']['#value'] == 'none') && $element['license_fieldset']['license_type']['#required']) {
-    form_set_error($element['#name'] . '][license_fieldset][license_type', t('@element is required.', ['@element' => $element['license_fieldset']['license_type']['#title']]));
+    $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_type', t('@element is required.', ['@element' => $element['license_fieldset']['license_type']['#title']]));
   }
   // If a license is required, error if no URI was given in manual mode.
   if (($element['license_fieldset']['license_type']['#value'] == 'manual') && $form_state->getValue($element['#name'])['license_fieldset']['license_uri'] == '' && $element['license_fieldset']['license_uri']['#required']) {
-    form_set_error($element['#name'] . '][license_fieldset][license_uri', t('@element is required.', ['@element' => $element['license_fieldset']['license_uri']['#title']]));
+    $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_uri', t('@element is required.', ['@element' => $element['license_fieldset']['license_uri']['#title']]));
   }
   // Re-set validation sections.
   $validation_sections = $original_validation_sections;
@@ -872,7 +872,7 @@ function xml_form_elements_creative_commons_get_processed_values(array &$element
   // Validate the initial version.
   if (!xml_form_elements_creative_commons_license_version_has_valid_format($values['license_fieldset']['license_version'])) {
     $error = TRUE;
-    form_set_error($element['#name'] . '][license_fieldset][license_version', t('Invalid CC license version format.'));
+    $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_version', t('Invalid CC license version format.'));
   }
 
   // Validate the initial license URI.
@@ -880,10 +880,10 @@ function xml_form_elements_creative_commons_get_processed_values(array &$element
     $error = TRUE;
     $test_uri = preg_replace('#^https?#', 'http', preg_replace('#/?$#', '/', $values['license_fieldset']['license_uri'], 1));
     if (xml_form_elements_creative_commons_license_uri_has_valid_format($test_uri)) {
-      form_set_error($element['#name'] . '][license_fieldset][license_uri', t('The CC license URI needs to start with "http://" and end with a slash "/".'));
+      $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_uri', t('The CC license URI needs to start with "http://" and end with a slash "/".'));
     }
     else {
-      form_set_error($element['#name'] . '][license_fieldset][license_uri', t('Invalid CC license URI format.'));
+      $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_uri', t('Invalid CC license URI format.'));
     }
   }
 
@@ -933,7 +933,7 @@ function xml_form_elements_creative_commons_get_processed_values(array &$element
         if ((float) $new_version < (float) $version) {
           // The specified version is too high.
           $error = TRUE;
-          form_set_error($error_element, t("CC license version not (yet) available."));
+          $form_state->setError($error_element, t("CC license version not (yet) available."));
         }
       }
       else {
@@ -991,14 +991,14 @@ function xml_form_elements_creative_commons_get_processed_values(array &$element
           // If only the jurisdiction was unknown, alert the user; otherwise
           // suggest choosing the license automatically.
           if (strpos($values['license_fieldset']['license_uri'], $new_license_uri) === 0) {
-            form_set_error($element['#name'] . '][license_fieldset][license_uri', t("CC license jurisdiction unknown or not applicable for this license."));
+            $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_uri', t("CC license jurisdiction unknown or not applicable for this license."));
           }
           else {
-            form_set_error($element['#name'] . '][license_fieldset][license_uri', t("CC license URI seems to be invalid. Perhaps you would prefer to choose one automatically?"));
+            $form_state->setErrorByName($element['#name'] . '][license_fieldset][license_uri', t("CC license URI seems to be invalid. Perhaps you would prefer to choose one automatically?"));
           }
         }
         else {
-          form_set_error($error_element, t("CC license version does not seem to exist."));
+          $form_state->setError($error_element, t("CC license version does not seem to exist."));
         }
       }
     }
