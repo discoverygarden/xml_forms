@@ -80,10 +80,10 @@ function xml_form_builder_schema() {
         'description' => 'An XSL transform for setting the Fedora object\'s Dublin Core metadata datastream.',
         'type' => 'varchar',
         'length' => 128,
-        'not null' => TRUE,
+        'not null' => FALSE,
       ],
       'self_transform' => [
-        'description' => 'A xsl transform for setting the Fedora Object\'s Dublin Core metadata datastream.',
+        'description' => 'An XSL transform to run on the metadata DS.',
         'type' => 'varchar',
         'length' => 128,
         'not null' => FALSE,
