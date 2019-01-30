@@ -273,6 +273,7 @@ function xml_form_elements_creative_commons(array $element, FormStateInterface $
       'wrapper' => $license_fieldset_id,
       'callback' => 'xml_form_elements_creative_commons_ajax',
       'keypress' => TRUE,
+      'disable-refocus' => TRUE,
     ],
     '#states' => [
       'invisible' => [
