@@ -23,5 +23,5 @@ the correct license in this case is to enter
 `http://creativecommons.org/licenses/by-sa/1.0/fi/`, resp.
 `http://creativecommons.org/licenses/by-nc-sa/1.0/fi/`, _manually_ (choose
 "Manually select a license URI" for _Select a license type_). Also, this kind
-of licenses cannot be set by administrators in Form Builder as _Default Value
- for the Creative Commons Form Element.
+of licenses cannot be set by administrators in Form Builder as _Default Value_
+for the Creative Commons Form Element.
