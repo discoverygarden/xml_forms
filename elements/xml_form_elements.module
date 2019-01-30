@@ -507,9 +507,6 @@ function xml_form_elements_defaultable_markup($children, array &$elements) {
 /**
  * Process for the creative_commons_process form element.
  *
- * The state of #tree is managed by this form element because #tree is needed
- * for ajax but destroys the value_callback.
- *
  * @param array $element
  *   The element to create.
  * @param \Drupal\Core\Form\FormStateInterface $form_state

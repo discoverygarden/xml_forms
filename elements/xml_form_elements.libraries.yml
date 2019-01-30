@@ -49,3 +49,11 @@ datepicker:
     - core/drupalSettings
     - core/jquery.ui.datepicker
     - core/drupal
+creative-commons:
+  version: 1.x
+  js:
+    js/creative_commons.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
