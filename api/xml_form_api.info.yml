@@ -6,3 +6,4 @@ dependencies:
   - :xml_schema_api
 core: 8.x
 type: module
+php: '7.2'
