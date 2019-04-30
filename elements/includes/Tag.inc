@@ -44,6 +44,7 @@ class Tag {
    */
 // @codingStandardsIgnoreLine
   public static function Process(array $element, FormStateInterface $form_state, array $complete_form = NULL) {
+    $form_state->loadInclude('php_lib', 'inc', 'DrupalFormHelpers');
     $tags = &get_form_element_parent($element, $complete_form);
     $element['#id'] = $element['#hash'];
     $element['#title'] = isset($tags['#title']) ? $tags['#title'] : FALSE;
