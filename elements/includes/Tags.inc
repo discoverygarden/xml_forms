@@ -215,8 +215,18 @@ function template_preprocess_tags(array &$vars) {
   $textfield = [
     'element' => array_shift($vars['tags']),
   ];
-  $vars['textfield'] = '<input type="text" id="' . $textfield['element']['#id'] . '" name="' . $textfield['element']['#name'] . '" value="' . $textfield['element']['#value'] . '" size="60" class="form-text" />';
-
+  $vars['textfield'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'input',
+    '#attributes' => [
+      'class' => ['form-text'],
+      'type' => 'text',
+      'id' => $textfield['element']['#id'],
+      'name' => $textfield['element']['#name'],
+      'value' => $textfield['element']['#value'],
+      'size' => 60,
+    ],
+  ];
 }
 
 /**
