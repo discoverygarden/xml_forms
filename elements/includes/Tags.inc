@@ -220,6 +220,7 @@ function template_preprocess_tags(array &$vars) {
     '#tag' => 'input',
     '#attributes' => [
       'class' => ['form-text'],
+      'type' => 'text',
       'id' => $textfield['element']['#id'],
       'name' => $textfield['element']['#name'],
       'value' => $textfield['element']['#value'],
