@@ -47,7 +47,7 @@ interface ActionInterface {
    *
    * @param XMLDocument $document
    *   Document to perform execution on.
-   * @param FormElement $element
+   * @param Drupal\objective_forms\FormElement $element
    *   Element in document to execute on.
    * @param mixed $value
    *   Value to execute.
@@ -59,7 +59,7 @@ interface ActionInterface {
    *
    * @param XMLDocument $document
    *   Document to check execution on.
-   * @param FormElement $element
+   * @param Drupal\objective_forms\FormElement $element
    *   Form element to check execution on.
    * @param mixed $value
    *   Value to check execution for.
