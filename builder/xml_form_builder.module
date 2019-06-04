@@ -468,8 +468,8 @@ function xml_form_builder_transform_mods_collection_hack(DOMDocument $document) 
 /**
  * Implements hook_help().
  */
-function xml_form_builder_help($path) {
-  if ($path == XML_FORM_BUILDER_SETTINGS_MENU) {
+function xml_form_builder_help($route) {
+  if ($route == 'xml_form_builder.settings_form') {
     $output_array = [
       '#type' => 'item',
       '#markup' => t('The "Use Default DC XSLTs" checkbox overrides the ability
