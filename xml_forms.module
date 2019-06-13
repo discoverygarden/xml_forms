@@ -5,6 +5,8 @@
  * XML Forms base module.
  */
 
+use Drupal\Core\Url;
+
 /**
  * Get the schema if it exists.
  *
@@ -19,5 +21,60 @@ function xml_forms_get_schema($filename) {
   }
   else {
     drupal_not_found();
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function xml_forms_help($route) {
+  switch ($route) {
+    // Main help page for the module.
+    case 'help.page.xml_forms':
+      // About section.
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The XML Forms group of modules includes:</br>') .
+        '<ul>
+        <li>' .
+        t('Islandora XML Forms: see the <a href=":xml_forms">wiki page*</a> for more information.', [
+          ":xml_forms" => 'https://wiki.duraspace.org/display/ISLANDORA/XML+Forms',
+        ]) .
+        '</li><li>' .
+        t('Islandora XML Form Builder: see the <a href=":xml_form_builder">wiki page*</a> for more information.', [
+          ":xml_form_builder" => 'https://wiki.duraspace.org/display/ISLANDORA/XML+Form+Builder',
+        ]) .
+        '</li><li>' .
+        t('Islandora XML Form Elements: see the  <a href=":xml_form_elements">wiki page*</a> for more information.', [
+          ":xml_form_elements" => 'https://wiki.duraspace.org/display/ISLANDORA/XML+Forms#XMLForms-formelements',
+        ]) .
+        '</li><li>' .
+        t('Islandora XML Form API: see the <a href=":xml_form_api">wiki page*</a> for more information.', [
+          ":xml_form_api" => 'https://wiki.duraspace.org/display/ISLANDORA/XML+Forms#XMLForms-formapi',
+        ]) .
+        '</li><li>' .
+        t('Islandora XML Schema API: see the <a href=":xml_schema_api">wiki page*</a> for more information.', [
+          ":xml_schema_api" => 'https://wiki.duraspace.org/display/ISLANDORA/XML+Forms#XMLForms-schemapi',
+        ]) .
+        '</li></ul></br>' .
+        t('These modules work together to allow you to create, import, view, copy, edit, and remove ingest forms, and associate those forms with various Content Models within Islandora.') .
+        ' ' .
+        t('If multiple ingest forms are associated with a particular Content Model, there will be an additional step to ask which form to use when adding an object to a collection.') .
+        ' ' .
+        t('The Islandora XML Form Builder provides most of the accessible functionality, while the other modules in the group help to support that functionality behind the scenes.') .
+      '</p>';
+      // Uses section.
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dt>' . t('Manage Ingest Forms') . '</dt><dd>';
+      $output .= t('Detailed instructions can be found at <a href=":how_to">How to Edit/Create Ingest Forms*</a> within the Islandora wiki. The main thing that has changed from that Drupal 7 version of documentation is the exact path to the <a href=":form_builder">XML Form Builder page</a> on your website, but everything else should be helpful.', [
+        ':form_builder' => Url::fromRoute('xml_form_builder.main')->toString(),
+        ':how_to' => 'https://wiki.duraspace.org/pages/viewpage.action?pageId=69833497',
+      ]) .
+      '</dd>';
+
+      $output .= '</br></br><p>';
+      $output .= t('*Links go to documentation for the Drupal 7 version of the module, as documentation for the Drupal 8 version of the module has not yet been written. There may be some small discrepencies; however, most key points remain useful.') .
+      '</p>';
+      return $output;
+
   }
 }
