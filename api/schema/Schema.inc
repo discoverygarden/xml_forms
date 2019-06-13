@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\php_lib\ReadOnlyProtectedMembers;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 module_load_include('inc', 'php_lib', 'DOMHelpers');
 module_load_include('inc', 'php_lib', 'String');
@@ -29,6 +30,8 @@ module_load_include('inc', 'xml_schema_api', 'XmlSchemaCache');
  */
 class XMLSchema {
 // @codingStandardsIgnoreEnd
+
+  use StringTranslationTrait;
 
   /**
    * Constants.
@@ -229,7 +232,7 @@ class XMLSchema {
     else {
       $doc = new DOMDocument();
       if (!@$doc->load($filename)) {
-        throw new Exception(t('Failed to find document %filename', ['%filename' => $filename]));
+        throw new Exception($this->t('Failed to find document %filename', ['%filename' => $filename]));
       }
       XmlSchemaCache::set($filename, $doc);
       return $doc;

@@ -11,6 +11,7 @@ module_load_include('inc', 'xml_form_api', 'Update');
 module_load_include('inc', 'xml_form_api', 'Delete');
 
 use Drupal\objective_forms\FormPropertyInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Container Class for all actions.
@@ -24,6 +25,8 @@ use Drupal\objective_forms\FormPropertyInterface;
  */
 class Actions implements FormPropertyInterface {
 // @codingStandardsIgnoreEnd
+
+  use StringTranslationTrait;
 
   /**
    * Create one or more DOMNodes in the Document.
@@ -61,7 +64,7 @@ class Actions implements FormPropertyInterface {
    */
   public function __construct($value) {
     if (!is_array($value)) {
-      throw new InvalidArgumentException(t('The value parameter to Actions must be an array.'));
+      throw new InvalidArgumentException($this->t('The value parameter to Actions must be an array.'));
     }
     if (isset($value['create']) && is_array($value['create'])) {
       $this->create = new Create($value['create']);
